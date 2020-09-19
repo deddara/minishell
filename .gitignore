@@ -1,0 +1,15 @@
+libft/
+.vscode/
+.idea/
+CMakeLists.txt
+cmake-build-debug/
+objs/
+._README.md
+*.[doa]
+*.swp
+*.swo
+*.DS_Store
+.fuse_hidden*
+._*.png
+vgcore.*
+minishell
