@@ -6,13 +6,13 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 00:07:37 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 00:09:59 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void sort_list(t_data *data, int fd)
+static void sort_list(t_data *data)
 {
 	int		i;
 	int		j;
@@ -28,7 +28,7 @@ static void sort_list(t_data *data, int fd)
 		j = 0;
 		while (j < n - i - 1)
 		{
-			if (ft_strcmp(data->envp[j], data->envp[j + 1]) > 0)
+			if (ft_strncmp(data->envp[j], data->envp[j + 1], ft_strlen(data->envp[j])) > 0)
 			{
 				tmp = ft_strdup(data->envp[j]);
 				free (data->envp[j]);
@@ -47,7 +47,7 @@ void	f_export(t_data *data, char *str, int fd)
 {
 	if (!str)
 	{
-		sort_list(data, fd);
-		f_env(data, 1);
+		sort_list(data);
+		f_env(fd, data);
 	}
 }
