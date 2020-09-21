@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/21 20:07:35 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 22:58:52 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void			*f_strarr_free(char **strarr);
 int				f_exit(t_data *data, int exitcode, char *exitstr);
 
 int				test_strarr(t_data *data);
-void			f_pwd(void);
+void			f_pwd(int fd);
 #endif
