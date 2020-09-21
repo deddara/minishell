@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/21 20:00:58 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/21 20:18:03 by deddara          ###   ########.fr       */
+/*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
+/*   Updated: 2020/09/21 21:13:44 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	f_pwd(void)
+#include <stdio.h>
+int		f_cd(char *path, char **envp)
 {
-	char *dir;
-
-	if (!(dir = getcwd(NULL, 0)))
-		return ;
-	write(1, dir, ft_strlen(dir));
-	write(1, "\n", 1);
+	if (!path)
+	{
+		chdir("~/");
+		f_pwd();
+		return (0);
+	}
+	if (chdir(path) == -1)
+	{
+		write (2, "cd: no such file or directory: ", 31);
+		write (2, &path, ft_strlen(path));
+		printf ("%d", errno);
+		return (errno);
+	}
+	return (0);
 }
