@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
+#    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/20 22:33:16 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/21 19:41:01 by deddara          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ FLS_2	= $(addprefix $(FLSDIR_2), \
 		strarr )
 
 FLS_3	= $(addprefix $(FLSDIR_3), \
-		test_strarr )
+		 )
 
 SRC	= $(FLS_1) $(FLS_2) $(FLS_3)
 
