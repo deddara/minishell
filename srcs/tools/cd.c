@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/21 21:29:41 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:35:45 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,21 @@ char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 
 int		f_cd(char *path, char **envp)
 {
+	char *home;
+
 	if (!path)
 	{
-		f_env_find_elem(envp, "HOME", "=");
-		f_pwd();
+		if(!(home = f_env_find_elem(envp, "HOME", "=")))
+			return (1);
+		if (chdir(home) == -1)
+			return (errno);
 		return (0);
 	}
 	if (chdir(path) == -1)
 	{
 		write (2, "cd: no such file or directory: ", 31);
-		write (2, &path, ft_strlen(path));
-		printf ("%d", errno);
+		write (2, path, ft_strlen(path));
+		write (2, "\n", 1);
 		return (errno);
 	}
 	return (0);
