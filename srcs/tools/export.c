@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 00:24:35 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 00:30:15 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,26 @@ void		two_d_arr_free(char **str)
 	{
 		while (str[i])
 		{
-			free (str[i]);
+			free(str[i]);
 			i++;
 		}
 		free(str);
+	}
+}
+
+static void	add_var(t_data *data, char *str)
+{
+	char	**words;
+	int		i;
+
+	i = 0;
+	if (!(words = ft_split(str, ' ')))
+		return ;
+	while (words[i])
+	{
+		if (!(data->envp = f_strarr_add_elem(data->envp, words[i])))
+			return ;
+		i++;
 	}
 }
 
@@ -85,4 +101,7 @@ void		f_export(t_data *data, char *str, int fd)
 		two_d_arr_free(sorted_env);
 		return ;
 	}
+	else
+		add_var(data, str);
+	f_env(1, data);
 }
