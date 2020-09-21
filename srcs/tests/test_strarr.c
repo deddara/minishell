@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_strarr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/20 22:23:01 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/21 19:39:18 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,21 @@ int				test_strarr(t_data *data)
 {
 	int			i;
 
-	test_strarr_add_elements(data);
 	i = 0;
+	if (!(data->envp = f_strarr_add_elem(data->envp, "dsad")))
+		return (f_exit(data, 1, "error\n"));
+	data->envp = f_strarr_rem_elem(data->envp, "test4", NULL);
 	while (data->envp[i])
 	{
 		ft_putstr_fd(data->envp[i++], 1);
 		ft_putchar_fd('\n', 1);
 	}
-	test_strarr_rem_elements(data);
-	i = 0;
-	while (data->envp[i])
-	{
-		ft_putstr_fd(data->envp[i++], 1);
-		ft_putchar_fd('\n', 1);
-	}
+	// test_strarr_rem_elements(data);
+	// i = 0;
+	// while (data->envp[i])
+	// {
+	// 	ft_putstr_fd(data->envp[i++], 1);
+	// 	ft_putchar_fd('\n', 1);
+	// }
 	return (f_exit(data, 0, ""));
 }

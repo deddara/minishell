@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strarr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 15:12:26 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/20 22:21:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/21 19:38:53 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char			**f_strarr_add_elem(char **src_arr, char *str)
 	int			i;
 	int			j;
 
-	if (!src_arr)
+	if (!src_arr || !str)
 		return (NULL);
 	i = 0;
 	while (src_arr[i])
@@ -87,7 +87,7 @@ char			**f_strarr_rem_elem(char **src_arr, char *str, char *endcmp)
 	int			j;
 	int			k;
 
-	if (!src_arr)
+	if (!src_arr || !str)
 		return (NULL);
 	if ((j = f_strarr_find_elem(src_arr, str, endcmp)) < 0)
 		return (src_arr);
