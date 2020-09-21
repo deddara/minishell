@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/21 23:08:36 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 23:28:28 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ int				f_cd(char *path, char **envp);
 char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
+int				f_unset(t_data *data, char *str);
 #endif
