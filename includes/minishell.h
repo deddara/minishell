@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/21 20:07:35 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:14:00 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
 
 typedef struct	s_data
 {
@@ -31,4 +32,5 @@ int				f_exit(t_data *data, int exitcode, char *exitstr);
 
 int				test_strarr(t_data *data);
 void			f_pwd(void);
+int				f_cd(char *path, char **envp);
 #endif
