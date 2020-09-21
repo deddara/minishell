@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/21 21:35:45 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:59:24 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int		f_cd(char *path, char **envp)
 	}
 	if (chdir(path) == -1)
 	{
-		write (2, "cd: no such file or directory: ", 31);
+		write (2, "cd: ", 4);
 		write (2, path, ft_strlen(path));
-		write (2, "\n", 1);
+		write (2, ": No such file or directory\n", 28);
 		return (errno);
 	}
 	return (0);

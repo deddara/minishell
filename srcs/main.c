@@ -6,14 +6,14 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/21 21:33:23 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:59:39 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 void			f_data_init(t_data *data)
 {
 	data->envp = NULL;
@@ -35,7 +35,5 @@ int				main(int argc, char **argv, char **envp)
 	f_data_init(&data);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
-	f_pwd();
-	f_cd("dsas", data.envp);
 	return (f_exit(&data, 0, ""));
 }
