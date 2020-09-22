@@ -6,12 +6,13 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/21 21:59:24 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:08:58 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
+#include <string.h>
 
 char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 {
@@ -57,7 +58,9 @@ int		f_cd(char *path, char **envp)
 	{
 		write (2, "cd: ", 4);
 		write (2, path, ft_strlen(path));
-		write (2, ": No such file or directory\n", 28);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
 		return (errno);
 	}
 	return (0);
