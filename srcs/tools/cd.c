@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 21:45:09 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 21:52:01 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			f_cd(char *path, char **envp)
 	{
 		if(!(home = f_env_find_elem(envp, "HOME", "=")))
 		{
-			ft_putstr_fd("cd: HOME not set", 2);
+			ft_putstr_fd("cd: HOME not set\n", 2);
 			return (errno);
 		}
 		if (chdir(home) == -1)
