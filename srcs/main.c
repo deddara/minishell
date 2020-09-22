@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 18:58:11 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 19:09:12 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ int				main(int argc, char **argv, char **envp)
 	f_data_init(&data);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
-	get_next_line(0, &data.input);
-	ft_putstr_fd(data.input, 1);
+	while (!data.input || ft_strncmp("exit", data.input, ft_strlen("exit")))
+	{
+		get_next_line(0, &data.input);
+		ft_putstr_fd(data.input, 1);
+		ft_putchar_fd('\n', 1);
+	}
 	return (f_exit(&data, 0, ""));
 }
