@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 22:06:59 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 22:27:10 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,6 @@ void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 int				f_export(t_data *data, char *str, int fd);
+int				check_for_equal(char **words);
+int				f_unset(t_data *data, char *str);
 #endif

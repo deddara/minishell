@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 22:24:25 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 22:25:29 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	sort_list(char **sorted_env)
 	}
 }
 
-static int	check_for_equal(char **words)
+int			check_for_equal(char **words)
 {
 	int i;
 	int j;
