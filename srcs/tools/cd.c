@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 21:31:50 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 21:45:09 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	tilda_handle(char *path, char**envp)
 
 	if(!(home = f_env_find_elem(envp, "HOME", "=")))
 	{
-		if (chdir(&path[1]) == -1);
+		if (chdir(&path[1]) == -1)
 			return (path_error(path));
 		return (0);
 	}
@@ -70,6 +70,7 @@ static int	tilda_handle(char *path, char**envp)
 		return (1);
 	if (chdir(new_path) == -1)
 		return (path_error(new_path));
+	return (0);
 }
 
 int			f_cd(char *path, char **envp)
@@ -79,7 +80,10 @@ int			f_cd(char *path, char **envp)
 	if (!path)
 	{
 		if(!(home = f_env_find_elem(envp, "HOME", "=")))
-			home = "/";
+		{
+			ft_putstr_fd("cd: HOME not set", 2);
+			return (errno);
+		}
 		if (chdir(home) == -1)
 			return (path_error(home));
 		return (0);
