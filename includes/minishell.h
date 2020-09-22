@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 15:13:07 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:56:00 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,5 @@ void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 void			f_export(t_data *data, char *str, int fd);
 void			two_d_arr_free(char **str);
+int				f_unset(t_data *data, char *str);
 #endif
