@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 21:52:01 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 21:54:37 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	path_error(char *path)
 	return (errno);
 }
 
-char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
+char		*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 {
 	int			i;
 	int			j;
@@ -53,12 +53,12 @@ char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 	return (NULL);
 }
 
-static int	tilda_handle(char *path, char**envp)
+static int	tilda_handle(char *path, char **envp)
 {
 	char *new_path;
 	char *home;
 
-	if(!(home = f_env_find_elem(envp, "HOME", "=")))
+	if (!(home = f_env_find_elem(envp, "HOME", "=")))
 	{
 		if (chdir(&path[1]) == -1)
 			return (path_error(path));
@@ -70,6 +70,7 @@ static int	tilda_handle(char *path, char**envp)
 		return (1);
 	if (chdir(new_path) == -1)
 		return (path_error(new_path));
+	free(new_path);
 	return (0);
 }
 
@@ -79,7 +80,7 @@ int			f_cd(char *path, char **envp)
 
 	if (!path)
 	{
-		if(!(home = f_env_find_elem(envp, "HOME", "=")))
+		if (!(home = f_env_find_elem(envp, "HOME", "=")))
 		{
 			ft_putstr_fd("cd: HOME not set\n", 2);
 			return (errno);
