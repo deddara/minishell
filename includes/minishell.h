@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 11:47:38 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 13:10:04 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 typedef struct	s_data
 {
 	char		**envp;
+	char		**argv;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
@@ -36,4 +37,5 @@ char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
+int				f_ls(t_data *data, int fd);
 #endif

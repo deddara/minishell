@@ -6,7 +6,7 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 11:42:49 by deddara          ###   ########.fr        #
+#    Updated: 2020/09/22 13:10:51 by deddara          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ OBJDIR		= objs/
 FLSDIR_1	= ./
 FLSDIR_2	= tools/
 FLSDIR_3	= tests/
+FLSDIR_4	= external_functions/
 
 FLS_1	= $(addprefix $(FLSDIR_1), \
 		main )
@@ -36,7 +37,10 @@ FLS_2	= $(addprefix $(FLSDIR_2), \
 FLS_3	= $(addprefix $(FLSDIR_3), \
 		 )
 
-SRC	= $(FLS_1) $(FLS_2) $(FLS_3)
+FLS_4	= $(addprefix $(FLSDIR_4), \
+		 ls)
+
+SRC	= $(FLS_1) $(FLS_2) $(FLS_3) $(FLS_4)
 
 OBJ	= $(addprefix $(OBJDIR), $(SRC:=.o))
 DFLS	= $(SRC:=.d)
@@ -50,7 +54,7 @@ $(NAME):	$(LIBFT) $(OBJ)
 
 $(OBJ):		$(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p	$(OBJDIR) $(addprefix $(OBJDIR), $(FLSDIR_1) $(FLSDIR_2) \
-			$(FLSDIR_3))
+			$(FLSDIR_3) $(FLSDIR_4))
 	$(CC)		$(FLAGS) $(INCLUDES) -c $< -o $@ -MMD
 
 include $(wildcard $(addprefix $(OBJDIR), $(DFLS)))
