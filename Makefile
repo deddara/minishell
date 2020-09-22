@@ -6,7 +6,7 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 15:18:04 by deddara          ###   ########.fr        #
+#    Updated: 2020/09/22 15:55:14 by deddara          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ FLS_1	= $(addprefix $(FLSDIR_1), \
 		main )
 
 FLS_2	= $(addprefix $(FLSDIR_2), \
-		strarr pwd cd env echo export)
+		strarr pwd cd env echo export unset)
 
 FLS_3	= $(addprefix $(FLSDIR_3), \
 		 )
