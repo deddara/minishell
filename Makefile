@@ -6,7 +6,7 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 18:07:47 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/22 18:50:53 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ $(NAME):	$(LIBFT) $(OBJ)
 $(OBJ):		$(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p	$(OBJDIR) $(addprefix $(OBJDIR), $(FLSDIR_1) $(FLSDIR_2) \
 			$(FLSDIR_3))
-	$(CC)		$(FLAGS) $(INCLUDES) -c $< -o $@ -MMD
+	$(CC)		$(FLAGS) -D BUFFER_SIZE=32 $(INCLUDES) -c $< -o $@ -MMD
 
 include $(wildcard $(addprefix $(OBJDIR), $(DFLS)))
 

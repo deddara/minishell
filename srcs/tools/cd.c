@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 18:14:00 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 18:41:38 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 {
