@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 18:41:38 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 21:48:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 {
 	int			i;
-	int			j;
 	int			len;
 	char		*coincidence;
 
@@ -27,7 +26,6 @@ char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 		return (NULL);
 	len = ft_strlen(str);
 	i = -1;
-	j = 0;
 	while (src_arr[++i])
 	{
 		if ((coincidence = ft_strnstr(src_arr[i], str, len)) && \
