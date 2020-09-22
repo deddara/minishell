@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 18:12:59 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 22:25:29 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,54 @@ static void	sort_list(char **sorted_env)
 	}
 }
 
-static void	add_var(t_data *data, char *str)
+int			check_for_equal(char **words)
+{
+	int i;
+	int j;
+	int flag;
+
+	flag = 0;
+	i = 0;
+	while (words[i])
+	{
+		j = 0;
+		flag = 0;
+		while (words[i][j])
+		{
+			if (words[i][j] == '=')
+				flag = 1;
+			j++;
+		}
+		if (!flag)
+		{
+			ft_putstr_fd("export: not a valid identifier\n", 2);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+static int	add_var(t_data *data, char *str)
 {
 	char	**words;
 	int		i;
 
 	i = 0;
 	if (!(words = ft_split(str, ' ')))
-		return ;
+		return (1);
+	if (check_for_equal(words))
+		return (1);
 	while (words[i])
 	{
 		if (!(data->envp = f_strarr_add_elem(data->envp, words[i])))
-			return ;
+			return (1);
 		i++;
 	}
+	return (0);
 }
 
-void		f_export(t_data *data, char *str, int fd)
+int			f_export(t_data *data, char *str, int fd)
 {
 	char	**sorted_env;
 	int		i;
@@ -84,8 +115,11 @@ void		f_export(t_data *data, char *str, int fd)
 			ft_putchar_fd('\n', fd);
 		}
 		sorted_env = f_strarr_free(sorted_env);
-		return ;
 	}
 	else
-		add_var(data, str);
+	{
+		if ((add_var(data, str)))
+			return (1);
+	}
+	return (0);
 }
