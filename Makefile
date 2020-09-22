@@ -6,13 +6,13 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 17:59:18 by deddara          ###   ########.fr        #
+#    Updated: 2020/09/22 18:07:47 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 LIBFT		= libft/libft.a
-INCLUDES	= -I includes/ -I libft/includes/
+INCLUDES	= -I includes/ -I libft/includes/ -I srcs/get_next_line/
 CC		= gcc
 CFLAGS		= -Wall -Wextra -Werror
 OFLAGS		= -O2
@@ -25,16 +25,23 @@ SRCDIR		= srcs/
 OBJDIR		= objs/
 FLSDIR_1	= ./
 FLSDIR_2	= tools/
-FLSDIR_3	= tests/
+FLSDIR_3	= get_next_line/
 
 FLS_1	= $(addprefix $(FLSDIR_1), \
 		main )
 
 FLS_2	= $(addprefix $(FLSDIR_2), \
-		strarr pwd cd env echo export unset)
+		cd \
+		echo \
+		env \
+		export \
+		pwd \
+		strarr \
+		unset )
 
 FLS_3	= $(addprefix $(FLSDIR_3), \
-		 )
+		get_next_line \
+		get_next_line_utils )
 
 SRC	= $(FLS_1) $(FLS_2) $(FLS_3)
 

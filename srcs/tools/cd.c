@@ -6,12 +6,13 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 15:08:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 18:14:00 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
+#include <errno.h>
 #include <string.h>
 
 char	*f_env_find_elem(char **src_arr, char *str, char *endcmp)
@@ -56,8 +57,8 @@ int		f_cd(char *path, char **envp)
 	}
 	if (chdir(path) == -1)
 	{
-		write (2, "cd: ", 4);
-		write (2, path, ft_strlen(path));
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);

@@ -6,21 +6,20 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 18:00:33 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 18:08:11 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
-# include "libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <errno.h>
+
+# define BUFFER_SIZE=32
 
 typedef struct	s_data
 {
 	char		**envp;
+	char		*input;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);

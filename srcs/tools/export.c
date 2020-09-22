@@ -6,11 +6,12 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 14:52:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 18:12:59 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 static void	sorter(char **sorted_env, int j)
 {
@@ -80,7 +81,7 @@ void		f_export(t_data *data, char *str, int fd)
 		while (sorted_env[i])
 		{
 			ft_putstr_fd(sorted_env[i++], fd);
-			write(fd, "\n", 1);
+			ft_putchar_fd('\n', fd);
 		}
 		sorted_env = f_strarr_free(sorted_env);
 		return ;
