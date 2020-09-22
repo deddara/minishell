@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 00:30:15 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/22 14:52:19 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,6 @@ static void	sort_list(char **sorted_env)
 	}
 }
 
-void		two_d_arr_free(char **str)
-{
-	int i;
-
-	i = 0;
-	if (str)
-	{
-		while (str[i])
-		{
-			free(str[i]);
-			i++;
-		}
-		free(str);
-	}
-}
-
 static void	add_var(t_data *data, char *str)
 {
 	char	**words;
@@ -98,10 +82,9 @@ void		f_export(t_data *data, char *str, int fd)
 			ft_putstr_fd(sorted_env[i++], fd);
 			write(fd, "\n", 1);
 		}
-		two_d_arr_free(sorted_env);
+		sorted_env = f_strarr_free(sorted_env);
 		return ;
 	}
 	else
 		add_var(data, str);
-	f_env(1, data);
 }
