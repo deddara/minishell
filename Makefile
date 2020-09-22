@@ -6,7 +6,7 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 15:55:14 by deddara          ###   ########.fr        #
+#    Updated: 2020/09/22 17:59:18 by deddara          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,8 @@ run: all
 	./$(NAME)
 
 test: debug
-	valgrind --leak-check=full -s ./$(NAME)
+	# valgrind --leak-check=full -s ./$(NAME)
+	./$(NAME)
 
 re:	fclean all
 
