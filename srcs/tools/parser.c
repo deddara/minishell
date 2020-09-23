@@ -6,13 +6,15 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 19:46:12 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 21:05:28 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 int				f_check_quotes(t_data *data, int i)
 {
 	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
@@ -81,8 +83,6 @@ int				f_pars_input(t_data *data)
 {
 	int			len;
 	int			i;
-	int			k;
-	char		*w;
 
 	len = ft_strlen(data->input);
 	i = data->pos;
@@ -102,19 +102,34 @@ int				f_pars_input(t_data *data)
 	/*     data->pos = i + 1;                                                   */
 	/* }                                                                        */
 	i = 0;
-	k = 0;
 	free((data->inp_arr) ? data->inp_arr : NULL);
-	data->inp_arr = (char**)malloc(sizeof(char*) * k + 1);
-	data->inp_arr[k] = NULL;
-	w = NULL;
+	data->inp_arr = (char**)malloc(sizeof(char*) * 1);
+	data->inp_arr[0] = NULL;
 
 	int flag = 0;
 	int first_pos;
 	int last_pos;
 	char *tmp;
+	char *tmp2;
 	char sign;
+	int j = 0;
+	char *delim;
+	delim = NULL;
 	while (i < data->pos)
 	{
+		if (ft_strrchr("<> |", data->input[i]) != NULL && flag == 0)
+		{
+			tmp2= malloc(i - j + 1);
+			// *delim = data->input[i];
+			tmp2 = strncpy(tmp, &data->input[j], i - j - 1);
+			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2)))
+				write(1, "error", 5);
+			// data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
+			i++;
+			j = i;
+			free(tmp2);
+			continue;
+		}
 		if ((data->input[i] == '\'' || data->input[i] == '\"') && flag == 0)
 		{	
 			first_pos = i;
