@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 02:55:26 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:25:37 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 int				f_check_quotes(t_data *data, int i)
 {
-	if ((data->input[i] == ''' || data->input[i] == '"') \
-			&& data->qt_o < 0 && data->dbl_qt_o < 0)
+	if (!(data->input[i] == ''' || data->input[i] == '"'))
+		return (0);
+	if (data->qt_o < 0 && data->dbl_qt_o < 0)
 	{
 		if (data->input[i] == ''')
 			data->qt_o = i;
@@ -56,24 +57,36 @@ int				f_pars_input(t_data *data)
 {
 	int			len;
 	int			i;
-	int			j;
+	int			stop;
 	int			k;
 
 	len = ft_strlen(data->input);
-	i = 0;
+	i = pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
 			&& !f_quote_status(data))))
 	{
-		f_check_quotes(data, i);
 		i++;
 	}
-	f_clear_flags(data);
-	j = 0;
+	if (data->input[i])
+		stop = i;
+	else
+		data->pars_complete = 1;
+	i = 0;
 	k = 1;
-	while (j < i)
+	if (data->input[i] && (data->input[i] != ' ' || (data->input[i] == ' ' \
+			&& !f_quote_status(data))))
+	{
+		if ((f_check_quotes(data, i)) == 2);
+		data->pos = i + 1;
+	}
+	f_clear_flags(data);
+	while (i < stop && (data->input[i] != ' ' || (data->input[i] == ' ' \
+			&& !f_quote_status(data))))
 	{
 		k++;
-		while (data->input[j] != ' ' && !f_check_quotes(data, j))
-		if
+		while (data->input[i])
+		{
+			j++;
+		}
 	}
 }
