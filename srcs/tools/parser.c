@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 22:12:50 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:18:47 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ int				f_pars_input(t_data *data)
 			tmp2 = ft_strncpy(tmp2, &data->input[j], i - j);
 			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2)))
 				write(1, "error", 5);
-			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, delim)))
-				write(1, "error", 5);
+			if (data->input[i] != ' ')
+				data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
 			i++;
 			j = i;
 			free(tmp2);
