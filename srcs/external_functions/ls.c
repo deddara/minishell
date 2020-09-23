@@ -17,7 +17,6 @@ static void	vremennoe_reshenie(t_data *data)
 	data->argv = malloc(sizeof(char*) * 1);
 	data->argv[0] = "/bin/ls";
 }
-≠
 int	f_ls(t_data *data, int fd)
 {
 	int pid;

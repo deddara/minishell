@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_for_functions.c                               :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/23 13:59:13 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/23 13:59:14 by deddara          ###   ########.fr       */
+/*   Created: 2020/09/23 14:01:04 by deddara           #+#    #+#             */
+/*   Updated: 2020/09/23 14:03:00 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int init_commands()
+char  **init_command()
 {
-	
+	char **argv;
+}
+
+int main()
+{
+	char	**ls_argv;
+	char	**grep_argv;
+	char	**cat;
+	char	
 }
