@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 18:31:35 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:51:11 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ void			f_clear_quotes_flags(t_data *data)
 	data->dbl_quote_close = -1;
 }
 
+int				f_add_segment(t_data *data, int i)
+{
+	char		*segment;
+	char		*w_tmp;
+
+	if(!(segment = (char*)malloc(sizeof(char) * i - data->last_saved + 1)))
+		return (1);
+	segment = ft_strncpy(segment, data->input + data->last_saved, i - data->last_saved);
+	segment[i - data->last_saved] = '\0';
+	w_tmp = data->w;
+	if(!(data->w = ft_strjoin(data->w, segment)))
+		return (1);
+	free(w_tmp);
+	free(segment);
+	data->last_saved = i + 1;
+	return (0);
+}
+
 int				f_pars_input(t_data *data)
 {
 	int			len;
@@ -60,8 +78,6 @@ int				f_pars_input(t_data *data)
 	int			stop;
 	int			k;
 	int			star_w;
-	char		*w;
-	char		*w_tmp;
 
 	len = ft_strlen(data->input);
 	i = data->pos;
@@ -74,32 +90,32 @@ int				f_pars_input(t_data *data)
 	f_clear_quotes_flags(data);
 	data->pars_complete = (!data->input[i]) ? 1 : 0;
 	data->pos = (data->input[i]) ? i + 1 : i;
-	/* if (data->input[i] && (data->input[i] != ' ' || (data->input[i] == ' ' \ */
-	/*         && !f_quote_status(data))))                                      */
-	/* {                                                                        */
-	/*     if ((f_check_quotes(data, i)) == 2);                                 */
-	/*     data->pos = i + 1;                                                   */
-	/* }                                                                        */
 	i = 0;
 	k = 0;
 	free((data->inp_arr) ? data->inp_arr : NULL);
 	data->inp_arr = (char**)malloc(sizeof(char*) * k + 1);
 	data->inp_arr[k] = NULL;
-	w = NULL;
 	while (i < data->pos)
 	{
-		start_w = i;
 		while (i < data->pos && !ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
 				&& !f_quote_status(data)))
 		{
-
 			if((f_check_quotes(data, i) == 1)
 			{
-				w_tmp = (char*)malloc(sizeof(char) * i - start_w + 1);
-				ft_strncpy(w_tmp + ft_strlen(w), data->input + ft_strlen(w), )
+				if (f_add_segment(data, i))
+					return (f_exit(data, 1, "malloc error\n"));
+			}
+			if((f_check_quotes(data, i) == 2)
+			{
+				if (f_add_segment(data, i))
+					return (f_exit(data, 1, "malloc error\n"));
+				f_clear_quotes_flags(data);
 			}
 			i++;
 		}
+		if (f_add_segment(data, i))
+			return (f_exit(data, 1, "malloc error\n"));
+		data->inp_arr = 
 	}
 	data->pos += (!data->pars_complete) ? 1 : 0;
 }
