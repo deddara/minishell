@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 20:17:25 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 02:22:16 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,9 @@ int				f_add_segment(t_data *data, int i)
 
 int				f_pars_input(t_data *data)
 {
-	int			len;
 	int			i;
 	int			k;
 
-	len = ft_strlen(data->input);
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
 			&& !f_quote_status(data))))
