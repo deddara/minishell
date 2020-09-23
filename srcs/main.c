@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 15:24:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void			f_data_init(t_data *data)
 {
 	data->envp = NULL;
 	data->input = NULL;
-	data->in_arr = NULL;
+	data->inp_arr = NULL;
 	data->pos = 0;
 	data->w_count = 0;
 	data->quote_open = -1;
