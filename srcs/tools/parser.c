@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 22:18:47 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:31:40 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,17 @@ int				f_pars_input(t_data *data)
 	delim = NULL;
 	while (i < data->pos)
 	{
-		if ((ft_strrchr("<> |", data->input[i]) != NULL || i + 1 == data->pos) && flag == 0)
+		if ((ft_strrchr("<> |", data->input[i]) != NULL || data->input[i + 1] == '\0') && flag == 0)
 		{
-			if (i + 1 == data->pos)
+			if (data->input[i + 1] == '\0')
 				i++;
 			tmp2 = malloc(i - j + 1);
 			delim = malloc(2);
 			delim[0] = data->input[i];
 			delim[1] = '\0';
 			tmp2 = ft_strncpy(tmp2, &data->input[j], i - j);
-			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2)))
-				write(1, "error", 5);
+			if ((ft_strrchr("<> |", data->input[i - 1]) == NULL))
+				data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2);
 			if (data->input[i] != ' ')
 				data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
 			i++;
