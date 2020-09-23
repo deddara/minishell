@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:32:55 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ void			f_data_init(t_data *data)
 	data->inp_arr = NULL;
 	data->pos = 0;
 	data->w_count = 0;
-	data->quote_open = -1;
-	data->quote_close = -1;
-	data->dbl_quote_open = -1;
-	data->dbl_quote_close = -1;
+	data->qt_o = -1;
+	data->qt_c = -1;
+	data->dbl_qt_o = -1;
+	data->dbl_qt_c = -1;
 	data->pars_complete = 0;
+	data->w = NULL;
+	data->last_saved = 0;
 }
 
 int				f_exit(t_data *data, int exitcode, char *exitstr)

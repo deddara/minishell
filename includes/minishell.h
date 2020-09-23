@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:31:49 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct	s_data
 	int			dbl_qt_o;
 	int			dbl_qt_c;
 	int			pars_complete;
+	char		*w;
+	int			last_saved;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
