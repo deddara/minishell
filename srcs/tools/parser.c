@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 21:59:42 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:12:50 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,10 @@ int				f_pars_input(t_data *data)
 	delim = NULL;
 	while (i < data->pos)
 	{
-		if (ft_strrchr("<> |", data->input[i]) != NULL && flag == 0)
+		if ((ft_strrchr("<> |", data->input[i]) != NULL || i + 1 == data->pos) && flag == 0)
 		{
+			if (i + 1 == data->pos)
+				i++;
 			tmp2 = malloc(i - j + 1);
 			delim = malloc(2);
 			delim[0] = data->input[i];
@@ -126,10 +128,12 @@ int				f_pars_input(t_data *data)
 			tmp2 = ft_strncpy(tmp2, &data->input[j], i - j);
 			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2)))
 				write(1, "error", 5);
-			data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
+			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, delim)))
+				write(1, "error", 5);
 			i++;
 			j = i;
 			free(tmp2);
+			free (delim);
 			continue;
 		}
 		if ((data->input[i] == '\'' || data->input[i] == '\"') && flag == 0)
