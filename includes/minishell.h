@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:29:44 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,5 @@ void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 void			f_export(t_data *data, char *str, int fd);
+int				f_pars_input(t_data *data);
 #endif

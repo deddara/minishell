@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 19:29:53 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void			f_data_init(t_data *data)
 	data->inp_arr = NULL;
 	data->pos = 0;
 	data->w_count = 0;
-	data->quote_open = -1;
-	data->quote_close = -1;
-	data->dbl_quote_open = -1;
-	data->dbl_quote_close = -1;
+	data->qt_o = -1;
+	data->qt_c = -1;
+	data->dbl_qt_o = -1;
+	data->dbl_qt_c = -1;
 	data->pars_complete = 0;
 }
 
@@ -50,7 +50,7 @@ int				main(int argc, char **argv, char **envp)
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
-	f_pars_input(data);
+	f_pars_input(&data);
 	ft_putstr_fd(data.input, 1);
 	ft_putchar_fd('\n', 1);
 	return (f_exit(&data, 0, ""));
