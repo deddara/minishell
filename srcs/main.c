@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 19:29:53 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 21:55:18 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
-
+	int i = 0;
 	(void)argv;
 	(void)argc;
 	f_data_init(&data);
@@ -51,7 +51,10 @@ int				main(int argc, char **argv, char **envp)
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
 	f_pars_input(&data);
-	ft_putstr_fd(data.input, 1);
-	ft_putchar_fd('\n', 1);
+	while (data.inp_arr[i])
+	{
+		ft_putstr_fd(data.inp_arr[i++], 1);
+		ft_putchar_fd('\n', 1);
+	}
 	return (f_exit(&data, 0, ""));
 }

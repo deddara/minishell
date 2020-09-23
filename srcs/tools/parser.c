@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 21:05:28 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 21:59:42 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,14 @@ int				f_pars_input(t_data *data)
 	{
 		if (ft_strrchr("<> |", data->input[i]) != NULL && flag == 0)
 		{
-			tmp2= malloc(i - j + 1);
-			// *delim = data->input[i];
-			tmp2 = strncpy(tmp, &data->input[j], i - j - 1);
+			tmp2 = malloc(i - j + 1);
+			delim = malloc(2);
+			delim[0] = data->input[i];
+			delim[1] = '\0';
+			tmp2 = ft_strncpy(tmp2, &data->input[j], i - j);
 			if(!(data->inp_arr = f_strarr_add_elem(data->inp_arr, tmp2)))
 				write(1, "error", 5);
-			// data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
+			data->inp_arr = f_strarr_add_elem(data->inp_arr, delim);
 			i++;
 			j = i;
 			free(tmp2);
