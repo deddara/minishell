@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 18:46:26 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 01:47:39 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ typedef struct	s_data
 {
 	char		**envp;
 	char		*input;
+	char		**in_arr;
+	int			pos;
+	int			w_count;
+	int			qt_o;
+	int			qt_c;
+	int			dbl_qt_o;
+	int			dbl_qt_c;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
