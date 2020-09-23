@@ -6,7 +6,7 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 18:50:53 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/23 20:06:25 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ FLS_2	= $(addprefix $(FLSDIR_2), \
 		export \
 		pwd \
 		strarr \
+		parser \
 		unset )
 
 FLS_3	= $(addprefix $(FLSDIR_3), \

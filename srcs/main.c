@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 19:32:55 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 20:07:44 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void			f_data_init(t_data *data)
 	data->input = NULL;
 	data->inp_arr = NULL;
 	data->pos = 0;
-	data->w_count = 0;
 	data->qt_o = -1;
 	data->qt_c = -1;
 	data->dbl_qt_o = -1;
@@ -45,6 +44,7 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
+	int i = 0;
 
 	(void)argv;
 	(void)argc;
@@ -52,8 +52,13 @@ int				main(int argc, char **argv, char **envp)
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
-	f_pars_input(data);
-	ft_putstr_fd(data.input, 1);
-	ft_putchar_fd('\n', 1);
+	f_pars_input(&data);
+	while (data.inp_arr[i])
+	{
+		ft_putstr_fd(data.inp_arr[i++], 1);
+		ft_putchar_fd('\n', 1);
+	}
+	/* ft_putstr_fd(data.input, 1); */
+	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));
 }

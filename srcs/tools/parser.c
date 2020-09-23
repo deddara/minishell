@@ -6,32 +6,33 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 19:51:11 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/23 20:17:25 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <string.h>
 
 int				f_check_quotes(t_data *data, int i)
 {
-	if (!(data->input[i] == ''' || data->input[i] == '"'))
+	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
 		return (0);
 	if (data->qt_o < 0 && data->dbl_qt_o < 0)
 	{
-		if (data->input[i] == ''')
+		if (data->input[i] == '\'')
 			data->qt_o = i;
-		else if (data->input[i] == '"')
+		else if (data->input[i] == '\"')
 			data->dbl_qt_o = i;
 		if (!(data->qt_o < 0 && data->dbl_qt_o < 0))
 			return (1);
 	}
-	else if (data->qt_o >= 0 && (data->input[i] == '''))
+	else if (data->qt_o >= 0 && (data->input[i] == '\''))
 	{
 		data->qt_c = i;
 		return (2);
 	}
-	else if (data->dbl_qt_o >= 0 && (data->input[i] == '"'))
+	else if (data->dbl_qt_o >= 0 && (data->input[i] == '\"'))
 	{
 		data->dbl_qt_c = i;
 		return (2);
@@ -47,10 +48,10 @@ int				f_quote_status(t_data *data)
 
 void			f_clear_quotes_flags(t_data *data)
 {
-	data->quote_open = -1;
-	data->quote_close = -1;
-	data->dbl_quote_open = -1;
-	data->dbl_quote_close = -1;
+	data->qt_o = -1;
+	data->qt_c = -1;
+	data->dbl_qt_o = -1;
+	data->dbl_qt_c = -1;
 }
 
 int				f_add_segment(t_data *data, int i)
@@ -60,7 +61,7 @@ int				f_add_segment(t_data *data, int i)
 
 	if(!(segment = (char*)malloc(sizeof(char) * i - data->last_saved + 1)))
 		return (1);
-	segment = ft_strncpy(segment, data->input + data->last_saved, i - data->last_saved);
+	strncpy(segment, data->input + data->last_saved, i - data->last_saved);
 	segment[i - data->last_saved] = '\0';
 	w_tmp = data->w;
 	if(!(data->w = ft_strjoin(data->w, segment)))
@@ -75,9 +76,7 @@ int				f_pars_input(t_data *data)
 {
 	int			len;
 	int			i;
-	int			stop;
 	int			k;
-	int			star_w;
 
 	len = ft_strlen(data->input);
 	i = data->pos;
@@ -97,15 +96,15 @@ int				f_pars_input(t_data *data)
 	data->inp_arr[k] = NULL;
 	while (i < data->pos)
 	{
-		while (i < data->pos && !ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
-				&& !f_quote_status(data)))
+		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
+				&& !f_quote_status(data))))
 		{
-			if((f_check_quotes(data, i) == 1)
+			if(f_check_quotes(data, i) == 1)
 			{
 				if (f_add_segment(data, i))
 					return (f_exit(data, 1, "malloc error\n"));
 			}
-			if((f_check_quotes(data, i) == 2)
+			if(f_check_quotes(data, i) == 2)
 			{
 				if (f_add_segment(data, i))
 					return (f_exit(data, 1, "malloc error\n"));
@@ -115,7 +114,9 @@ int				f_pars_input(t_data *data)
 		}
 		if (f_add_segment(data, i))
 			return (f_exit(data, 1, "malloc error\n"));
-		data->inp_arr = 
+		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
+			return (f_exit(data, 1, "malloc error\n"));
+		free((data->w) ? data->w : NULL);
 	}
-	data->pos += (!data->pars_complete) ? 1 : 0;
+	return (0);
 }
