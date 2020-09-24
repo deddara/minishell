@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 15:12:26 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 16:23:43 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ char			**f_strarr_add_elem(char **src_arr, char *str)
 	int			i;
 	int			j;
 
-	if (!src_arr || !str)
+	if (!src_arr)
 		return (NULL);
+	if (!str)
+		return (src_arr);
 	i = 0;
 	while (src_arr[i])
 		i++;
