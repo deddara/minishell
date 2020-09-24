@@ -7,7 +7,6 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
 /*   Updated: 2020/09/22 22:41:34 by deddara          ###   ########.fr       */
-/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +23,15 @@ void			f_data_init(t_data *data)
 	data->input = NULL;
 	data->inp_arr = NULL;
 	data->pos = 0;
-	data->w_count = 0;
-	data->quote_open = -1;
-	data->quote_close = -1;
-	data->dbl_quote_open = -1;
-	data->dbl_quote_close = -1;
+	data->qt1_o = 0;
+	data->qt1_c = 0;
+	data->qt2_o = 0;
+	data->qt2_c = 0;
 	data->pars_complete = 0;
+	data->w = NULL;
+	data->last_saved = 0;
+	data->errstr = NULL;
+	data->slash = 0;
 }
 
 int				f_exit(t_data *data, int exitcode, char *exitstr)
@@ -38,12 +40,15 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 	free((data->input) ? data->input : NULL);
 	data->input = NULL;
 	ft_putstr_fd(exitstr, (exitcode) ? 2 : 1);
+	free((data->errstr) ? data->errstr : NULL);
+	data->errstr = NULL;
 	return (exitcode);
 }
 
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
+	int i = 0;
 
 	(void)argv;
 	(void)argc;
@@ -51,8 +56,14 @@ int				main(int argc, char **argv, char **envp)
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
-	f_pars_input(data);
-	ft_putstr_fd(data.input, 1);
-	ft_putchar_fd('\n', 1);
+	if (f_pars_input(&data))
+		return (f_exit(&data, 1, data.errstr));
+	while (data.inp_arr[i])
+	{
+		ft_putstr_fd(data.inp_arr[i++], 1);
+		ft_putchar_fd('\n', 1);
+	}
+	/* ft_putstr_fd(data.input, 1); */
+	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));
 }

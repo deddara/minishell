@@ -21,12 +21,15 @@ typedef struct	s_data
 	char		*input;
 	char		**inp_arr;
 	int			pos;
-	int			w_count;
-	int			qt_o;
-	int			qt_c;
-	int			dbl_qt_o;
-	int			dbl_qt_c;
+	int			qt1_o;
+	int			qt1_c;
+	int			qt2_o;
+	int			qt2_c;
 	int			pars_complete;
+	char		*w;
+	int			last_saved;
+	char		*errstr;
+	int			slash;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
@@ -42,7 +45,13 @@ char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
+<<<<<<< HEAD
 int				f_export(t_data *data, char *str, int fd);
 int				check_for_equal(char **words);
 int				f_unset(t_data *data, char *str);
+=======
+void			f_export(t_data *data, char *str, int fd);
+int				f_pars_input(t_data *data);
+
+>>>>>>> awerebea
 #endif

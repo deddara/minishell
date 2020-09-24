@@ -6,34 +6,35 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 18:31:35 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 19:46:59 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <string.h>
 
 int				f_check_quotes(t_data *data, int i)
 {
-	if (!(data->input[i] == ''' || data->input[i] == '"'))
+	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
 		return (0);
-	if (data->qt_o < 0 && data->dbl_qt_o < 0)
+	if (!data->qt1_o && !data->qt2_o)
 	{
-		if (data->input[i] == ''')
-			data->qt_o = i;
-		else if (data->input[i] == '"')
-			data->dbl_qt_o = i;
-		if (!(data->qt_o < 0 && data->dbl_qt_o < 0))
+		if (data->input[i] == '\'')
+			data->qt1_o = 1;
+		else if (data->input[i] == '\"')
+			data->qt2_o = 1;
+		if (data->qt1_o || data->qt2_o)
 			return (1);
 	}
-	else if (data->qt_o >= 0 && (data->input[i] == '''))
+	else if (data->qt1_o && (data->input[i] == '\''))
 	{
-		data->qt_c = i;
+		data->qt1_c = 1;
 		return (2);
 	}
-	else if (data->dbl_qt_o >= 0 && (data->input[i] == '"'))
+	else if (data->qt2_o && (data->input[i] == '\"'))
 	{
-		data->dbl_qt_c = i;
+		data->qt2_c = 1;
 		return (2);
 	}
 	return (0);
@@ -41,65 +42,149 @@ int				f_check_quotes(t_data *data, int i)
 
 int				f_quote_status(t_data *data)
 {
-	return (((data->qt_o >= 0 && data->qt_c < 0) || \
-				(data->dbl_qt_o >= 0 && data->dbl_qt_c < 0)) ? 1 : 0);
+	if (data->qt1_o && !data->qt1_c)
+		return (1);
+	else if (data->qt2_o && !data->qt2_c)
+		return (2);
+	else
+		return (0);
 }
 
 void			f_clear_quotes_flags(t_data *data)
 {
-	data->quote_open = -1;
-	data->quote_close = -1;
-	data->dbl_quote_open = -1;
-	data->dbl_quote_close = -1;
+	data->qt1_o = 0;
+	data->qt1_c = 0;
+	data->qt2_o = 0;
+	data->qt2_c = 0;
+}
+
+int				f_add_segment(t_data *data, int i)
+{
+	char		*segment;
+	char		*w_tmp;
+
+	if (!(i - data->last_saved))
+		return (0);
+	if(!(segment = (char*)malloc(sizeof(char) * i - data->last_saved + 1)))
+		return (1);
+	ft_strncpy(segment, data->input + data->last_saved, i - data->last_saved);
+	segment[i - data->last_saved] = '\0';
+	w_tmp = data->w;
+	if (!data->w)
+	{
+		if(!(data->w = ft_strdup(segment)))
+			return (1);
+	}
+	else
+	{
+		if(!(data->w = ft_strjoin(data->w, segment)))
+			return (1);
+	}
+	free(w_tmp);
+	w_tmp = NULL;
+	free(segment);
+	data->last_saved = i;
+	return (0);
 }
 
 int				f_pars_input(t_data *data)
 {
-	int			len;
 	int			i;
-	int			stop;
 	int			k;
-	int			star_w;
-	char		*w;
-	char		*w_tmp;
+	int			quotes;
+	char		*c;
+	char		proc[3];
 
-	len = ft_strlen(data->input);
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
-			&& !f_quote_status(data))))
+			&& f_quote_status(data))))
 	{
 		f_check_quotes(data, i);
 		i++;
 	}
 	f_clear_quotes_flags(data);
 	data->pars_complete = (!data->input[i]) ? 1 : 0;
-	data->pos = (data->input[i]) ? i + 1 : i;
-	/* if (data->input[i] && (data->input[i] != ' ' || (data->input[i] == ' ' \ */
-	/*         && !f_quote_status(data))))                                      */
-	/* {                                                                        */
-	/*     if ((f_check_quotes(data, i)) == 2);                                 */
-	/*     data->pos = i + 1;                                                   */
-	/* }                                                                        */
+	data->pos = i;
 	i = 0;
 	k = 0;
 	free((data->inp_arr) ? data->inp_arr : NULL);
 	data->inp_arr = (char**)malloc(sizeof(char*) * k + 1);
 	data->inp_arr[k] = NULL;
-	w = NULL;
 	while (i < data->pos)
 	{
-		start_w = i;
-		while (i < data->pos && !ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
-				&& !f_quote_status(data)))
+		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
+				&& f_quote_status(data))))
 		{
-
-			if((f_check_quotes(data, i) == 1)
+			if ((quotes = f_check_quotes(data, i)))
 			{
-				w_tmp = (char*)malloc(sizeof(char) * i - start_w + 1);
-				ft_strncpy(w_tmp + ft_strlen(w), data->input + ft_strlen(w), )
+				if (f_add_segment(data, i))
+					return (1);
+				i++;
+				data->last_saved = i;
+				if (quotes == 2)
+					f_clear_quotes_flags(data);
+				continue;
+			}
+			if (data->input[i] == '\\')
+			{
+				if (f_add_segment(data, i))
+					return (1);
+				data->last_saved = i;
+				data->slash = 1;
+				while (data->input[i + data->slash] == '\\')
+					data->slash++;
+				if (f_quote_status(data) == 1)
+				{
+					if (f_add_segment(data, i + data->slash))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
+				if (f_quote_status(data) == 2)
+				{
+					if (f_add_segment(data, i + data->slash / 2 + 1))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
+				else
+				{
+					if (f_add_segment(data, i + data->slash / 2))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
 			}
 			i++;
 		}
+		if (f_quote_status(data))
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
+				return (1);
+			return (1);
+		}
+		if (f_add_segment(data, i))
+			return (1);
+		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
+			return (1);
+		if (data->input[i] && (c = ft_strchr("><|", data->input[i])))
+		{
+			ft_bzero(proc, 3);
+			proc[0] = *c;
+			if (*c == '>' && data->input[i + 1] == '>')
+			{
+				proc[1] = '>';
+				i++;
+			}
+			if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, proc)))
+				return (1);
+		}
+		i++;
+		while (ft_isspace(data->input[i]))
+			i++;
+		data->last_saved = i;
+		free((data->w) ? data->w : NULL);
+		data->w = NULL;
 	}
-	data->pos += (!data->pars_complete) ? 1 : 0;
+	return (0);
 }
