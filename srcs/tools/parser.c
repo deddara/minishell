@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 12:19:29 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 14:14:01 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int				f_add_segment(t_data *data, int i)
 	free(w_tmp);
 	w_tmp = NULL;
 	free(segment);
-	data->last_saved = i + 1;
+	data->last_saved = i;
 	return (0);
 }
 
@@ -111,6 +111,7 @@ int				f_pars_input(t_data *data)
 				if (f_add_segment(data, i))
 					return (f_exit(data, 1, "malloc error\n"));
 				i++;
+				data->last_saved = i;
 				continue;
 			}
 			if(f_check_quotes(data, i) == 2)
@@ -119,19 +120,26 @@ int				f_pars_input(t_data *data)
 					return (f_exit(data, 1, "malloc error\n"));
 				f_clear_quotes_flags(data);
 				i++;
+				data->last_saved = i;
 				continue;
 			}
 			i++;
+		}
+		if (ft_strchr("><|", data->input[i]))
+		{
+			if (f_add_segment(data, i))
+				return (f_exit(data, 1, "malloc error\n"));
 		}
 		if (f_add_segment(data, i))
 			return (f_exit(data, 1, "malloc error\n"));
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
 			return (f_exit(data, 1, "malloc error\n"));
-		if (ft_isspace(data->input[i]))
+		i++;
+		while (ft_isspace(data->input[i]))
 		{
 			i++;
 		}
-		data->last_saved += i - data->last_saved;
+		data->last_saved = i;
 		free((data->w) ? data->w : NULL);
 		data->w = NULL;
 	}
