@@ -14,25 +14,33 @@
 #include "libft.h"
 #include <sys/errno.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
 
-static void test_print(char **str)
+static void test_print(t_data *data) //тестовая хуйня для создания команды и печати всего массиво (печать можешь закомментить)
 {
-    int i = 0;
-    while (str[i])
-    {
-        ft_putstr_fd(str[i], 1);
-        write(1, "\n", 1);
-        i++;
-    }
+    data->argv = malloc(2);
+    data->argv[0] = malloc(3);
+    data->argv[0] = "/bin/ls/";
+    data->argv[1] = 0;
+//    int i = 0;
+//    while (str[i])
+//    {
+//        ft_putstr_fd(str[i], 1);
+//        write(1, "\n", 1);
+//        i++;
+//    }
 }
+
+
 
 static int check_existence(char *c_path)
 {
-    int id;
-
-    if (open(c_path) == -1)
-        return (0);
-    return (1);
+    if (open(c_path, O_RDONLY) == -1)
+    {
+        return (1);
+    }
+    return (0);
 }
 
 static int find_command(char **path_data, char *command)
@@ -46,14 +54,20 @@ static int find_command(char **path_data, char *command)
     while (path_data[i])
     {
         if (!(c_path = ft_strjoin(path_data[i], "/")))
-            return (0);
+            return (1);
         tmp = c_path;
         if (!(c_path = ft_strjoin(c_path, command)))
-            return (0);
+            return (1);
         free (tmp);
-        return (check_existence(c_path));
+        if (!check_existence(c_path))
+            return (0);
+        i++;
     }
-    return (0);
+    ft_putstr_fd(command, 2);
+    ft_putstr_fd(": ", 2);
+    ft_putstr_fd(strerror(errno), 2);
+    ft_putchar_fd('\n', 2);
+    return (errno);
 }
 
 int    check_command(t_data *data)
@@ -62,10 +76,19 @@ int    check_command(t_data *data)
     char    **path_data;
     int     i;
 
+    test_print(data);
     i = 0;
     if (data->argv[0][0] == '/')
     {
-        return (check_existence(data->argv[0]));
+        if (check_existence(data->argv[0]))
+        {
+            ft_putstr_fd(data->argv[0], 2);
+            ft_putstr_fd(": ", 2);
+            ft_putstr_fd(strerror(errno), 2);
+            ft_putchar_fd('\n', 2);
+            return (errno);
+        }
+        return (0);
     }
     if (!(path_p = f_env_find_elem(data->envp, "PATH", "="))) //if path not found (should return error that we didn't find command.
         return (1);
