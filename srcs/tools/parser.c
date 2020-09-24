@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 19:09:24 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 19:30:28 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ int				f_check_quotes(t_data *data, int i)
 
 int				f_quote_status(t_data *data)
 {
-	return (((data->qt1_o && !data->qt1_c) || \
-				(data->qt2_o && !data->qt2_c)) ? 1 : 0);
+	if (data->qt1_o && !data->qt1_c)
+		return (1);
+	else if (data->qt2_o && !data->qt2_c)
+		return (2);
+	else
+		return (0);
 }
 
 void			f_clear_quotes_flags(t_data *data)
