@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 15:41:44 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:50:27 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int				f_check_quotes(t_data *data, int i)
 
 int				f_quote_status(t_data *data)
 {
-	return (((data->qt1_o >= 0 && data->qt1_c < 0) || \
-				(data->qt2_o >= 0 && data->qt2_c < 0)) ? 1 : 0);
+	return (((data->qt1_o && !data->qt1_c) || \
+				(data->qt2_o && !data->qt2_c)) ? 1 : 0);
 }
 
 void			f_clear_quotes_flags(t_data *data)
@@ -85,6 +85,7 @@ int				f_pars_input(t_data *data)
 {
 	int			i;
 	int			k;
+	int			quotes;
 
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
@@ -106,30 +107,23 @@ int				f_pars_input(t_data *data)
 		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
 				&& f_quote_status(data))))
 		{
-			if(f_check_quotes(data, i) == 1)
+			if ((quotes = f_check_quotes(data, i)))
 			{
 				if (f_add_segment(data, i))
-					return (f_exit(data, 1, "malloc error\n"));
+					return (1);
 				i++;
 				data->last_saved = i;
-				continue;
-			}
-			if(f_check_quotes(data, i) == 2)
-			{
-				if (f_add_segment(data, i))
-					return (f_exit(data, 1, "malloc error\n"));
-				f_clear_quotes_flags(data);
-				i++;
-				data->last_saved = i;
+				if (quotes == 2)
+					f_clear_quotes_flags(data);
 				continue;
 			}
 			i++;
 		}
-		if (ft_strchr("><|", data->input[i]))
-		{
-			if (f_add_segment(data, i))
-				return (f_exit(data, 1, "malloc error\n"));
-		}
+		/* if (ft_strchr("><|", data->input[i]))               */
+		/* {                                                   */
+		/*     if (f_add_segment(data, i))                     */
+		/*         return (f_exit(data, 1, "malloc error\n")); */
+		/* }                                                   */
 		if (f_add_segment(data, i))
 			return (f_exit(data, 1, "malloc error\n"));
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
