@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 19:46:59 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 20:10:51 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int				f_pars_input(t_data *data)
 					i += data->slash;
 					data->last_saved = i;
 				}
-				if (f_quote_status(data) == 2)
+				else if (f_quote_status(data) == 2)
 				{
 					if (f_add_segment(data, i + data->slash / 2 + 1))
 						return (1);
