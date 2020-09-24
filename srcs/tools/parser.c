@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 15:37:04 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:41:44 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ int				f_check_quotes(t_data *data, int i)
 {
 	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
 		return (0);
-	if (data->qt1_o < 0 && data->qt2_o < 0)
+	if (!data->qt1_o && !data->qt2_o)
 	{
 		if (data->input[i] == '\'')
-			data->qt1_o = i;
+			data->qt1_o = 1;
 		else if (data->input[i] == '\"')
-			data->qt2_o = i;
-		if (!(data->qt1_o < 0 && data->qt2_o < 0))
+			data->qt2_o = 1;
+		if (data->qt1_o || data->qt2_o)
 			return (1);
 	}
-	else if (data->qt1_o >= 0 && (data->input[i] == '\''))
+	else if (data->qt1_o && (data->input[i] == '\''))
 	{
-		data->qt1_c = i;
+		data->qt1_c = 1;
 		return (2);
 	}
-	else if (data->qt2_o >= 0 && (data->input[i] == '\"'))
+	else if (data->qt2_o && (data->input[i] == '\"'))
 	{
-		data->qt2_c = i;
+		data->qt2_c = 1;
 		return (2);
 	}
 	return (0);
@@ -48,10 +48,10 @@ int				f_quote_status(t_data *data)
 
 void			f_clear_quotes_flags(t_data *data)
 {
-	data->qt1_o = -1;
-	data->qt1_c = -1;
-	data->qt2_o = -1;
-	data->qt2_c = -1;
+	data->qt1_o = 0;
+	data->qt1_c = 0;
+	data->qt2_o = 0;
+	data->qt2_c = 0;
 }
 
 int				f_add_segment(t_data *data, int i)
