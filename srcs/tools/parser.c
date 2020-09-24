@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 19:30:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 19:46:59 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,27 @@ int				f_pars_input(t_data *data)
 				data->slash = 1;
 				while (data->input[i + data->slash] == '\\')
 					data->slash++;
-				if (f_add_segment(data, i + data->slash / 2))
-					return (1);
-				i += data->slash;
-				data->last_saved = i;
+				if (f_quote_status(data) == 1)
+				{
+					if (f_add_segment(data, i + data->slash))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
+				if (f_quote_status(data) == 2)
+				{
+					if (f_add_segment(data, i + data->slash / 2 + 1))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
+				else
+				{
+					if (f_add_segment(data, i + data->slash / 2))
+						return (1);
+					i += data->slash;
+					data->last_saved = i;
+				}
 			}
 			i++;
 		}
