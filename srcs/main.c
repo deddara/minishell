@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
 /*   Updated: 2020/09/22 22:41:34 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +22,14 @@ void			f_data_init(t_data *data)
 {
 	data->envp = NULL;
 	data->input = NULL;
+	data->inp_arr = NULL;
+	data->pos = 0;
+	data->w_count = 0;
+	data->quote_open = -1;
+	data->quote_close = -1;
+	data->dbl_quote_open = -1;
+	data->dbl_quote_close = -1;
+	data->pars_complete = 0;
 }
 
 int				f_exit(t_data *data, int exitcode, char *exitstr)
@@ -42,6 +51,7 @@ int				main(int argc, char **argv, char **envp)
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
+	f_pars_input(data);
 	ft_putstr_fd(data.input, 1);
 	ft_putchar_fd('\n', 1);
 	return (f_exit(&data, 0, ""));
