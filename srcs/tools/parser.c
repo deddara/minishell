@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 15:50:27 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:52:25 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,10 @@ int				f_pars_input(t_data *data)
 			}
 			i++;
 		}
-		/* if (ft_strchr("><|", data->input[i]))               */
-		/* {                                                   */
-		/*     if (f_add_segment(data, i))                     */
-		/*         return (f_exit(data, 1, "malloc error\n")); */
-		/* }                                                   */
 		if (f_add_segment(data, i))
-			return (f_exit(data, 1, "malloc error\n"));
+			return (1);
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
-			return (f_exit(data, 1, "malloc error\n"));
+			return (1);
 		i++;
 		while (ft_isspace(data->input[i]))
 		{
