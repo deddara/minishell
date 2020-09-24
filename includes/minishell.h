@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
 /*   Updated: 2020/09/22 22:27:10 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:37:22 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +19,14 @@ typedef struct	s_data
 {
 	char		**envp;
 	char		*input;
+	char		**inp_arr;
+	int			pos;
+	int			w_count;
+	int			qt_o;
+	int			qt_c;
+	int			dbl_qt_o;
+	int			dbl_qt_c;
+	int			pars_complete;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
