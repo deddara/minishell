@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 01:25:20 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 02:07:13 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,17 @@ int				f_pars_input(t_data *data)
 					return (1);
 				i++;
 				data->last_saved = i;
+				/* f_check_quotes(data, i); */
 				k = 0;
-				while ((data->input[i] && !ft_strchr(" \'\"\\", data->input[i++])))
+				while ((data->input[i] && !ft_strchr(" \'\"\\", data->input[i])))
+				{
 					k++;
+					i++;
+				}
 				if(k)
 				{
+					if (f_check_quotes(data, i - 1) == 2)
+						f_clear_quotes_flags(data);
 					if (!(name = (char*)malloc(sizeof(char) * k + 1)))
 						return (1);
 					name[k] = '\0';
