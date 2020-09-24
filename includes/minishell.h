@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/23 20:07:16 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:35:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ typedef struct	s_data
 	char		*input;
 	char		**inp_arr;
 	int			pos;
-	int			qt_o;
-	int			qt_c;
-	int			dbl_qt_o;
-	int			dbl_qt_c;
+	int			qt1_o;
+	int			qt1_c;
+	int			qt2_o;
+	int			qt2_c;
 	int			pars_complete;
 	char		*w;
 	int			last_saved;
