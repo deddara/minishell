@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 17:05:46 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 18:49:39 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void			f_data_init(t_data *data)
 	data->w = NULL;
 	data->last_saved = 0;
 	data->errstr = NULL;
+	data->slash = 0;
 }
 
 int				f_exit(t_data *data, int exitcode, char *exitstr)
