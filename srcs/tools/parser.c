@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 20:10:51 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 20:23:58 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,26 @@
 
 int				f_check_quotes(t_data *data, int i)
 {
+	int			shield;
+
+	shield = (i && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0;
 	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
 		return (0);
 	if (!data->qt1_o && !data->qt2_o)
 	{
-		if (data->input[i] == '\'')
+		if (data->input[i] == '\'' && !shield)
 			data->qt1_o = 1;
-		else if (data->input[i] == '\"')
+		else if (data->input[i] == '\"' && !shield)
 			data->qt2_o = 1;
 		if (data->qt1_o || data->qt2_o)
 			return (1);
 	}
-	else if (data->qt1_o && (data->input[i] == '\''))
+	else if (data->qt1_o && (data->input[i] == '\'') && !shield)
 	{
 		data->qt1_c = 1;
 		return (2);
 	}
-	else if (data->qt2_o && (data->input[i] == '\"'))
+	else if (data->qt2_o && (data->input[i] == '\"') && !shield)
 	{
 		data->qt2_c = 1;
 		return (2);
