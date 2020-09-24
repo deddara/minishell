@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 15:52:25 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 16:36:25 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int				f_add_segment(t_data *data, int i)
 	char		*segment;
 	char		*w_tmp;
 
+	if (!(i - data->last_saved))
+		return (0);
 	if(!(segment = (char*)malloc(sizeof(char) * i - data->last_saved + 1)))
 		return (1);
 	ft_strncpy(segment, data->input + data->last_saved, i - data->last_saved);
@@ -86,6 +88,8 @@ int				f_pars_input(t_data *data)
 	int			i;
 	int			k;
 	int			quotes;
+	char		*c;
+	char		proc[3];
 
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
@@ -123,6 +127,18 @@ int				f_pars_input(t_data *data)
 			return (1);
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
 			return (1);
+		if (data->input[i] && (c = ft_strchr("><|", data->input[i])))
+		{
+			ft_bzero(proc, 3);
+			proc[0] = *c;
+			if (*c == '>' && data->input[i + 1] == '>')
+			{
+				proc[1] = '>';
+				i++;
+			}
+			if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, proc)))
+				return (1);
+		}
 		i++;
 		while (ft_isspace(data->input[i]))
 		{
