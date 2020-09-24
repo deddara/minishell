@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 21:26:42 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 01:25:20 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <string.h>
 
-int				f_chk_shield(t_data *data, int i)
+int				f_chk_shield (t_data *data, int i)
 {
 	return ((i && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0);
 }
@@ -63,10 +63,29 @@ void			f_clear_quotes_flags(t_data *data)
 	data->qt2_c = 0;
 }
 
+int				f_join_to_w(t_data *data, char *str)
+{
+	char		*w_tmp;
+
+	w_tmp = data->w;
+	if (!data->w)
+	{
+		if(!(data->w = ft_strdup(str)))
+			return (1);
+	}
+	else
+	{
+		if(!(data->w = ft_strjoin(data->w, str)))
+			return (1);
+	}
+	free(w_tmp);
+	w_tmp = NULL;
+	return (0);
+}
+
 int				f_add_segment(t_data *data, int i)
 {
 	char		*segment;
-	char		*w_tmp;
 
 	if (!(i - data->last_saved))
 		return (0);
@@ -74,19 +93,7 @@ int				f_add_segment(t_data *data, int i)
 		return (1);
 	ft_strncpy(segment, data->input + data->last_saved, i - data->last_saved);
 	segment[i - data->last_saved] = '\0';
-	w_tmp = data->w;
-	if (!data->w)
-	{
-		if(!(data->w = ft_strdup(segment)))
-			return (1);
-	}
-	else
-	{
-		if(!(data->w = ft_strjoin(data->w, segment)))
-			return (1);
-	}
-	free(w_tmp);
-	w_tmp = NULL;
+	f_join_to_w(data, segment);
 	free(segment);
 	data->last_saved = i;
 	return (0);
@@ -120,6 +127,48 @@ int				f_pars_input(t_data *data)
 		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
 				&& f_quote_status(data))))
 		{
+			if (f_quote_status(data) != 1 && !f_chk_shield(data, i) && data->input[i] == '$')
+			{
+				char	*name;
+				int		j;
+				int		index;
+				char	*env_val;
+
+				j = 0;
+				index = -1;
+				env_val = NULL;
+				if (f_add_segment(data, i))
+					return (1);
+				i++;
+				data->last_saved = i;
+				k = 0;
+				while ((data->input[i] && !ft_strchr(" \'\"\\", data->input[i++])))
+					k++;
+				if(k)
+				{
+					if (!(name = (char*)malloc(sizeof(char) * k + 1)))
+						return (1);
+					name[k] = '\0';
+					while (k)
+						name[j++] = data->input[i - k--];
+					if ((index = f_strarr_find_elem(data->envp, name, "=")) != -1)
+					{
+						if (!(env_val = ft_strdup((ft_strchr(data->envp[index], '=') + 1))))
+							return (1);
+						if (f_join_to_w(data, env_val))
+							return (1);
+						free((env_val) ? env_val : NULL);
+					}
+					data->last_saved = i;
+					free((name) ? name : NULL);
+				}
+				else
+				{
+					if (f_join_to_w(data, "$"))
+						return (1);
+					data->last_saved = i;
+				}
+			}
 			if ((quotes = f_check_quotes(data, i)))
 			{
 				if (f_add_segment(data, i))
