@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 20:23:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 21:26:42 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,30 @@
 #include "libft.h"
 #include <string.h>
 
+int				f_chk_shield(t_data *data, int i)
+{
+	return ((i && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0);
+}
+
 int				f_check_quotes(t_data *data, int i)
 {
-	int			shield;
-
-	shield = (i && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0;
 	if (!(data->input[i] == '\'' || data->input[i] == '\"'))
 		return (0);
 	if (!data->qt1_o && !data->qt2_o)
 	{
-		if (data->input[i] == '\'' && !shield)
+		if (data->input[i] == '\'' && !f_chk_shield(data, i))
 			data->qt1_o = 1;
-		else if (data->input[i] == '\"' && !shield)
+		else if (data->input[i] == '\"' && !f_chk_shield(data, i))
 			data->qt2_o = 1;
 		if (data->qt1_o || data->qt2_o)
 			return (1);
 	}
-	else if (data->qt1_o && (data->input[i] == '\'') && !shield)
+	else if (data->qt1_o && (data->input[i] == '\'') && !f_chk_shield(data, i))
 	{
 		data->qt1_c = 1;
 		return (2);
 	}
-	else if (data->qt2_o && (data->input[i] == '\"') && !shield)
+	else if (data->qt2_o && (data->input[i] == '\"') && !f_chk_shield(data, i))
 	{
 		data->qt2_c = 1;
 		return (2);
@@ -154,8 +156,8 @@ int				f_pars_input(t_data *data)
 				{
 					if (f_add_segment(data, i + data->slash / 2))
 						return (1);
-					i += data->slash;
-					data->last_saved = i;
+					i += data->slash - 1;
+					data->last_saved = i + 1;
 				}
 			}
 			i++;
@@ -166,6 +168,8 @@ int				f_pars_input(t_data *data)
 				return (1);
 			return (1);
 		}
+		if (f_chk_shield(data, i) && ft_strchr("><|&", data->input[i]))
+			i++;
 		if (f_add_segment(data, i))
 			return (1);
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
