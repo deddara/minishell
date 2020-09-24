@@ -6,13 +6,13 @@
 #    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/22 18:50:53 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/24 02:21:55 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 LIBFT		= libft/libft.a
-INCLUDES	= -I includes/ -I libft/includes/ -I srcs/get_next_line/
+INCLUDES	= -I includes/ -I libft/includes/
 CC		= gcc
 CFLAGS		= -Wall -Wextra -Werror
 OFLAGS		= -O2
@@ -37,6 +37,7 @@ FLS_2	= $(addprefix $(FLSDIR_2), \
 		export \
 		pwd \
 		strarr \
+		parser \
 		unset )
 
 FLS_3	= $(addprefix $(FLSDIR_3), \
