@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 16:42:02 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 17:01:14 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,12 @@ int				f_pars_input(t_data *data)
 				continue;
 			}
 			i++;
+		}
+		if (f_quote_status(data))
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
+				return (1);
+			return (1);
 		}
 		if (f_add_segment(data, i))
 			return (1);

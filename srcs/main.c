@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 15:35:52 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/24 17:05:46 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void			f_data_init(t_data *data)
 	data->pars_complete = 0;
 	data->w = NULL;
 	data->last_saved = 0;
+	data->errstr = NULL;
 }
 
 int				f_exit(t_data *data, int exitcode, char *exitstr)
@@ -38,6 +39,8 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 	free((data->input) ? data->input : NULL);
 	data->input = NULL;
 	ft_putstr_fd(exitstr, (exitcode) ? 2 : 1);
+	free((data->errstr) ? data->errstr : NULL);
+	data->errstr = NULL;
 	return (exitcode);
 }
 
@@ -52,7 +55,8 @@ int				main(int argc, char **argv, char **envp)
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	get_next_line(0, &data.input);
-	f_pars_input(&data);
+	if (f_pars_input(&data))
+		return (f_exit(&data, 1, data.errstr));
 	while (data.inp_arr[i])
 	{
 		ft_putstr_fd(data.inp_arr[i++], 1);
