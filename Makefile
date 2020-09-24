@@ -38,7 +38,8 @@ FLS_2	= $(addprefix $(FLSDIR_2), \
 		pwd \
 		strarr \
 		parser \
-		unset )
+		unset \
+		command_checker)
 
 FLS_3	= $(addprefix $(FLSDIR_3), \
 		get_next_line \
