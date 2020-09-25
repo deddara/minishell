@@ -101,6 +101,32 @@ static int struct_handler(t_data *data, t_command *cmd_tmp, int i)
 	return (0);
 }
 
+static int count_symbols(t_data *data, int i, char symb)
+{
+	int j;
+
+	j = 0;
+	while (data->inp_arr[i][0] == symb && data->inp_arr[i])
+	{
+		i++;
+		j++;
+	}
+	if (symb == '>' && j > 2)
+	{
+		write (2, "syntax error near unexpected token ", 35);
+		j > 3 ? write(2, "`>'\n", 4) : write(2, "`>>'\n", 4);
+		return (258);
+	}
+	if (j > 1)
+	{
+		write (2, "syntax error near unexpected token ", 35);
+		write (2, &symb, 1);
+		write (2, "\n", 1);
+		return (258);
+	}
+	return (0);
+}
+
 int		structer(t_data *data)
 {
 	int			i;
@@ -114,6 +140,12 @@ int		structer(t_data *data)
 	i = 0;
 	while (data->inp_arr[i])
 	{
+		if (data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '>' \
+		|| data->inp_arr[i][0] == '<')
+		{
+			if (count_symbols(data, i, data->inp_arr[i][0]))
+				return (258);
+		}
 		if ((err_code = struct_handler(data, cmd_tmp, i)))
 			return (err_code);
 		i++;
