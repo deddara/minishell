@@ -50,6 +50,6 @@ int			    f_export(t_data *data, char *str, int fd);
 int				f_pars_input(t_data *data);
 int				structer(t_data *data, t_command *cmd);
 void			clear_list(t_command *cmd);
-int             check_command(t_data *data);
-
+int             check_command(t_data *data, t_command *cmd);
+int				command_handler(t_data *data, t_command *cmd);
 #endif

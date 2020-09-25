@@ -37,18 +37,18 @@ t_command	*create_command_lst(void)
 	return (tmp);
 }
 
-static int			pipe_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	if (ft_strncmp(data->inp_arr[i + 1], ">", 1) == 0)
-		cmd_tmp->redirect = 1;
+		(*cmd_tmp)->redirect = 1;
 	else if (ft_strncmp(data->inp_arr[i + 1], ">>", 2) == 0)
-		cmd_tmp->redirect = 2;
+		(*cmd_tmp)->redirect = 2;
 	else if (ft_strncmp(data->inp_arr[i + 1], "<", 1) == 0)
-		cmd_tmp->redirect = 3;
-	cmd_tmp->pipe = 1;
-	if (!(cmd_tmp->next = create_command_lst()))
+		(*cmd_tmp)->redirect = 3;
+	(*cmd_tmp)->pipe = 1;
+	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
-	cmd_tmp = cmd_tmp->next;
+	(*cmd_tmp) = (*cmd_tmp)->next;
 	return (0);
 }
 
@@ -73,7 +73,7 @@ static int			valid_check(t_data *data, int i)
 	return (0);
 }
 
-static int			redirect_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	if (data->inp_arr[i + 1][0] == '|' && (data->inp_arr[i][0] == '<' || \
 			!ft_strncmp(data->inp_arr[i], ">>", 2)))
@@ -82,18 +82,18 @@ static int			redirect_handler(t_data *data, t_command *cmd_tmp, int i)
 		return (258);
 	}
 	if (ft_strncmp(data->inp_arr[i], ">", 1) == 0)
-		cmd_tmp->redirect = 1;
+		(*cmd_tmp)->redirect = 1;
 	else if (ft_strncmp(data->inp_arr[i], ">>", 2) == 0)
-		cmd_tmp->redirect = 2;
+		(*cmd_tmp)->redirect = 2;
 	else if (ft_strncmp(data->inp_arr[i], "<", 1) == 0)
-		cmd_tmp->redirect = 3;
-	if (!(cmd_tmp->next = create_command_lst()))
+		(*cmd_tmp)->redirect = 3;
+	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
-	cmd_tmp = cmd_tmp->next;
+	*(cmd_tmp) = (*cmd_tmp)->next;
 	return (0);
 }
 
-static int			struct_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			struct_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	int err_code;
 
@@ -110,8 +110,8 @@ static int			struct_handler(t_data *data, t_command *cmd_tmp, int i)
 		if ((err_code = redirect_handler(data, cmd_tmp, i)))
 			return (err_code);
 	}
-	else if (!(cmd_tmp->argv = \
-	f_strarr_add_elem(cmd_tmp->argv, data->inp_arr[i])))
+	else if (!((*cmd_tmp)->argv = \
+	f_strarr_add_elem((*cmd_tmp)->argv, data->inp_arr[i])))
 	{
 		write(2, "malloc error\n", 13);
 		return (1);
@@ -161,7 +161,7 @@ int					structer(t_data *data, t_command *cmd)
 			if (count_symbols(data, i, data->inp_arr[i][0]))
 				return (258);
 		}
-		if ((err_code = struct_handler(data, cmd_tmp, i)))
+		if ((err_code = struct_handler(data, &cmd_tmp, i)))
 			return (err_code);
 		i++;
 	}

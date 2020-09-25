@@ -67,11 +67,11 @@ int				main(int argc, char **argv, char **envp)
 	//		ft_putstr_fd(data.inp_arr[i++], 1);
 	//		ft_putchar_fd('\n', 1);
 	//	}
-	write (1, "da", 2);
 	if (structer(&data, command))
 		return (1);
+	if (command_handler(&data, command))
+		return (f_exit(&data, 0, ""));
 	clear_list(command);
-    check_command(&data);
 	/* ft_putstr_fd(data.input, 1); */
 	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));

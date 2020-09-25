@@ -17,12 +17,12 @@
 #include <fcntl.h>
 #include <string.h>
 
-static void test_print(t_data *data) //тестовая хуйня для создания команды и печати всего массиво (печать можешь закомментить)
-{
-    data->argv = malloc(2);
-    data->argv[0] = malloc(3);
-    data->argv[0] = "/bin/ls/";
-    data->argv[1] = 0;
+//static void test_print(t_data *data) //тестовая хуйня для создания команды и печати всего массиво (печать можешь закомментить)
+//{
+//    data->argv = malloc(2);
+//    data->argv[0] = malloc(3);
+//    data->argv[0] = "/bin/ls/";
+//    data->argv[1] = 0;
 //    int i = 0;
 //    while (str[i])
 //    {
@@ -30,7 +30,7 @@ static void test_print(t_data *data) //тестовая хуйня для соз
 //        write(1, "\n", 1);
 //        i++;
 //    }
-}
+//}
 
 
 
@@ -70,19 +70,19 @@ static int find_command(char **path_data, char *command)
     return (errno);
 }
 
-int    check_command(t_data *data)
+int    check_command(t_data *data, t_command *cmd)
 {
     char    *path_p;
     char    **path_data;
     int     i;
 
-    test_print(data);
+//    test_print(data);
     i = 0;
-    if (data->argv[0][0] == '/')
+    if (cmd->argv[0][0] == '/')
     {
-        if (check_existence(data->argv[0]))
+        if (check_existence(cmd->argv[0]))
         {
-            ft_putstr_fd(data->argv[0], 2);
+            ft_putstr_fd(cmd->argv[0], 2);
             ft_putstr_fd(": ", 2);
             ft_putstr_fd(strerror(errno), 2);
             ft_putchar_fd('\n', 2);
@@ -94,5 +94,5 @@ int    check_command(t_data *data)
         return (1);
     if (!(path_data = ft_split(path_p, ':')))
         return (errno);
-    return (find_command(path_data, data->argv[0]));
+    return (find_command(path_data, cmd->argv[0]));
 }
