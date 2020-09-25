@@ -46,5 +46,6 @@ void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 void			f_export(t_data *data, char *str, int fd);
 int				f_pars_input(t_data *data);
+int				structer(t_data *data);
 
 #endif

@@ -63,6 +63,7 @@ int				main(int argc, char **argv, char **envp)
 		ft_putstr_fd(data.inp_arr[i++], 1);
 		ft_putchar_fd('\n', 1);
 	}
+	structer(&data);
 	/* ft_putstr_fd(data.input, 1); */
 	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));
