@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 15:38:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 16:26:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int				f_pars_input(t_data *data)
 					data->last_saved = i;
 					free((name) ? name : NULL);
 				}
-				else
+				else if (!ft_strchr("\'\"", data->input[i]) || f_quote_status(data) == 2)
 				{
 					if (f_join_to_w(data, "$"))
 						return (1);
