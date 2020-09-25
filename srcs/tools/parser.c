@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 23:52:29 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 00:20:16 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,66 @@ int				f_dollar_pars(t_data *data, int *i)
 	return (0);
 }
 
+int				f_quotes_pars(t_data *data, int *i)
+{
+	int			quotes;
+
+	if ((quotes = f_check_quotes(data, *i)))
+	{
+		if (f_add_segment(data, *i))
+			return (1);
+		(*i)++;
+		data->last_saved = *i;
+		if (quotes == 2)
+			f_clear_quotes_flags(data);
+		return (2);
+	}
+	return (0);
+}
+
+int				f_slash_pars(t_data *data, int *i)
+{
+	if (data->input[*i] == '\\')
+	{
+		if (f_add_segment(data, *i))
+			return (1);
+		data->last_saved = *i;
+		data->slash = 1;
+		while (data->input[*i + data->slash] == '\\')
+			data->slash++;
+		if (f_quote_status(data) == 1)
+		{
+			if (f_add_segment(data, *i + data->slash))
+				return (1);
+			*i += data->slash - 1;
+			data->last_saved = *i + 1;
+			data->slash = 0;
+		}
+		else if ((f_quote_status(data) == 2) && (data->slash % 2) && !ft_strchr("\"$", data->input[*i + data->slash]))
+		{
+			if (f_add_segment(data, *i + data->slash / 2 + 1))
+				return (1);
+			*i += data->slash - 1;
+			data->last_saved = *i + 1;
+		}
+		else
+		{
+			if (f_add_segment(data, *i + data->slash / 2))
+				return (1);
+			*i += data->slash - 1;
+			data->last_saved = *i + 1;
+		}
+		if (f_quote_status(data) != 1 && f_chk_shield(data, *i + 1) && !data->input[*i + 1])
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: empty \
+space after escape character '\\'\n")))
+				return (1);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int				f_pars_input(t_data *data)
 {
 	int			i;
@@ -197,7 +257,7 @@ int				f_pars_input(t_data *data)
 	while (i < data->pos)
 	{
 		while (i < data->pos && (((!(c = ft_strchr("> <|", data->input[i])) || (c \
-				&& f_quote_status(data)))) || ((data->input[i] == ' ') && f_chk_shield(data, i) && !f_quote_status(data))))
+				&& (quotes = f_quote_status(data))))) || (c && f_chk_shield(data, i) && !quotes)))
 		{
 			if ((res = f_dollar_pars(data, &i)))
 			{
@@ -206,55 +266,15 @@ int				f_pars_input(t_data *data)
 				else if (res == 2)
 					continue;
 			}
-			if ((quotes = f_check_quotes(data, i)))
+			if ((res = f_quotes_pars(data, &i)))
 			{
-				if (f_add_segment(data, i))
+				if (res == 1)
 					return (1);
-				i++;
-				data->last_saved = i;
-				if (quotes == 2)
-					f_clear_quotes_flags(data);
-				continue;
+				else if (res == 2)
+					continue;
 			}
-			if (data->input[i] == '\\')
-			{
-				if (f_add_segment(data, i))
-					return (1);
-				data->last_saved = i;
-				data->slash = 1;
-				while (data->input[i + data->slash] == '\\')
-					data->slash++;
-				if (f_quote_status(data) == 1)
-				{
-					if (f_add_segment(data, i + data->slash))
-						return (1);
-					i += data->slash - 1;
-					data->last_saved = i + 1;
-					data->slash = 0;
-				}
-				else if ((f_quote_status(data) == 2) && (data->slash % 2) && !ft_strchr("\"$", data->input[i + data->slash]))
-				{
-					if (f_add_segment(data, i + data->slash / 2 + 1))
-						return (1);
-					i += data->slash - 1;
-					data->last_saved = i + 1;
-				}
-				else
-				{
-					if (f_add_segment(data, i + data->slash / 2))
-						return (1);
-					i += data->slash - 1;
-					data->last_saved = i + 1;
-				}
-				/* if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr(" ", data->input[i + 1])) */
-				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && !data->input[i + 1])
-				{
-					if(!(data->errstr = ft_strdup("undefined behavior: empty \
-space after escape character '\\'\n")))
-						return (1);
-					return (1);
-				}
-			}
+			if (f_slash_pars(data, &i))
+				return (1);
 			i++;
 		}
 		if ((quotes = f_quote_status(data)))
