@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 00:20:16 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 00:36:33 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,13 +229,53 @@ space after escape character '\\'\n")))
 	return (0);
 }
 
+int				f_chk_unclosed_quotes(t_data *data)
+{
+	int			quotes;
+
+	if ((quotes = f_quote_status(data)))
+	{
+		if (quotes == 1)
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
+				return (1);
+		}
+		if (quotes == 2)
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: unclosed double quote\n")))
+				return (1);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+int				f_process_pars(t_data *data, int *i)
+{
+	char		*c;
+	char		proc[3];
+
+	if (data->input[*i] && (c = ft_strchr("><|", data->input[*i])))
+	{
+		ft_bzero(proc, 3);
+		proc[0] = *c;
+		if (*c == '>' && data->input[*i + 1] == '>')
+		{
+			proc[1] = '>';
+			(*i)++;
+		}
+		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, proc)))
+			return (1);
+	}
+	return (0);
+}
+
 int				f_pars_input(t_data *data)
 {
 	int			i;
 	int			k;
 	int			quotes;
 	char		*c;
-	char		proc[3];
 	int			res;
 
 	i = data->pos;
@@ -259,56 +299,28 @@ int				f_pars_input(t_data *data)
 		while (i < data->pos && (((!(c = ft_strchr("> <|", data->input[i])) || (c \
 				&& (quotes = f_quote_status(data))))) || (c && f_chk_shield(data, i) && !quotes)))
 		{
-			if ((res = f_dollar_pars(data, &i)))
-			{
-				if (res == 1)
-					return (1);
-				else if (res == 2)
-					continue;
-			}
-			if ((res = f_quotes_pars(data, &i)))
-			{
-				if (res == 1)
-					return (1);
-				else if (res == 2)
-					continue;
-			}
+			if ((res = f_dollar_pars(data, &i)) == 2)
+				continue;
+			if (res == 1)
+				return (1);
+			if ((res = f_quotes_pars(data, &i)) == 2)
+				continue;
+			if (res == 1)
+				return (1);
 			if (f_slash_pars(data, &i))
 				return (1);
 			i++;
 		}
-		if ((quotes = f_quote_status(data)))
-		{
-			if (quotes == 1)
-			{
-				if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
-					return (1);
-			}
-			if (quotes == 2)
-			{
-				if(!(data->errstr = ft_strdup("undefined behavior: unclosed double quote\n")))
-					return (1);
-			}
+		if (f_chk_unclosed_quotes(data))
 			return (1);
-		}
 		if (f_chk_shield(data, i) && ft_strchr("><|&", data->input[i]))
 			i++;
 		if (f_add_segment(data, i))
 			return (1);
 		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
 			return (1);
-		if (data->input[i] && (c = ft_strchr("><|", data->input[i])))
-		{
-			ft_bzero(proc, 3);
-			proc[0] = *c;
-			if (*c == '>' && data->input[i + 1] == '>')
-			{
-				proc[1] = '>';
-				i++;
-			}
-			if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, proc)))
-				return (1);
-		}
+		if (f_process_pars(data, &i))
+			return (1);
 		i++;
 		while (ft_isspace(data->input[i]))
 			i++;
