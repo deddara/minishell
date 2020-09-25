@@ -5,7 +5,24 @@
 #include <stdlib.h>
 #include "libft.h"
 
-static t_command	*create_command_lst(void)
+void 				clear_list(t_command *cmd)
+{
+	t_command *tmp;
+
+	if (cmd)
+	{
+		while (cmd)
+		{
+			f_strarr_free(cmd->argv);
+			tmp = cmd;
+			cmd = cmd->next;
+			free (tmp);
+		}
+		cmd = NULL;
+	}
+}
+
+t_command	*create_command_lst(void)
 {
 	t_command *tmp;
 
@@ -128,15 +145,12 @@ static int			count_symbols(t_data *data, int i, char symb)
 	return (0);
 }
 
-int					structer(t_data *data)
+int					structer(t_data *data, t_command *cmd)
 {
 	int			i;
-	t_command	*cmd;
 	t_command	*cmd_tmp;
 	int			err_code;
 
-	if (!(cmd = create_command_lst()))
-		return (1);
 	cmd_tmp = cmd;
 	i = 0;
 	while (data->inp_arr[i])

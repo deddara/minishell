@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
+# include "structer.h"
 
 typedef struct	s_data
 {
@@ -46,6 +47,7 @@ void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 void			f_export(t_data *data, char *str, int fd);
 int				f_pars_input(t_data *data);
-int				structer(t_data *data);
+int				structer(t_data *data, t_command *cmd);
+void			clear_list(t_command *cmd);
 
 #endif

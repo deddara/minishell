@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include "structer.h"
 
 void			f_data_init(t_data *data)
 {
@@ -48,22 +49,28 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
-	int i = 0;
+	t_command	*command;
 
+	command = NULL;
 	(void)argv;
 	(void)argc;
 	f_data_init(&data);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
+	if (!(command = create_command_lst()))
+			return (1);
 	get_next_line(0, &data.input);
 	if (f_pars_input(&data))
 		return (f_exit(&data, 1, data.errstr));
-	while (data.inp_arr[i])
-	{
-		ft_putstr_fd(data.inp_arr[i++], 1);
-		ft_putchar_fd('\n', 1);
-	}
-	structer(&data);
+	//	while (data.inp_arr[i])
+	//	{
+	//		ft_putstr_fd(data.inp_arr[i++], 1);
+	//		ft_putchar_fd('\n', 1);
+	//	}
+	write (1, "da", 2);
+	if (structer(&data, command))
+		return (1);
+	clear_list(command);
 	/* ft_putstr_fd(data.input, 1); */
 	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));
