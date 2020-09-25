@@ -20,7 +20,7 @@ static t_command	*create_command_lst(void)
 	return (tmp);
 }
 
-static int	pipe_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			pipe_handler(t_data *data, t_command *cmd_tmp, int i)
 {
 	if (ft_strncmp(data->inp_arr[i + 1], ">", 1) == 0)
 		cmd_tmp->redirect = 1;
@@ -35,11 +35,11 @@ static int	pipe_handler(t_data *data, t_command *cmd_tmp, int i)
 	return (0);
 }
 
-static int	valid_check(t_data *data, int i)
+static int			valid_check(t_data *data, int i)
 {
 	if (data->inp_arr[0][0] == '|')
 	{
-		write (2, "syntax error near unexpected token `|'\n", 39);
+		write(2, "syntax error near unexpected token `|'\n", 39);
 		return (258);
 	}
 	if (data->inp_arr[i][0] == '|' && !data->inp_arr[i + 1])
@@ -47,7 +47,7 @@ static int	valid_check(t_data *data, int i)
 		write(2, "undefined behavior: multiple lines\n", 35);
 		return (1);
 	}
-		if ((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>') \
+	if ((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>')\
 				&& !data->inp_arr[i + 1])
 	{
 		write(2, "syntax error near unexpected token `newline'\n", 45);
@@ -56,7 +56,7 @@ static int	valid_check(t_data *data, int i)
 	return (0);
 }
 
-static int	redirect_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			redirect_handler(t_data *data, t_command *cmd_tmp, int i)
 {
 	if (data->inp_arr[i + 1][0] == '|' && (data->inp_arr[i][0] == '<' || \
 			!ft_strncmp(data->inp_arr[i], ">>", 2)))
@@ -76,7 +76,7 @@ static int	redirect_handler(t_data *data, t_command *cmd_tmp, int i)
 	return (0);
 }
 
-static int struct_handler(t_data *data, t_command *cmd_tmp, int i)
+static int			struct_handler(t_data *data, t_command *cmd_tmp, int i)
 {
 	int err_code;
 
@@ -93,7 +93,8 @@ static int struct_handler(t_data *data, t_command *cmd_tmp, int i)
 		if ((err_code = redirect_handler(data, cmd_tmp, i)))
 			return (err_code);
 	}
-	else if (!(cmd_tmp->argv = f_strarr_add_elem(cmd_tmp->argv, data->inp_arr[i])))
+	else if (!(cmd_tmp->argv = \
+	f_strarr_add_elem(cmd_tmp->argv, data->inp_arr[i])))
 	{
 		write(2, "malloc error\n", 13);
 		return (1);
@@ -101,7 +102,7 @@ static int struct_handler(t_data *data, t_command *cmd_tmp, int i)
 	return (0);
 }
 
-static int count_symbols(t_data *data, int i, char symb)
+static int			count_symbols(t_data *data, int i, char symb)
 {
 	int j;
 
@@ -113,26 +114,26 @@ static int count_symbols(t_data *data, int i, char symb)
 	}
 	if (symb == '>' && j > 2)
 	{
-		write (2, "syntax error near unexpected token ", 35);
+		write(2, "syntax error near unexpected token ", 35);
 		j > 3 ? write(2, "`>'\n", 4) : write(2, "`>>'\n", 4);
 		return (258);
 	}
 	if (j > 1)
 	{
-		write (2, "syntax error near unexpected token ", 35);
-		write (2, &symb, 1);
-		write (2, "\n", 1);
+		write(2, "syntax error near unexpected token ", 35);
+		write(2, &symb, 1);
+		write(2, "\n", 1);
 		return (258);
 	}
 	return (0);
 }
 
-int		structer(t_data *data)
+int					structer(t_data *data)
 {
 	int			i;
 	t_command	*cmd;
 	t_command	*cmd_tmp;
-	int 		err_code;
+	int			err_code;
 
 	if (!(cmd = create_command_lst()))
 		return (1);
