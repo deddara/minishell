@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 19:40:20 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 20:01:58 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,76 @@ int				f_add_segment(t_data *data, int i)
 	return (0);
 }
 
+int				f_dollar_pars(t_data *data, int i)
+{
+	char		*name;
+	int			k;
+	int			j;
+	int			index;
+	char		*env_val;
+
+	if (data->input[i] == '$' && f_quote_status(data) != 1 && !f_chk_shield(data, i))
+	{
+		j = 0;
+		index = -1;
+		env_val = NULL;
+		if (f_add_segment(data, i))
+			return (1);
+		i++;
+		data->last_saved = i;
+		/* f_check_quotes(data, i); */
+		k = 0;
+		while ((data->input[i] && !ft_strchr(" \'\"\\$|?", data->input[i])))
+		{
+			k++;
+			i++;
+		}
+		if(k)
+		{
+			if (f_check_quotes(data, i - 1) == 2)
+				f_clear_quotes_flags(data);
+			if (!(name = (char*)malloc(sizeof(char) * k + 1)))
+				return (1);
+			name[k] = '\0';
+			while (k)
+				name[j++] = data->input[i - k--];
+			if ((index = f_strarr_find_elem(data->envp, name, "=")) != -1)
+			{
+				if (!(env_val = ft_strdup((ft_strchr(data->envp[index], '=') + 1))))
+					return (1);
+				if (f_join_to_w(data, env_val))
+					return (1);
+				free((env_val) ? env_val : NULL);
+			}
+			data->last_saved = i;
+			free((name) ? name : NULL);
+			return (2);
+		}
+		if (data->input[i] == '$')
+		{
+			if(!(data->errstr = ft_strdup("undefined behavior: command '$$' not supported\n")))
+				return (1);
+			return (1);
+		}
+		else if (data->input[i] == '?')
+		{
+			if (f_join_to_w(data, ft_itoa(data->errcode)))
+				return (1);
+			i++;
+			data->last_saved = i;
+			return (2);
+		}
+		else if (!data->input[i] || !ft_strchr("\'\"", data->input[i]) || f_quote_status(data) == 2)
+		{
+			if (f_join_to_w(data, "$"))
+				return (1);
+			data->last_saved = i;
+			return (2);
+		}
+	}
+	return (0);
+}
+
 int				f_pars_input(t_data *data)
 {
 	int			i;
@@ -106,12 +176,14 @@ int				f_pars_input(t_data *data)
 	int			quotes;
 	char		*c;
 	char		proc[3];
+	int			res;
 
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
 			&& f_quote_status(data))))
 	{
-		f_check_quotes(data, i);
+		if ((f_check_quotes(data, i)) == 2)
+			f_clear_quotes_flags(data);
 		i++;
 	}
 	f_clear_quotes_flags(data);
@@ -127,69 +199,12 @@ int				f_pars_input(t_data *data)
 		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
 				&& f_quote_status(data))))
 		{
-			if (data->input[i] == '$' && f_quote_status(data) != 1 && !f_chk_shield(data, i))
+			if ((res = f_dollar_pars(data, i)))
 			{
-				char	*name;
-				int		j;
-				int		index;
-				char	*env_val;
-
-				j = 0;
-				index = -1;
-				env_val = NULL;
-				if (f_add_segment(data, i))
+				if (res == 1)
 					return (1);
-				i++;
-				data->last_saved = i;
-				/* f_check_quotes(data, i); */
-				k = 0;
-				while ((data->input[i] && !ft_strchr(" \'\"\\$|?", data->input[i])))
-				{
-					k++;
-					i++;
-				}
-				if(k)
-				{
-					if (f_check_quotes(data, i - 1) == 2)
-						f_clear_quotes_flags(data);
-					if (!(name = (char*)malloc(sizeof(char) * k + 1)))
-						return (1);
-					name[k] = '\0';
-					while (k)
-						name[j++] = data->input[i - k--];
-					if ((index = f_strarr_find_elem(data->envp, name, "=")) != -1)
-					{
-						if (!(env_val = ft_strdup((ft_strchr(data->envp[index], '=') + 1))))
-							return (1);
-						if (f_join_to_w(data, env_val))
-							return (1);
-						free((env_val) ? env_val : NULL);
-					}
-					data->last_saved = i;
-					free((name) ? name : NULL);
+				else if (res == 2)
 					continue;
-				}
-				if (data->input[i] == '$')
-				{
-					if(!(data->errstr = ft_strdup("undefined behavior: command '$$' not supported\n")))
-						return (1);
-					return (1);
-				}
-				else if (data->input[i] == '?')
-				{
-					if (f_join_to_w(data, ft_itoa(data->errcode)))
-						return (1);
-					i++;
-					data->last_saved = i;
-					continue;
-				}
-				else if (!data->input[i] || !ft_strchr("\'\"", data->input[i]) || f_quote_status(data) == 2)
-				{
-					if (f_join_to_w(data, "$"))
-						return (1);
-					data->last_saved = i;
-					continue;
-				}
 			}
 			if ((quotes = f_check_quotes(data, i)))
 			{
