@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 22:38:53 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 23:52:29 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,8 +196,8 @@ int				f_pars_input(t_data *data)
 	data->inp_arr[k] = NULL;
 	while (i < data->pos)
 	{
-		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
-				&& f_quote_status(data))))
+		while (i < data->pos && (((!(c = ft_strchr("> <|", data->input[i])) || (c \
+				&& f_quote_status(data)))) || ((data->input[i] == ' ') && f_chk_shield(data, i) && !f_quote_status(data))))
 		{
 			if ((res = f_dollar_pars(data, &i)))
 			{
@@ -232,7 +232,7 @@ int				f_pars_input(t_data *data)
 					data->last_saved = i + 1;
 					data->slash = 0;
 				}
-				else if ((f_quote_status(data) == 2) && (data->slash % 2) && !ft_strchr("\" ", data->input[i + data->slash]))
+				else if ((f_quote_status(data) == 2) && (data->slash % 2) && !ft_strchr("\"$", data->input[i + data->slash]))
 				{
 					if (f_add_segment(data, i + data->slash / 2 + 1))
 						return (1);
@@ -246,7 +246,8 @@ int				f_pars_input(t_data *data)
 					i += data->slash - 1;
 					data->last_saved = i + 1;
 				}
-				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr(" ", data->input[i + 1]))
+				/* if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr(" ", data->input[i + 1])) */
+				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && !data->input[i + 1])
 				{
 					if(!(data->errstr = ft_strdup("undefined behavior: empty \
 space after escape character '\\'\n")))
