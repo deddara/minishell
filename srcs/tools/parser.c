@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 00:36:33 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 01:37:33 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ int				f_quotes_pars(t_data *data, int *i)
 	return (0);
 }
 
+/* int				f_count_slashes( */
+
 int				f_slash_pars(t_data *data, int *i)
 {
 	if (data->input[*i] == '\\')
@@ -270,17 +272,27 @@ int				f_process_pars(t_data *data, int *i)
 	return (0);
 }
 
+int				f_chk_shield_rev(t_data *data, int i)
+{
+	int			k;
+
+	k = 0;
+	while ((i - 1 >= 0) && data->input[i-- - 1] == '\\')
+		k++;
+	if (k)
+		return ((k % 2) ? 1 : 0);
+	return (0);
+}
+
 int				f_pars_input(t_data *data)
 {
 	int			i;
-	int			k;
-	int			quotes;
-	char		*c;
 	int			res;
+	char		*ptr;
 
 	i = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
-			&& f_quote_status(data))))
+			&& ((f_quote_status(data) || f_chk_shield_rev(data, i))))))
 	{
 		if ((f_check_quotes(data, i)) == 2)
 			f_clear_quotes_flags(data);
@@ -290,14 +302,13 @@ int				f_pars_input(t_data *data)
 	data->pars_complete = (!data->input[i]) ? 1 : 0;
 	data->pos = i;
 	i = 0;
-	k = 0;
 	free((data->inp_arr) ? data->inp_arr : NULL);
-	data->inp_arr = (char**)malloc(sizeof(char*) * k + 1);
-	data->inp_arr[k] = NULL;
+	data->inp_arr = (char**)malloc(sizeof(char*) * 1);
+	data->inp_arr[0] = NULL;
 	while (i < data->pos)
 	{
-		while (i < data->pos && (((!(c = ft_strchr("> <|", data->input[i])) || (c \
-				&& (quotes = f_quote_status(data))))) || (c && f_chk_shield(data, i) && !quotes)))
+		while (i < data->pos && (((!(ptr = ft_strchr("> <|", data->input[i])) || (ptr \
+				&& (res = f_quote_status(data))))) || (ptr && f_chk_shield(data, i) && !res)))
 		{
 			if ((res = f_dollar_pars(data, &i)) == 2)
 				continue;
@@ -328,5 +339,6 @@ int				f_pars_input(t_data *data)
 		free((data->w) ? data->w : NULL);
 		data->w = NULL;
 	}
+	data->pos += (data->pars_complete) ? 0 : 1;
 	return (0);
 }
