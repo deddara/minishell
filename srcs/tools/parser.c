@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 16:26:23 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 19:40:20 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int				f_pars_input(t_data *data)
 				data->last_saved = i;
 				/* f_check_quotes(data, i); */
 				k = 0;
-				while ((data->input[i] && !ft_strchr(" \'\"\\", data->input[i])))
+				while ((data->input[i] && !ft_strchr(" \'\"\\$|?", data->input[i])))
 				{
 					k++;
 					i++;
@@ -167,12 +167,28 @@ int				f_pars_input(t_data *data)
 					}
 					data->last_saved = i;
 					free((name) ? name : NULL);
+					continue;
 				}
-				else if (!ft_strchr("\'\"", data->input[i]) || f_quote_status(data) == 2)
+				if (data->input[i] == '$')
+				{
+					if(!(data->errstr = ft_strdup("undefined behavior: command '$$' not supported\n")))
+						return (1);
+					return (1);
+				}
+				else if (data->input[i] == '?')
+				{
+					if (f_join_to_w(data, ft_itoa(data->errcode)))
+						return (1);
+					i++;
+					data->last_saved = i;
+					continue;
+				}
+				else if (!data->input[i] || !ft_strchr("\'\"", data->input[i]) || f_quote_status(data) == 2)
 				{
 					if (f_join_to_w(data, "$"))
 						return (1);
 					data->last_saved = i;
+					continue;
 				}
 			}
 			if ((quotes = f_check_quotes(data, i)))
@@ -215,7 +231,7 @@ int				f_pars_input(t_data *data)
 					i += data->slash - 1;
 					data->last_saved = i + 1;
 				}
-				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr("\" ", data->input[i + 1]))
+				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr(" ", data->input[i + 1]))
 				{
 					if(!(data->errstr = ft_strdup("undefined behavior: empty \
 space after escape character '\\'\n")))
@@ -225,10 +241,18 @@ space after escape character '\\'\n")))
 			}
 			i++;
 		}
-		if (f_quote_status(data))
+		if ((quotes = f_quote_status(data)))
 		{
-			if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
-				return (1);
+			if (quotes == 1)
+			{
+				if(!(data->errstr = ft_strdup("undefined behavior: unclosed quote\n")))
+					return (1);
+			}
+			if (quotes == 2)
+			{
+				if(!(data->errstr = ft_strdup("undefined behavior: unclosed double quote\n")))
+					return (1);
+			}
 			return (1);
 		}
 		if (f_chk_shield(data, i) && ft_strchr("><|&", data->input[i]))
