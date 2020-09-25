@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 18:49:39 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 22:41:34 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int				main(int argc, char **argv, char **envp)
 	if (structer(&data, command))
 		return (1);
 	clear_list(command);
+    check_command(&data);
 	/* ft_putstr_fd(data.input, 1); */
 	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));

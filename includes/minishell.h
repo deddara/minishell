@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 18:15:00 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/22 22:27:10 by deddara          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_data
 	char		*w;
 	int			last_saved;
 	char		*errstr;
+	char        **argv;
 	int			slash;
 }				t_data;
 
@@ -45,9 +46,10 @@ char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
-void			f_export(t_data *data, char *str, int fd);
+int			    f_export(t_data *data, char *str, int fd);
 int				f_pars_input(t_data *data);
 int				structer(t_data *data, t_command *cmd);
 void			clear_list(t_command *cmd);
+int             check_command(t_data *data);
 
 #endif
