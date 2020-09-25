@@ -90,15 +90,15 @@ int		structer(t_data *data)
 		}
 		i++;
 	}
-	while (cmd)
-	{
-		int j = 0;
-		while (cmd->argv[j]) {
-			ft_putstr_fd(cmd->argv[j], 1);
-			ft_putstr_fd("\n", 1);
-			j++;
-		}
-		cmd = cmd->next;
-	}
+//	while (cmd)
+//	{
+//		int j = 0;
+//		while (cmd->argv[j]) {
+//			ft_putstr_fd(cmd->argv[j], 1);
+//			ft_putstr_fd("\n", 1);
+//			j++;
+//		}
+//		cmd = cmd->next;
+//	}
 	return (0);
 }
