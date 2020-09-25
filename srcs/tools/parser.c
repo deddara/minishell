@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/25 02:07:13 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/25 14:25:09 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int				f_pars_input(t_data *data)
 		while (i < data->pos && (!ft_strchr("> <|", data->input[i]) || (ft_strchr("> <|", data->input[i]) \
 				&& f_quote_status(data))))
 		{
-			if (f_quote_status(data) != 1 && !f_chk_shield(data, i) && data->input[i] == '$')
+			if (data->input[i] == '$' && f_quote_status(data) != 1 && !f_chk_shield(data, i))
 			{
 				char	*name;
 				int		j;
@@ -197,15 +197,16 @@ int				f_pars_input(t_data *data)
 				{
 					if (f_add_segment(data, i + data->slash))
 						return (1);
-					i += data->slash;
-					data->last_saved = i;
+					i += data->slash - 1;
+					data->last_saved = i + 1;
+					data->slash = 0;
 				}
-				else if (f_quote_status(data) == 2)
+				else if ((f_quote_status(data) == 2) && (data->input[i + data->slash] != '\"'))
 				{
 					if (f_add_segment(data, i + data->slash / 2 + 1))
 						return (1);
-					i += data->slash;
-					data->last_saved = i;
+					i += data->slash - 1;
+					data->last_saved = i + 1;
 				}
 				else
 				{
@@ -213,6 +214,13 @@ int				f_pars_input(t_data *data)
 						return (1);
 					i += data->slash - 1;
 					data->last_saved = i + 1;
+				}
+				if (f_quote_status(data) != 1 && f_chk_shield(data, i + 1) && ft_strchr("\" ", data->input[i + 1]))
+				{
+					if(!(data->errstr = ft_strdup("undefined behavior: empty \
+space after escape character '\\'\n")))
+						return (1);
+					return (1);
 				}
 			}
 			i++;
