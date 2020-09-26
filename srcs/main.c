@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 12:13:26 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 12:54:55 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,26 @@ int				f_exit(t_data *data, int exitcode, char *exitstr)
 	return (exitcode);
 }
 
+void			f_clear_input_data(t_data *data)
+{
+	data->pars_complete = 0;
+	data->inp_arr = f_strarr_free(data->inp_arr);
+	free((data->w) ? data->w : NULL);
+	data->w = NULL;
+	free((data->errstr) ? data->errstr : NULL);
+	data->errstr = NULL;
+	data->pos = 0;
+	data->start = 0;
+	data->qt1_o = 0;
+	data->qt1_c = 0;
+	data->qt2_o = 0;
+	data->qt2_c = 0;
+	data->pars_complete = 0;
+	data->last_saved = 0;
+	data->errcode = 0;
+	data->slash = 0;
+}
+
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
@@ -59,17 +79,25 @@ int				main(int argc, char **argv, char **envp)
 	f_data_init(&data);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
-	get_next_line(0, &data.input);
-	while (!data.pars_complete)
+	data.input = ft_strdup("start :)");
+	while (ft_strncmp("exit", data.input, ft_strlen("exit")))
 	{
-		if (f_pars_input(&data))
-			return (f_exit(&data, 1, data.errstr));
-		int i = 0;
-		while (data.inp_arr[i])
+		ft_putstr_fd("minishell$ ", 1);
+		free((data.input) ? data.input : NULL);
+		data.input = NULL;
+		get_next_line(0, &data.input);
+		while (!data.pars_complete)
 		{
-			ft_putstr_fd(data.inp_arr[i++], 1);
-			ft_putchar_fd('\n', 1);
+			if (f_pars_input(&data))
+				return (f_exit(&data, 1, data.errstr));
+			int i = 0;
+			while (data.inp_arr[i])
+			{
+				ft_putstr_fd(data.inp_arr[i++], 1);
+				ft_putchar_fd('\n', 1);
+			}
 		}
+		f_clear_input_data(&data);
 	}
 	return (f_exit(&data, 0, ""));
 }

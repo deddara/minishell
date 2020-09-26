@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 12:07:11 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 12:57:13 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int				f_dollar_pars(t_data *data, int *i)
 			return (1);
 		(*i)++;
 		data->last_saved = *i;
-		/* f_check_quotes(data, *i); */
 		k = 0;
 		while ((data->input[*i] && !ft_strchr(" \'\"\\$|?", data->input[*i])))
 		{
@@ -185,8 +184,6 @@ int				f_quotes_pars(t_data *data, int *i)
 	}
 	return (0);
 }
-
-/* int				f_count_slashes( */
 
 int				f_slash_pars(t_data *data, int *i)
 {
