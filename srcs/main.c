@@ -96,7 +96,7 @@ int				main(int argc, char **argv, char **envp)
 			if (f_pars_input(&data))
 				return (f_exit(&data, 1, data.errstr));
 			if (structer(&data, command))
-				return (1);
+				continue;
 			command_handler(&data, command);
 			clear_list(command);
 		}
