@@ -17,10 +17,12 @@
 
 typedef struct	s_data
 {
+	char		**minishell_argv;
 	char		**envp;
 	char		*input;
 	char		**inp_arr;
 	int			pos;
+	int			start;
 	int			qt1_o;
 	int			qt1_c;
 	int			qt2_o;
@@ -30,6 +32,7 @@ typedef struct	s_data
 	int			last_saved;
 	char		*errstr;
 	char        **argv;
+	int			errcode;
 	int			slash;
 }				t_data;
 
@@ -52,4 +55,21 @@ int				structer(t_data *data, t_command *cmd);
 void			clear_list(t_command *cmd);
 int             check_command(t_data *data, t_command *cmd);
 int				command_handler(t_data *data, t_command *cmd);
+
+int				f_pars_input(t_data *data);
+int				f_add_segment(t_data *data, int i);
+int				f_join_to_w(t_data *data, char *str);
+int				f_chk_shield (t_data *data, int i);
+int				f_chk_shield_rev(t_data *data, int i);
+int				f_chk_quotes(t_data *data, int i);
+int				f_word_chks(t_data *data, int *i);
+int				f_chk_unclosed_quotes(t_data *data);
+int				f_quotes_pars(t_data *data, int *i);
+int				f_quote_status(t_data *data);
+void			f_clear_quotes_flags(t_data *data);
+int				f_slash_pars(t_data *data, int *i);
+int				f_process_pars(t_data *data, int *i);
+int				f_dollar_pars(t_data *data, int *i);
+int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
+
 #endif

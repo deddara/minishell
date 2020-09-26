@@ -1,7 +1,6 @@
 minishell.dSYM/
 .vscode/
 .idea/
-CMakeLists.txt
 cmake-build-debug/
 objs/
 ._README.md
