@@ -62,17 +62,16 @@ int				main(int argc, char **argv, char **envp)
 	get_next_line(0, &data.input);
 	if (f_pars_input(&data))
 		return (f_exit(&data, 1, data.errstr));
-	//	while (data.inp_arr[i])
-	//	{
-	//		ft_putstr_fd(data.inp_arr[i++], 1);
-	//		ft_putchar_fd('\n', 1);
-	//	}
 	if (structer(&data, command))
 		return (1);
 	if (command_handler(&data, command))
 		return (f_exit(&data, 0, ""));
 	clear_list(command);
-	/* ft_putstr_fd(data.input, 1); */
-	/* ft_putchar_fd('\n', 1);      */
 	return (f_exit(&data, 0, ""));
 }
+
+//	while (data.inp_arr[i])
+//	{
+//		ft_putstr_fd(data.inp_arr[i++], 1);
+//		ft_putchar_fd('\n', 1);
+//	}
