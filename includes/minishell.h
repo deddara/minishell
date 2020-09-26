@@ -41,7 +41,7 @@ void			*f_strarr_free(char **strarr);
 int				f_exit(t_data *data, int exitcode, char *exitstr);
 
 int				test_strarr(t_data *data);
-int				f_cd(char *path, char **envp);
+int				f_cd(char *path, t_data *data);
 char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);

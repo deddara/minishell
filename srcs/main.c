@@ -67,8 +67,8 @@ int				main(int argc, char **argv, char **envp)
 	if (command_handler(&data, command))
 		return (f_exit(&data, 0, ""));
 	clear_list(command);
-	f_cd ("~/school21", data.envp);
-	f_export(&data, "NULL", 1);
+	f_cd ("~/school21", &data);
+	f_export(&data, NULL, 1);
 	return (f_exit(&data, 0, ""));
 }
 
