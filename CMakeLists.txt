@@ -73,5 +73,6 @@ add_executable(minishell
         srcs/tools/coammand_handler.c
         srcs/tools/command_checker.c
         srcs/tools/structer.c
+        srcs/tools/cmd_caller.c
         srcs/builtins/unset.c
         srcs/main.c)

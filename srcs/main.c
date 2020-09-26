@@ -98,6 +98,7 @@ int				main(int argc, char **argv, char **envp)
 			if (structer(&data, command))
 				continue;
 			command_handler(&data, command);
+			cmd_caller(&data, command);
 			clear_list(command);
 		}
 		f_clear_input_data(&data);

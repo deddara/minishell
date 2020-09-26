@@ -36,7 +36,7 @@ FLS_2		= $(addprefix $(FLSDIR_2), \
 FLSDIR_3	= tools/
 FLS_3		= $(addprefix $(FLSDIR_3), \
 				strarr coammand_handler command_checker \
-				 structer)
+				 structer cmd_caller)
 
 FLSDIR_4	= parser/
 FLS_4		= $(addprefix $(FLSDIR_4), \

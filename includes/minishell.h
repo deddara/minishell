@@ -34,6 +34,8 @@ typedef struct	s_data
 	char        **argv;
 	int			errcode;
 	int			slash;
+	int			counter;
+	int 		fd[2];
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
@@ -71,5 +73,6 @@ int				f_slash_pars(t_data *data, int *i);
 int				f_process_pars(t_data *data, int *i);
 int				f_dollar_pars(t_data *data, int *i);
 int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
+int				cmd_caller(t_data *data, t_command *cmd);
 
 #endif
