@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 12:54:55 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 14:12:39 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void			f_clear_input_data(t_data *data)
 	data->qt2_c = 0;
 	data->pars_complete = 0;
 	data->last_saved = 0;
-	data->errcode = 0;
+	data->errcode = 127;
 	data->slash = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:00:58 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 18:44:39 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 15:13:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <unistd.h>
 
-void f_pwd(int fd)
+void	f_pwd(int fd)
 {
 	char *dir;
 

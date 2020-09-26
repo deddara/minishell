@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 11:26:48 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 15:07:59 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,20 @@ void			f_pwd(int fd);
 void			f_env(int fd, t_data *data);
 void			f_echo(char *str, int fd, int n);
 void			f_export(t_data *data, char *str, int fd);
+
 int				f_pars_input(t_data *data);
+int				f_add_segment(t_data *data, int i);
+int				f_join_to_w(t_data *data, char *str);
+int				f_chk_shield (t_data *data, int i);
+int				f_chk_shield_rev(t_data *data, int i);
+int				f_chk_quotes(t_data *data, int i);
+int				f_word_chks(t_data *data, int *i);
+int				f_chk_unclosed_quotes(t_data *data);
+int				f_quotes_pars(t_data *data, int *i);
+int				f_quote_status(t_data *data);
+void			f_clear_quotes_flags(t_data *data);
+int				f_slash_pars(t_data *data, int *i);
+int				f_process_pars(t_data *data, int *i);
+int				f_dollar_pars(t_data *data, int *i);
 
 #endif

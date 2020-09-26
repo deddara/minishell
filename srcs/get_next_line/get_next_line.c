@@ -6,14 +6,15 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 12:58:02 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 18:50:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 15:13:43 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
-# include <stdlib.h>
-# include <unistd.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 /*
 ** Exit function is to free memory in case of exit because error is occurred
 ** (exit code -1), or when we exit bacause in FD nothing to read more.

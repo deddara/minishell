@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/26 12:21:11 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/26 15:07:11 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 LIBFT		= libft/libft.a
 INCLUDES	= -I includes/ -I libft/includes/
-CC		= gcc
+CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 OFLAGS		= -O2
 DBGFLAGS	= -g
@@ -23,28 +23,38 @@ override FLAGS ?= $(CFLAGS)
 #------------------------------- minishell compiling ---------------------------
 SRCDIR		= srcs/
 OBJDIR		= objs/
+
 FLSDIR_1	= ./
-FLSDIR_2	= tools/
-FLSDIR_3	= get_next_line/
+FLS_1		= $(addprefix $(FLSDIR_1), \
+				main )
 
-FLS_1	= $(addprefix $(FLSDIR_1), \
-		main )
+FLSDIR_2	= get_next_line/
+FLS_2		= $(addprefix $(FLSDIR_2), \
+				get_next_line \
+				get_next_line_utils )
 
-FLS_2	= $(addprefix $(FLSDIR_2), \
-		cd \
-		echo \
-		env \
-		export \
-		pwd \
-		strarr \
-		parser \
-		unset )
+FLSDIR_3	= tools/
+FLS_3		= $(addprefix $(FLSDIR_3), \
+				strarr )
 
-FLS_3	= $(addprefix $(FLSDIR_3), \
-		get_next_line \
-		get_next_line_utils )
+FLSDIR_4	= parser/
+FLS_4		= $(addprefix $(FLSDIR_4), \
+				checks \
+				dollar \
+				parser \
+				quotes \
+				slash_n_process )
 
-SRC	= $(FLS_1) $(FLS_2) $(FLS_3)
+FLSDIR_5	= builtins/
+FLS_5		= $(addprefix $(FLSDIR_5), \
+				cd \
+				echo \
+				env \
+				export \
+				pwd \
+				unset )
+
+SRC	= $(FLS_1) $(FLS_2) $(FLS_3) $(FLS_4) $(FLS_5)
 
 OBJ	= $(addprefix $(OBJDIR), $(SRC:=.o))
 DFLS	= $(SRC:=.d)
@@ -58,7 +68,7 @@ $(NAME):	$(LIBFT) $(OBJ)
 
 $(OBJ):		$(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p	$(OBJDIR) $(addprefix $(OBJDIR), $(FLSDIR_1) $(FLSDIR_2) \
-			$(FLSDIR_3))
+			$(FLSDIR_3) $(FLSDIR_4) $(FLSDIR_5))
 	$(CC)		$(FLAGS) -D BUFFER_SIZE=32 $(INCLUDES) -c $< -o $@ -MMD
 
 include $(wildcard $(addprefix $(OBJDIR), $(DFLS)))

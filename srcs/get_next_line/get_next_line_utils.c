@@ -6,12 +6,12 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 12:59:14 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 18:38:04 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 15:11:21 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-# include <stdlib.h>
+#include <stdlib.h>
 
 t_glst	*f_gnl_new(int fd)
 {
