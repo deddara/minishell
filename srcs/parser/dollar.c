@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:27:49 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 15:11:50 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 16:12:56 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,23 @@ supported\n")))
 	return (1);
 }
 
-static int		f_dollar_question(t_data *data, int *i)
+static int		f_dollar_question_or_zero(t_data *data, int *i)
 {
 	char		*num;
 
-	if (!(num = ft_itoa(data->errcode)))
-		return (1);
-	if (f_join_to_w(data, num))
-		return (1);
-	*i += ft_strlen(num);
-	data->last_saved = *i;
+	if (data->input[*i] == '?')
+	{
+		if (!(num = ft_itoa(data->errcode)) || f_join_to_w(data, num))
+			return (1);
+		(*i)++;
+		data->last_saved = *i;
+		free((num) ? num : NULL);
+	}
+	else
+	{
+		if (f_join_to_w(data, "minishell"))
+			return (1);
+	}
 	return (2);
 }
 
@@ -78,20 +85,14 @@ int				f_dollar_pars(t_data *data, int *i)
 	if (data->input[*i] == '$' && f_quote_status(data) != 1 \
 			&& !f_chk_shield(data, *i))
 	{
-		if (f_add_segment(data, *i))
+		if (f_dollar_pars_prepare(data, i, &k))
 			return (1);
-		(*i)++;
-		data->last_saved = *i;
-		k = *i;
-		while ((data->input[*i] && !ft_strchr(" \'\"\\$|?", data->input[*i])))
-			(*i)++;
-		k = *i - k;
 		if (k)
 			return (f_dollar_pars_name_exist(data, *i, k));
 		if (data->input[*i] == '$')
 			return (f_double_dollar_err(data));
-		else if (data->input[*i] == '?')
-			return (f_dollar_question(data, i));
+		else if (ft_strchr("0?", data->input[*i]))
+			return (f_dollar_question_or_zero(data, i));
 		else if (!data->input[*i] || !ft_strchr("\'\"", data->input[*i]) \
 					|| f_quote_status(data) == 2)
 			return (f_join_dollar_sym_to_w(data, i));
