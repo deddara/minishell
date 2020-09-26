@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 01:37:33 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 12:07:11 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int				f_chk_shield (t_data *data, int i)
 {
-	return ((i && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0);
+	return (((i > data->start) && data->input[i - 1] == '\\' && (data->slash % 2)) ? 1 : 0);
 }
 
 int				f_check_quotes(t_data *data, int i)
@@ -277,7 +277,7 @@ int				f_chk_shield_rev(t_data *data, int i)
 	int			k;
 
 	k = 0;
-	while ((i - 1 >= 0) && data->input[i-- - 1] == '\\')
+	while ((i - 1 >= data->start) && data->input[i-- - 1] == '\\')
 		k++;
 	if (k)
 		return ((k % 2) ? 1 : 0);
@@ -291,6 +291,8 @@ int				f_pars_input(t_data *data)
 	char		*ptr;
 
 	i = data->pos;
+	data->start = data->pos;
+	data->last_saved = data->pos;
 	while (data->input[i] && (data->input[i] != ';' || (data->input[i] == ';' \
 			&& ((f_quote_status(data) || f_chk_shield_rev(data, i))))))
 	{
@@ -299,9 +301,9 @@ int				f_pars_input(t_data *data)
 		i++;
 	}
 	f_clear_quotes_flags(data);
-	data->pars_complete = (!data->input[i]) ? 1 : 0;
+	data->pars_complete = (!data->input[i] || ((data->input[i] == ';') && !data->input[i + 1])) ? 1 : 0;
 	data->pos = i;
-	i = 0;
+	i = data->start;
 	free((data->inp_arr) ? data->inp_arr : NULL);
 	data->inp_arr = (char**)malloc(sizeof(char*) * 1);
 	data->inp_arr[0] = NULL;
@@ -332,7 +334,7 @@ int				f_pars_input(t_data *data)
 			return (1);
 		if (f_process_pars(data, &i))
 			return (1);
-		i++;
+		i += (data->input[i]) ? 1 : 0;
 		while (ft_isspace(data->input[i]))
 			i++;
 		data->last_saved = i;
