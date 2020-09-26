@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:27:49 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 16:22:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 16:45:51 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int		f_dollar_question_or_zero(t_data *data, int *i)
 	}
 	else
 	{
-		if (f_join_to_w(data, "minishell"))
+		if (f_join_to_w(data, data->minishell_argv[0]))
 			return (1);
 		(*i)++;
 		data->last_saved = *i;

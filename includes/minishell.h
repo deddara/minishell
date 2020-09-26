@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 15:44:01 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 16:43:42 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 typedef struct	s_data
 {
+	char		**minishell_argv;
 	char		**envp;
 	char		*input;
 	char		**inp_arr;

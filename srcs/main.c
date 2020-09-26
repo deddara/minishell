@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 14:12:39 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/26 16:45:01 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 #include <unistd.h>
 #include <errno.h>
 
-void			f_data_init(t_data *data)
+void			f_data_init(t_data *data, char **argv)
 {
+	data->minishell_argv = argv;
 	data->envp = NULL;
 	data->input = NULL;
 	data->inp_arr = NULL;
@@ -74,9 +75,8 @@ int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
 
-	(void)argv;
 	(void)argc;
-	f_data_init(&data);
+	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_exit(&data, 1, "malloc error\n"));
 	data.input = ft_strdup("start :)");
