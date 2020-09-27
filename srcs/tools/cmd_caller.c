@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include<stdio.h>
 #include "libft.h"
+#include "string.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 //static int	execute(t_command *cmd, t_command *prev, t_data *data)
@@ -59,7 +60,7 @@
 
 static int our_command(t_command *cmd)
 {
-    if (ft_strnstr(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
+    if (ft_strncmp(cmd->argv[0], "pwd", 3) == 0)
     {
         f_pwd(1);
         return (0);

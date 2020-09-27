@@ -97,7 +97,11 @@ int				main(int argc, char **argv, char **envp)
 				return (f_exit(&data, 1, data.errstr));
 			if (structer(&data, command))
 				continue;
-			command_handler(&data, command);
+			if (command_handler(&data, command))
+            {
+                clear_list(command);
+                continue;
+            }
 			cmd_caller(&data, command);
 			clear_list(command);
 		}
