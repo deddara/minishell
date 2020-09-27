@@ -61,17 +61,18 @@
 static int our_command(t_command *cmd, t_data *data)
 {
     if (!ft_strncmp(cmd->argv[0], "pwd", 3))
-    {
         f_pwd(1);
-        return (0);
-    }
-    if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
-    {
+    else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
         f_cd(cmd->argv[1], data);
-        return (0);
-    }
-
-    return (1);
+    else if (!ft_strncmp(cmd->argv[0], "echo", 4))
+        f_echo(cmd->argv[1], 1, 0);
+    else if (!ft_strncmp(cmd->argv[0], "env", 3))
+        f_env(1, data);
+    else if (!ft_strncmp(cmd->argv[0], "export", 6))
+        f_export(data, cmd->argv[1], 1);
+    else
+        return (1);
+    return (0);
 }
 
 static int execute_one(t_command *cmd, t_data *data)
