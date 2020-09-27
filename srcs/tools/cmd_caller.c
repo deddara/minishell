@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include<stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 static int	execute(t_command *cmd, t_command *prev, t_data *data)
 {
 	int pid;

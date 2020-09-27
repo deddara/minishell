@@ -43,7 +43,7 @@ static int check_existence(char *c_path)
     return (0);
 }
 
-static int find_command(char **path_data, char *command)
+static int find_command(char **path_data, t_command *command)
 {
     int     i;
     char    *tmp;
@@ -56,14 +56,20 @@ static int find_command(char **path_data, char *command)
         if (!(c_path = ft_strjoin(path_data[i], "/")))
             return (1);
         tmp = c_path;
-        if (!(c_path = ft_strjoin(c_path, command)))
+        if (!(c_path = ft_strjoin(c_path, command->argv[0])))
             return (1);
         free (tmp);
         if (!check_existence(c_path))
+        {
+            free(command->argv[0]);
+            command->argv[0] = ft_strdup(c_path);
+            free(c_path);
             return (0);
+        }
         i++;
+        free(c_path);
     }
-    ft_putstr_fd(command, 2);
+    ft_putstr_fd(command->argv[0], 2);
     ft_putstr_fd(": ", 2);
     ft_putstr_fd(strerror(errno), 2);
     ft_putchar_fd('\n', 2);
@@ -74,10 +80,8 @@ int    check_command(t_data *data, t_command *cmd)
 {
     char    *path_p;
     char    **path_data;
-    int     i;
 
 //    test_print(data);
-    i = 0;
     if (cmd->argv[0][0] == '/')
     {
         if (check_existence(cmd->argv[0]))
@@ -94,5 +98,5 @@ int    check_command(t_data *data, t_command *cmd)
         return (1);
     if (!(path_data = ft_split(path_p, ':')))
         return (errno);
-    return (find_command(path_data, cmd->argv[0]));
+    return (find_command(path_data, cmd));
 }
