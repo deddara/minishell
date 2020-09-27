@@ -60,7 +60,7 @@
 
 static int our_command(t_command *cmd)
 {
-    if (ft_strncmp(cmd->argv[0], "pwd", 3) == 0)
+    if (!ft_strncmp(cmd->argv[0], "pwd", 3))
     {
         f_pwd(1);
         return (0);
