@@ -61,6 +61,11 @@ static int find_command(char **path_data, t_command *command)
         free (tmp);
         if (!check_existence(c_path))
         {
+            if (ft_strncmp(command->argv[0], "pwd", 3) == 0 || ft_strncmp(command->argv[0], "echo", 3) == 0)
+            {
+                free(c_path);
+                return (0);
+            }
             free(command->argv[0]);
             command->argv[0] = ft_strdup(c_path);
             free(c_path);

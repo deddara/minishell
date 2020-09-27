@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include<stdio.h>
+#include "libft.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 //static int	execute(t_command *cmd, t_command *prev, t_data *data)
@@ -56,11 +57,24 @@
 //	return (0);
 //}
 
+static int our_command(t_command *cmd)
+{
+    if (ft_strnstr(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
+    {
+        f_pwd(1);
+        return (0);
+    }
+
+    return (1);
+}
+
 static int execute_one(t_command *cmd, t_data *data)
 {
     pid_t   pid;
     int     status;
 
+    if (!our_command(cmd))
+        return (0);
     if ((pid = fork()) < 0)
         return (1);
     if (pid == 0)
