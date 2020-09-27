@@ -75,12 +75,12 @@ static int find_command(char **path_data, t_command *command)
         i++;
         free(c_path);
     }
-    if ((!ft_strncmp(command->argv[0], "cd", 2) && !command->argv[0][3]) ||
-    (!ft_strncmp(command->argv[0], "exit", 4) && !command->argv[0][5]) ||
-    (!ft_strncmp(command->argv[0], "export", 6) && !command->argv[0][7]))
+    if ((!ft_strncmp(command->argv[0], "cd", 2) && ft_strlen(command->argv[0]) == 2) ||
+    (!ft_strncmp(command->argv[0], "exit", 4) && ft_strlen(command->argv[0]) == 4) ||
+    (!ft_strncmp(command->argv[0], "export", 6) && ft_strlen(command->argv[0]) == 6))
         return (0);
     ft_putstr_fd(command->argv[0], 2);
-    ft_putstr_fd(": ", 2);
+    ft_putstr_fd(":s ", 2);
     ft_putstr_fd(strerror(errno), 2);
     ft_putchar_fd('\n', 2);
     return (errno);

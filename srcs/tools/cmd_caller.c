@@ -58,11 +58,16 @@
 //	return (0);
 //}
 
-static int our_command(t_command *cmd)
+static int our_command(t_command *cmd, t_data *data)
 {
     if (!ft_strncmp(cmd->argv[0], "pwd", 3))
     {
         f_pwd(1);
+        return (0);
+    }
+    if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
+    {
+        f_cd(cmd->argv[1], data);
         return (0);
     }
 
@@ -74,7 +79,7 @@ static int execute_one(t_command *cmd, t_data *data)
     pid_t   pid;
     int     status;
 
-    if (!our_command(cmd))
+    if (!our_command(cmd, data))
         return (0);
     if ((pid = fork()) < 0)
         return (1);
@@ -128,6 +133,7 @@ int			cmd_caller(t_data *data, t_command *cmd)
 	    return (execute_one(cmd, data));
 	while (cmd)
 	{
+	    data->counter++;
 		if (execute(cmd, data))
 			return (0);
 		cmd = cmd->next;
