@@ -77,7 +77,8 @@ static int find_command(char **path_data, t_command *command)
     }
     if ((!ft_strncmp(command->argv[0], "cd", 2) && ft_strlen(command->argv[0]) == 2) ||
     (!ft_strncmp(command->argv[0], "exit", 4) && ft_strlen(command->argv[0]) == 4) ||
-    (!ft_strncmp(command->argv[0], "export", 6) && ft_strlen(command->argv[0]) == 6))
+    (!ft_strncmp(command->argv[0], "export", 6) && ft_strlen(command->argv[0]) == 6) ||
+    (!ft_strncmp(command->argv[0], "unset", 5) && ft_strlen(command->argv[0]) == 5))
         return (0);
     ft_putstr_fd(command->argv[0], 2);
     ft_putstr_fd(":s ", 2);
