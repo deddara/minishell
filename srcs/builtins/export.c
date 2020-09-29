@@ -89,6 +89,13 @@ static int	add_var(t_data *data, char **argv)
 		return (1);
 	while (argv[i])
 	{
+		if (ft_strchr(argv[i], ' '))
+		{
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(argv[i], 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			return (1);
+		}
 		if (!(data->envp = f_strarr_add_elem(data->envp, argv[i])))
 			return (1);
 		i++;
