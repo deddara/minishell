@@ -31,7 +31,7 @@ static int our_command(t_command *cmd, t_data *data)
 	else if (!ft_strncmp(cmd->argv[0], "env", 3))
 		f_env(1, data);
 	else if (!ft_strncmp(cmd->argv[0], "export", 6))
-		f_export(data, cmd->argv[1], 1);
+		f_export(data, &cmd->argv[1], 1);
 	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
 		f_unset(data, &cmd->argv[1]);
 	else

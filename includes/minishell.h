@@ -52,7 +52,7 @@ void			f_pwd(int fd);
 int		        f_unset(t_data *data, char **argv);
 void			f_env(int fd, t_data *data);
 void			f_echo(char **argv, int fd);
-int			    f_export(t_data *data, char *str, int fd);
+int			    f_export(t_data *data, char **argv, int fd);
 int				f_pars_input(t_data *data);
 int				structer(t_data *data, t_command *cmd);
 void			clear_list(t_command *cmd);

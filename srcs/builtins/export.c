@@ -80,32 +80,29 @@ int			check_for_equal(char **words)
 	return (0);
 }
 
-static int	add_var(t_data *data, char *str)
+static int	add_var(t_data *data, char **argv)
 {
-	char	**words;
-	int		i;
+	int i;
 
 	i = 0;
-	if (!(words = ft_split(str, ' ')))
+	if (check_for_equal(argv))
 		return (1);
-	if (check_for_equal(words))
-		return (1);
-	while (words[i])
+	while (argv[i])
 	{
-		if (!(data->envp = f_strarr_add_elem(data->envp, words[i])))
+		if (!(data->envp = f_strarr_add_elem(data->envp, argv[i])))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int			f_export(t_data *data, char *str, int fd)
+int			f_export(t_data *data, char **argv, int fd)
 {
 	char	**sorted_env;
 	int		i;
 
 	i = 0;
-	if (!str)
+	if (!argv[i])
 	{
 		sorted_env = f_strarr_dup(data->envp);
 		sort_list(sorted_env);
@@ -118,7 +115,7 @@ int			f_export(t_data *data, char *str, int fd)
 	}
 	else
 	{
-		if ((add_var(data, str)))
+		if ((add_var(data, argv)))
 			return (1);
 	}
 	return (0);
