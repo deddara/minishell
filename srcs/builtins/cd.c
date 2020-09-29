@@ -16,48 +16,38 @@
 #include <string.h>
 #include <unistd.h>
 
-static void	change_pwd(char *pwd, t_data *data)
+static void old_pwd(t_data *data)
 {
-	char	*old_pwd;
-	char	*new_pwd;
+	char	*old_p;
 	char 	*tmp;
-	int		flag;
 
-	flag = -1;
-	if (!(old_pwd = f_env_find_elem(data->envp, "PWD", "=")))
-		flag = 1;
-	old_pwd = ft_strdup(old_pwd);
+	if (!(old_p = getcwd(NULL, 0)))
+		return ;
 	if (!f_env_find_elem(data->envp, "OLDPWD", "="))
-		flag++;
-	data->envp = f_strarr_rem_elem(data->envp, "PWD", "=");
+		return ;
 	data->envp = f_strarr_rem_elem(data->envp, "OLDPWD", "=");
-	if (flag == 2)
-		return;
-	else if (flag == 1)
-	{
-		tmp = old_pwd;
-		old_pwd = ft_strjoin("OLDPWD=", old_pwd);
-		data->envp = f_strarr_add_elem(data->envp, old_pwd);
-		free(tmp);
-		free (old_pwd);
-	}
-	else if (flag == 0)
-	{
-		new_pwd = ft_strjoin("PWD=", pwd);
-		data->envp = f_strarr_add_elem(data->envp, new_pwd);
-		free(new_pwd);
-	}
-	else if (flag == -1)
-	{
-		tmp = old_pwd;
-		old_pwd = ft_strjoin("OLDPWD=", old_pwd);
-		data->envp = f_strarr_add_elem(data->envp, old_pwd);
-		free (old_pwd);
-		free (tmp);
-		new_pwd = ft_strjoin("PWD=", pwd);
-		data->envp = f_strarr_add_elem(data->envp, new_pwd);
-		free(new_pwd);
-	}
+	tmp = old_p;
+	old_p = ft_strjoin("OLDPWD=", old_p);
+	data->envp = f_strarr_add_elem(data->envp, old_p);
+	free(tmp);
+	free(old_p);
+}
+
+static void new_pwd(t_data *data)
+{
+	char *new_p;
+	char *tmp;
+
+	if (!(new_p = getcwd(NULL, 0)))
+		return ;
+	if (!f_env_find_elem(data->envp, "PWD", "="))
+		return ;
+	data->envp = f_strarr_rem_elem(data->envp, "PWD", "=");
+	tmp = new_p;
+	new_p = ft_strjoin("PWD=", new_p);
+	data->envp = f_strarr_add_elem(data->envp, new_p);
+	free(tmp);
+	free(new_p);
 }
 
 static int	path_error(char *path)
@@ -102,18 +92,20 @@ static int	tilda_handle(char *path, t_data *data)
 
 	if (!(home = f_env_find_elem(data->envp, "HOME", "=")))
 	{
+		old_pwd(data);
 		if (chdir(&path[1]) == -1)
 			return (path_error(path));
-		change_pwd(path, data);
+		new_pwd(data);
 		return (0);
 	}
 	if (!(new_path = ft_strdup(home)))
 		return (1);
 	if (!(new_path = ft_strjoin(new_path, &path[1])))
 		return (1);
+	old_pwd(data);
 	if (chdir(new_path) == -1)
 		return (path_error(new_path));
-	change_pwd(new_path, data);
+	new_pwd(data);
 	free(new_path);
 	return (0);
 }
@@ -129,17 +121,17 @@ int			f_cd(char *path, t_data *data)
 			ft_putstr_fd("cd: HOME not set\n", 2);
 			return (errno);
 		}
+		old_pwd(data);
 		if (chdir(home) == -1)
 			return (path_error(home));
-		change_pwd(home, data);
+		new_pwd(data);
 		return (0);
 	}
 	else if (path[0] == '~')
 		return (tilda_handle(path, data));
+	old_pwd(data);
 	if (chdir(path) == -1)
-	{
 		return (path_error(path));
-	}
-	change_pwd(path, data);
+	new_pwd(data);
 	return (0);
 }
