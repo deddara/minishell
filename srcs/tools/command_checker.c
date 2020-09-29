@@ -62,7 +62,8 @@ static int find_command(char **path_data, t_command *command)
         if (!check_existence(c_path))
         {
             if (!ft_strncmp(command->argv[0], "pwd", 3) \
-            || !ft_strncmp(command->argv[0], "echo", 4) || !ft_strncmp(command->argv[0], "env", 3))
+            || !ft_strncmp(command->argv[0], "echo", 4) || !ft_strncmp(command->argv[0], "env", 3) ||
+            !ft_strncmp(command->argv[0], "cd", 2))
             {
                 free(c_path);
                 return (0);
