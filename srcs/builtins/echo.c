@@ -13,9 +13,30 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	f_echo(char *str, int fd, int n)
+void	f_echo(char **argv, int fd)
 {
-	ft_putstr_fd(str, fd);
+	int	i;
+	int	n;
+
+	n = 0;
+	i = 0;
+	if (!argv[i])
+	{
+		ft_putchar_fd('\n', 1);
+		return ;
+	}
+	if (!ft_strncmp(argv[i], "-n", 3))
+	{
+		n = 1;
+		i++;
+	}
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], fd);
+		if (argv[i + 1])
+			ft_putchar_fd(' ', fd);
+		i++;
+	}
 	if (!n)
-	ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', 1);
 }
