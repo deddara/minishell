@@ -30,6 +30,7 @@ t_command	*create_command_lst(void)
 		return (NULL);
 	tmp->pipe = 0;
 	tmp->redirect = 0;
+	tmp->file = 0;
 	tmp->argv = malloc(sizeof(char) * 2);
 	tmp->argv[0] = 0;
 	tmp->argv[1] = 0;
@@ -90,6 +91,7 @@ static int			redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
 	*(cmd_tmp) = (*cmd_tmp)->next;
+	(*cmd_tmp)->file = 1;
 	return (0);
 }
 

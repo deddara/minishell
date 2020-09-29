@@ -11,7 +11,12 @@ int	command_handler(t_data *data, t_command *cmd)
 
 	while (tmp)
 	{
-		if(check_command(data, tmp))
+		if (tmp->file)
+		{
+			tmp = tmp->next;
+			continue;
+		}
+		if (check_command(data, tmp))
 			return (1);
 		tmp = tmp->next;
 	}

@@ -6,6 +6,7 @@ typedef struct			s_command
 	char 				**argv;
 	int 				pipe;
 	int 				redirect;
+	int 				file;
 	struct s_command	*next;
 }						t_command;
 
