@@ -49,7 +49,7 @@ int				test_strarr(t_data *data);
 int				f_cd(char *path, t_data *data);
 char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 void			f_pwd(int fd);
-int		        f_unset(t_data *data, char *str);
+int		        f_unset(t_data *data, char **argv);
 void			f_env(int fd, t_data *data);
 void			f_echo(char **argv, int fd);
 int			    f_export(t_data *data, char *str, int fd);

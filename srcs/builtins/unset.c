@@ -13,17 +13,14 @@
 #include "minishell.h"
 #include "libft.h"
 
-int		f_unset(t_data *data, char *str)
+int		f_unset(t_data *data, char **argv)
 {
-	char	**args;
 	int		i;
 
 	i = 0;
-	if (!(args = ft_split(str, ' ')))
-		return (f_exit(data, 1, "malloc error\n"));
-	while (args[i])
+	while (argv[i])
 	{
-		if (!(data->envp = f_strarr_rem_elem(data->envp, args[i], "=")))
+		if (!(data->envp = f_strarr_rem_elem(data->envp, argv[i], "=")))
 			return (f_exit(data, 1, "malloc error\n"));
 		i++;
 	}
