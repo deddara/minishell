@@ -97,8 +97,6 @@ static int			struct_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	int err_code;
 
-	if ((err_code = valid_check(data, i)))
-		return (err_code);
 	if (data->inp_arr[i][0] == '|')
 	{
 		if (pipe_handler(data, cmd_tmp, i))
@@ -157,6 +155,8 @@ int					structer(t_data *data, t_command *cmd)
 		return (1);
 	while (data->inp_arr[i])
 	{
+		if ((err_code = valid_check(data, i)))
+			return (err_code);
 		if (data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '>' \
 		|| data->inp_arr[i][0] == '<')
 		{
