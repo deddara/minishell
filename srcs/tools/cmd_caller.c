@@ -43,6 +43,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
 	int		status;
+	int 	fd;
 
 	if (!our_command(cmd, data))
 		return (0);
