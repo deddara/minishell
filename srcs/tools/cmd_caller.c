@@ -17,6 +17,7 @@
 #include<stdio.h>
 #include "libft.h"
 #include "string.h"
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -39,11 +40,32 @@ static int our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
+static int check_fd(t_command *cmd, t_data *data)
+{
+	if (cmd->redirect == 1)
+	{
+		while (cmd)
+		{
+			if ((data->fd_f = open(cmd->next->argv[0], O_RDWR | O_CREAT, 0755)) < 0)
+				return (1);
+			if (cmd->next->redirect)
+			{
+				cmd = cmd->next;
+				continue ;
+			}
+			dup2(data->fd_f, 1);
+			close(data->fd_f);
+			return (0);
+		}
+	}
+	return (0);
+}
+
 static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
 	int		status;
-	int 	fd;
+
 
 	if (!our_command(cmd, data))
 		return (0);
@@ -51,6 +73,8 @@ static int		execute_one(t_command *cmd, t_data *data)
 		return (1);
 	if (pid == 0)
 	{
+		if ((check_fd(cmd, data)))
+			return (1);
 		execve(cmd->argv[0], cmd->argv, data->envp);
 	}
 	waitpid(pid, &status, 0);
