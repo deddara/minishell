@@ -64,8 +64,8 @@ static int			valid_check(t_data *data, int i)
 		write(2, "undefined behavior: multiple lines\n", 35);
 		return (1);
 	}
-	if ((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>')\
-				&& !data->inp_arr[i + 1])
+	if (((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>')\
+	&& !data->inp_arr[i + 1]) || (data->inp_arr[0][0] == '<' || data->inp_arr[0][0] == '>'))
 	{
 		write(2, "syntax error near unexpected token `newline'\n", 45);
 		return (1);
