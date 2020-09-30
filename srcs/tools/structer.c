@@ -31,6 +31,7 @@ t_command	*create_command_lst(void)
 	tmp->pipe = 0;
 	tmp->redirect = 0;
 	tmp->file = 0;
+	tmp->flag = 0;
 	tmp->argv = malloc(sizeof(char) * 2);
 	tmp->argv[0] = 0;
 	tmp->argv[1] = 0;
@@ -49,6 +50,12 @@ static int			pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 	(*cmd_tmp)->pipe = 1;
 	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
+	if ((*cmd_tmp)->redirect)
+	{
+		(*cmd_tmp) = (*cmd_tmp)->next;
+		(*cmd_tmp)->file = 1;
+		return (0);
+	}
 	(*cmd_tmp) = (*cmd_tmp)->next;
 	return (0);
 }
@@ -145,6 +152,23 @@ static int			count_symbols(t_data *data, int i, char symb)
 	return (0);
 }
 
+static int check_for_redir(t_command *cmd)
+{
+	t_command *cmd_tmp;
+
+	cmd_tmp = cmd;
+	while (cmd_tmp)
+	{
+		if (cmd_tmp->redirect && cmd_tmp->pipe &&!cmd_tmp->flag)
+		{
+			cmd_tmp->flag = 1;
+			return (1);
+		}
+		cmd_tmp = cmd_tmp->next;
+	}
+	return (0);
+}
+
 int					structer(t_data *data, t_command *cmd)
 {
 	int			i;
@@ -157,6 +181,11 @@ int					structer(t_data *data, t_command *cmd)
 		return (1);
 	while (data->inp_arr[i])
 	{
+		if (check_for_redir(cmd))
+		{
+			i++;
+			continue;
+		}
 		if ((err_code = valid_check(data, i)))
 			return (err_code);
 		if (data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '>' \

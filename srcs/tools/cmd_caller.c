@@ -57,8 +57,6 @@ static void write_in_file(t_command *command)
 
 static int our_command(t_command *cmd, t_data *data)
 {
-	if ((check_fd(cmd, data)))
-		return (1);
 	if (cmd->redirect)
 		write_in_file(cmd);
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
@@ -89,12 +87,12 @@ static int		execute_one(t_command *cmd, t_data *data)
 		return (1);
 	if (pid == 0)
 	{
+		if ((check_fd(cmd, data)))
+			return (1);
 		if (!our_command(cmd, data))
 		{
 			exit(0);
 		}
-		if ((check_fd(cmd, data)))
-			return (1);
 		execve(cmd->argv[0], cmd->argv, data->envp);
 		exit (0);
 	}

@@ -7,6 +7,7 @@ typedef struct			s_command
 	int 				pipe;
 	int 				redirect;
 	int 				file;
+	int 				flag;
 	struct s_command	*next;
 }						t_command;
 
