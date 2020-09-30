@@ -6,7 +6,7 @@
 #    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/26 15:45:10 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/30 16:17:04 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,18 +28,17 @@ FLSDIR_1	= ./
 FLS_1		= $(addprefix $(FLSDIR_1), \
 				main )
 
-FLSDIR_2	= get_next_line/
+FLSDIR_2	= tools/
 FLS_2		= $(addprefix $(FLSDIR_2), \
-				get_next_line \
-				get_next_line_utils )
+				cmd_caller \
+				coammand_handler \
+				command_checker \
+				readline \
+				strarr \
+				structer )
 
-FLSDIR_3	= tools/
+FLSDIR_3	= parser/
 FLS_3		= $(addprefix $(FLSDIR_3), \
-				strarr coammand_handler command_checker \
-				 structer cmd_caller)
-
-FLSDIR_4	= parser/
-FLS_4		= $(addprefix $(FLSDIR_4), \
 				checks \
 				dollar \
 				dollar_pars_prepare \
@@ -47,8 +46,8 @@ FLS_4		= $(addprefix $(FLSDIR_4), \
 				quotes \
 				slash_n_process )
 
-FLSDIR_5	= builtins/
-FLS_5		= $(addprefix $(FLSDIR_5), \
+FLSDIR_4	= builtins/
+FLS_4		= $(addprefix $(FLSDIR_4), \
 				cd \
 				echo \
 				env \
@@ -56,7 +55,7 @@ FLS_5		= $(addprefix $(FLSDIR_5), \
 				pwd \
 				unset )
 
-SRC	= $(FLS_1) $(FLS_2) $(FLS_3) $(FLS_4) $(FLS_5)
+SRC	= $(FLS_1) $(FLS_2) $(FLS_3) $(FLS_4)
 
 OBJ	= $(addprefix $(OBJDIR), $(SRC:=.o))
 DFLS	= $(SRC:=.d)
@@ -70,8 +69,8 @@ $(NAME):	$(LIBFT) $(OBJ)
 
 $(OBJ):		$(OBJDIR)%.o: $(SRCDIR)%.c
 	mkdir -p	$(OBJDIR) $(addprefix $(OBJDIR), $(FLSDIR_1) $(FLSDIR_2) \
-			$(FLSDIR_3) $(FLSDIR_4) $(FLSDIR_5))
-	$(CC)		$(FLAGS) -D BUFFER_SIZE=32 $(INCLUDES) -c $< -o $@ -MMD
+			$(FLSDIR_3) $(FLSDIR_4))
+	$(CC)		$(FLAGS) $(INCLUDES) -c $< -o $@ -MMD
 
 include $(wildcard $(addprefix $(OBJDIR), $(DFLS)))
 

@@ -6,13 +6,12 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 16:45:01 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/30 16:19:37 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include "get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
@@ -68,7 +67,7 @@ void			f_clear_input_data(t_data *data)
 	data->qt2_c = 0;
 	data->pars_complete = 0;
 	data->last_saved = 0;
-	data->errcode = 127;
+	data->errcode = 0;
 	data->slash = 0;
 }
 
@@ -88,7 +87,8 @@ int				main(int argc, char **argv, char **envp)
 		ft_putstr_fd("minishell$ ", 1);
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
-		get_next_line(0, &data.input);
+		if (f_readline(&data.input))
+			return (f_exit(&data, 0, ""));
 		while (!data.pars_complete)
 		{
 			if (!(command = create_command_lst()))
@@ -98,10 +98,10 @@ int				main(int argc, char **argv, char **envp)
 			if (structer(&data, command))
 				continue;
 			if (command_handler(&data, command))
-            {
-                clear_list(command);
-                continue;
-            }
+			{
+				clear_list(command);
+				continue;
+			}
 			cmd_caller(&data, command);
 			clear_list(command);
 		}
@@ -109,9 +109,3 @@ int				main(int argc, char **argv, char **envp)
 	}
 	return (f_exit(&data, 0, ""));
 }
-
-//	while (data.inp_arr[i])
-//	{
-//		ft_putstr_fd(data.inp_arr[i++], 1);
-//		ft_putchar_fd('\n', 1);
-//	}

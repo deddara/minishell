@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/22 22:27:10 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/30 16:02:03 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int				f_process_pars(t_data *data, int *i);
 int				f_dollar_pars(t_data *data, int *i);
 int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
 int				cmd_caller(t_data *data, t_command *cmd);
+int				f_readline(char **input);
 
 #endif
