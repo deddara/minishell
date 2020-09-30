@@ -106,12 +106,30 @@ static void write_in_file(t_command *command)
 	}
 }
 
+static int	is_our_command(t_command *cmd, t_data *data)
+{
+	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
+		return (0);
+	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 3))
+		return (0);
+	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
+		return (0);
+	else if (!ft_strncmp(cmd->argv[0], "env", 3))
+		return (0);
+	else if (!ft_strncmp(cmd->argv[0], "export", 6))
+		return (0);
+	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
+		return (0);
+	else
+		return (1);
+}
+
 static int our_command(t_command *cmd, t_data *data)
 {
-	if (cmd->redirect)
-		write_in_file(cmd);
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
 		f_pwd(1);
+	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 3))
+		f_cd(cmd->argv[1], data);
 	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
 		f_echo(&cmd->argv[1], 1);
 	else if (!ft_strncmp(cmd->argv[0], "env", 3))
@@ -132,19 +150,35 @@ static int		execute_one(t_command *cmd, t_data *data)
 	pid_t	pid;
 	int		status;
 
-	if (!ft_strncmp(cmd->argv[0], "cd", 3))
+	if (cmd->redirect)
 	{
-		f_cd(cmd->argv[1], data);
+		if ((pid = fork()) < 0)
+			return (1);
+		if (pid == 0)
+		{
+			if ((check_fd(cmd, data)))
+				exit (errno);
+			if (cmd->redirect)
+				write_in_file(cmd);
+			if (cmd->redirect && cmd->flag2 == 2)
+				exit(0);
+			if (!our_command(cmd, data))
+				exit(0);
+			execve(cmd->argv[0], cmd->argv, data->envp);
+			exit (0);
+		}
+		waitpid(pid, &status, 0);
+		return (0);
+	}
+	else if (!is_our_command(cmd, data))
+	{
+		our_command(cmd, data);
 		return (0);
 	}
 	if ((pid = fork()) < 0)
 		return (1);
 	if (pid == 0)
 	{
-		if ((check_fd(cmd, data)))
-			exit (errno);
-		if (cmd->redirect && cmd->flag2 == 2)
-			exit(0);
 		if (!our_command(cmd, data))
 			exit(0);
 		execve(cmd->argv[0], cmd->argv, data->envp);
