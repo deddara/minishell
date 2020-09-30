@@ -42,16 +42,31 @@ static int check_fd(t_command *cmd, t_data *data)
 	return (0);
 }
 
+static void write_in_file(t_command *command)
+{
+	int i;
+
+	i = 1;
+	while (command->next->argv[i])
+	{
+		if (!(command->argv = f_strarr_add_elem(command->argv, command->next->argv[i])))
+			return ;
+		i++;
+	}
+}
+
 static int our_command(t_command *cmd, t_data *data)
 {
 	if ((check_fd(cmd, data)))
 		return (1);
+	if (cmd->redirect)
+		write_in_file(cmd);
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
-		f_pwd(1, cmd);
+		f_pwd(1);
 	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
 		f_cd(cmd->argv[1], data);
 	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
-		f_echo(&cmd->argv[1], 1, cmd);
+		f_echo(&cmd->argv[1], 1);
 	else if (!ft_strncmp(cmd->argv[0], "env", 3))
 		f_env(1, data);
 	else if (!ft_strncmp(cmd->argv[0], "export", 6))
@@ -63,20 +78,7 @@ static int our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
-static void write_in_file(t_command *command)
-{
-	int i;
 
-	i = 1;
-	while (command->next->argv[i])
-	{
-		ft_putstr_fd(command->next->argv[i], 1);
-		if (command->next->argv[i + 1])
-			ft_putchar_fd(' ', 1);
-		i++;
-	}
-	ft_putchar_fd('\n', 1);
-}
 
 static int		execute_one(t_command *cmd, t_data *data)
 {
@@ -89,13 +91,12 @@ static int		execute_one(t_command *cmd, t_data *data)
 	{
 		if (!our_command(cmd, data))
 		{
-			if (cmd->redirect)
-				write_in_file(cmd);
 			exit(0);
 		}
 		if ((check_fd(cmd, data)))
 			return (1);
 		execve(cmd->argv[0], cmd->argv, data->envp);
+		exit (0);
 	}
 	waitpid(pid, &status, 0);
 	return (0);
