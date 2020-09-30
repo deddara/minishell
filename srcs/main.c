@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 16:19:37 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/30 18:55:07 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void			f_data_init(t_data *data, char **argv)
 	data->errstr = NULL;
 	data->errcode = 0;
 	data->slash = 0;
+	data->sig = 0;
 }
 
-int				f_exit(t_data *data, int exitcode, char *exitstr)
+int				f_quit(t_data *data, int exitcode, char *exitstr)
 {
 	data->envp = f_strarr_free(data->envp);
 	data->inp_arr = f_strarr_free(data->inp_arr);
@@ -81,21 +82,21 @@ int				main(int argc, char **argv, char **envp)
 	(void)argc;
 	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))
-		return (f_exit(&data, 1, "malloc error\n"));
+		return (f_quit(&data, 1, "malloc error\n"));
 	data.input = ft_strdup("start :)");
-	while (ft_strncmp("exit", data.input, ft_strlen("exit")))
+	while (1)
 	{
 		ft_putstr_fd("minishell$ ", 1);
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
 		if (f_readline(&data.input))
-			return (f_exit(&data, 0, ""));
+			return (f_quit(&data, 0, ""));
 		while (!data.pars_complete)
 		{
 			if (!(command = create_command_lst()))
 				return (1);
 			if (f_pars_input(&data))
-				return (f_exit(&data, 1, data.errstr));
+				return (f_quit(&data, 1, data.errstr));
 			if (structer(&data, command))
 				continue;
 			if (command_handler(&data, command))
@@ -108,5 +109,5 @@ int				main(int argc, char **argv, char **envp)
 		}
 		f_clear_input_data(&data);
 	}
-	return (f_exit(&data, 0, ""));
+	return (f_quit(&data, 0, ""));
 }
