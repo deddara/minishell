@@ -21,25 +21,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int our_command(t_command *cmd, t_data *data)
-{
-	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
-		f_pwd(1);
-	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
-		f_cd(cmd->argv[1], data);
-	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
-		f_echo(&cmd->argv[1], 1);
-	else if (!ft_strncmp(cmd->argv[0], "env", 3))
-		f_env(1, data);
-	else if (!ft_strncmp(cmd->argv[0], "export", 6))
-		f_export(data, &cmd->argv[1], 1);
-	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
-		f_unset(data, &cmd->argv[1]);
-	else
-		return (1);
-	return (0);
-}
-
 static int check_fd(t_command *cmd, t_data *data)
 {
 	if (cmd->redirect == 1)
@@ -61,18 +42,43 @@ static int check_fd(t_command *cmd, t_data *data)
 	return (0);
 }
 
+static int our_command(t_command *cmd, t_data *data)
+{
+	if ((check_fd(cmd, data)))
+		return (1);
+	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
+		f_pwd(1);
+	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
+		f_cd(cmd->argv[1], data);
+	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
+		f_echo(&cmd->argv[1], 1);
+	else if (!ft_strncmp(cmd->argv[0], "env", 3))
+		f_env(1, data);
+	else if (!ft_strncmp(cmd->argv[0], "export", 6))
+		f_export(data, &cmd->argv[1], 1);
+	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
+		f_unset(data, &cmd->argv[1]);
+	else
+		return (1);
+	return (0);
+}
+
+
+
 static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
 	int		status;
 
 
-	if (!our_command(cmd, data))
-		return (0);
 	if ((pid = fork()) < 0)
 		return (1);
 	if (pid == 0)
 	{
+		if (!our_command(cmd, data))
+		{
+			exit (0);
+		}
 		if ((check_fd(cmd, data)))
 			return (1);
 		execve(cmd->argv[0], cmd->argv, data->envp);
