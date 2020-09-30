@@ -143,7 +143,7 @@ static int			count_symbols(t_data *data, int i, char symb)
 	if (symb == '>' && j > 2)
 	{
 		write(2, "syntax error near unexpected token ", 35);
-		j > 3 ? write(2, "`>'\n", 4) : write(2, "`>>'\n", 4);
+		j > 3 ? write(2, "`>'\n", 4) : write(2, "`>>'\n", 5);
 		return (258);
 	}
 	if (j > 1)

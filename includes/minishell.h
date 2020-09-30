@@ -38,6 +38,7 @@ typedef struct	s_data
 	int 		fd[2];
 	int 		fd_f;
 	int 		fd_in;
+	int 		cd;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);

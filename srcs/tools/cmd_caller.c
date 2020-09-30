@@ -112,7 +112,7 @@ static int our_command(t_command *cmd, t_data *data)
 		write_in_file(cmd);
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
 		f_pwd(1);
-	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 2))
+	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 3))
 		f_cd(cmd->argv[1], data);
 	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
 		f_echo(&cmd->argv[1], 1);
@@ -134,6 +134,11 @@ static int		execute_one(t_command *cmd, t_data *data)
 	pid_t	pid;
 	int		status;
 
+	if (!ft_strncmp(cmd->argv[0], "cd", 3))
+	{
+		f_cd(cmd->argv[1], data);
+		return (0);
+	}
 	if ((pid = fork()) < 0)
 		return (1);
 	if (pid == 0)

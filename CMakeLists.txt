@@ -7,7 +7,6 @@ include_directories(includes)
 include_directories(libft/includes)
 
 add_executable(minishell
-        includes/get_next_line.h
         includes/minishell.h
         libft/includes/libft.h
         libft/srcs/lists/ft_lstadd_back.c
@@ -55,8 +54,6 @@ add_executable(minishell
         libft/srcs/symbols/ft_isspace.c
         libft/srcs/symbols/ft_tolower.c
         libft/srcs/symbols/ft_toupper.c
-        srcs/get_next_line/get_next_line.c
-        srcs/get_next_line/get_next_line_utils.c
         srcs/tests/test_strarr.c
         srcs/builtins/cd.c
         srcs/builtins/echo.c
@@ -74,5 +71,6 @@ add_executable(minishell
         srcs/tools/command_checker.c
         srcs/tools/structer.c
         srcs/tools/cmd_caller.c
+        srcs/tools/readline.c
         srcs/builtins/unset.c
         srcs/main.c)

@@ -29,6 +29,7 @@ void			f_data_init(t_data *data, char **argv)
 	data->qt1_c = 0;
 	data->qt2_o = 0;
 	data->qt2_c = 0;
+	data->cd = 0;
 	data->pars_complete = 0;
 	data->w = NULL;
 	data->last_saved = 0;
