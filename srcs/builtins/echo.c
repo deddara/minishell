@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	f_echo(char **argv, int fd)
+void	f_echo(char **argv, int fd, t_command *cmd)
 {
 	int	i;
 	int	n;
@@ -37,6 +37,8 @@ void	f_echo(char **argv, int fd)
 			ft_putchar_fd(' ', fd);
 		i++;
 	}
-	if (!n)
+	if (cmd->redirect)
+		ft_putchar_fd(' ', 1);
+	else if (!n)
 		ft_putchar_fd('\n', 1);
 }

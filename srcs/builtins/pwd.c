@@ -14,12 +14,15 @@
 #include "libft.h"
 #include <unistd.h>
 
-void f_pwd(int fd)
+void f_pwd(int fd, t_command *cmd)
 {
 	char *dir;
 
 	if (!(dir = getcwd(NULL, 0)))
 		return ;
 	ft_putstr_fd(dir, fd);
-	ft_putchar_fd('\n', fd);
+	if (cmd->redirect)
+		ft_putchar_fd(' ', fd);
+	else
+		ft_putchar_fd('\n', fd);
 }
