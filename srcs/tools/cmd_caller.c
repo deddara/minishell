@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:41:13 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/29 14:41:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/09/30 19:11:28 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ static int	is_our_command(t_command *cmd, t_data *data)
 		return (0);
 	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
 		return (0);
+	else if (!ft_strncmp(cmd->argv[0], "exit", 4))
+		return (0);
 	else
 		return (1);
 }
@@ -138,6 +140,8 @@ static int our_command(t_command *cmd, t_data *data)
 		f_export(data, &cmd->argv[1], 1);
 	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
 		f_unset(data, &cmd->argv[1]);
+	else if (!ft_strncmp(cmd->argv[0], "exit", 4))
+		f_exit(data, &cmd->argv[0]);
 	else
 		return (1);
 	return (0);
