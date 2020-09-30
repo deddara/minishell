@@ -139,15 +139,11 @@ static int		execute_one(t_command *cmd, t_data *data)
 	if (pid == 0)
 	{
 		if ((check_fd(cmd, data)))
-		{
 			exit (errno);
-		}
 		if (cmd->redirect && cmd->flag2 == 2)
 			exit(0);
 		if (!our_command(cmd, data))
-		{
 			exit(0);
-		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
 		exit (0);
 	}
