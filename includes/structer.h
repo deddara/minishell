@@ -8,6 +8,7 @@ typedef struct			s_command
 	int 				redirect;
 	int 				file;
 	int 				flag;
+	int 				flag2;
 	struct s_command	*next;
 }						t_command;
 

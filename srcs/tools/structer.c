@@ -32,6 +32,7 @@ t_command	*create_command_lst(void)
 	tmp->redirect = 0;
 	tmp->file = 0;
 	tmp->flag = 0;
+	tmp->flag2 = 0;
 	tmp->argv = malloc(sizeof(char) * 2);
 	tmp->argv[0] = 0;
 	tmp->argv[1] = 0;
@@ -48,6 +49,7 @@ static int			pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 	else if (ft_strncmp(data->inp_arr[i + 1], "<", 1) == 0)
 		(*cmd_tmp)->redirect = 3;
 	(*cmd_tmp)->pipe = 1;
+	(*cmd_tmp)->flag2 = 2;
 	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
 	if ((*cmd_tmp)->redirect)
@@ -89,6 +91,8 @@ static int			redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 		write(2, "syntax error near unexpected token `newline'\n", 45);
 		return (258);
 	}
+	if (!ft_strncmp(data->inp_arr[i + 1], "|", 1))
+		(*cmd_tmp)->pipe = 1;
 	if (ft_strncmp(data->inp_arr[i], ">", 1) == 0)
 		(*cmd_tmp)->redirect = 1;
 	else if (ft_strncmp(data->inp_arr[i], ">>", 2) == 0)
@@ -159,7 +163,7 @@ static int check_for_redir(t_command *cmd)
 	cmd_tmp = cmd;
 	while (cmd_tmp)
 	{
-		if (cmd_tmp->redirect && cmd_tmp->pipe &&!cmd_tmp->flag)
+		if (cmd_tmp->redirect && cmd_tmp->pipe && !cmd_tmp->flag)
 		{
 			cmd_tmp->flag = 1;
 			return (1);

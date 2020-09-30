@@ -89,6 +89,8 @@ static int		execute_one(t_command *cmd, t_data *data)
 	{
 		if ((check_fd(cmd, data)))
 			return (1);
+		if (cmd->redirect && cmd->flag2 == 2)
+			exit(0);
 		if (!our_command(cmd, data))
 		{
 			exit(0);
