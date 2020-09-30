@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include<stdio.h>
+#include <errno.h>
 #include "libft.h"
 #include "string.h"
 #include <fcntl.h>
@@ -24,7 +25,11 @@
 static int redirect_in(t_command *cmd, t_data *data)
 {
 	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY, 0755)) < 0)
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
 		return (1);
+	}
 	dup2(data->fd_in, 0);
 	close(data->fd_in);
 	return (0);
@@ -33,7 +38,11 @@ static int redirect_in(t_command *cmd, t_data *data)
 static int redirect_out(t_command *cmd, t_data *data)
 {
 	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0755)) < 0)
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
 		return (1);
+	}
 	dup2(data->fd_f, 1);
 	close(data->fd_f);
 	return (0);
@@ -42,7 +51,11 @@ static int redirect_out(t_command *cmd, t_data *data)
 static int double_redirect_out(t_command *cmd, t_data *data)
 {
 	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0755)) < 0)
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
 		return (1);
+	}
 	dup2(data->fd_f, 1);
 	close(data->fd_f);
 	return (0);
@@ -55,11 +68,20 @@ static int check_fd(t_command *cmd, t_data *data)
 		while (cmd)
 		{
 			if (cmd->redirect == 1)
-				redirect_out(cmd, data);
+			{
+				if (redirect_out(cmd, data))
+					return (1);
+			}
 			else if (cmd->redirect == 3)
-				redirect_in(cmd, data);
+			{
+				if (redirect_in(cmd, data))
+					return (1);
+			}
 			else if (cmd->redirect == 2)
-				double_redirect_out(cmd, data);
+			{
+				if (double_redirect_out(cmd, data))
+					return (1);
+			}
 			if (cmd->next->redirect)
 			{
 				cmd = cmd->next;
@@ -117,7 +139,9 @@ static int		execute_one(t_command *cmd, t_data *data)
 	if (pid == 0)
 	{
 		if ((check_fd(cmd, data)))
-			return (1);
+		{
+			exit (errno);
+		}
 		if (cmd->redirect && cmd->flag2 == 2)
 			exit(0);
 		if (!our_command(cmd, data))
