@@ -21,21 +21,50 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+static int redirect_in(t_command *cmd, t_data *data)
+{
+	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY, 0755)) < 0)
+		return (1);
+	dup2(data->fd_in, 0);
+	close(data->fd_in);
+	return (0);
+}
+
+static int redirect_out(t_command *cmd, t_data *data)
+{
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0755)) < 0)
+		return (1);
+	dup2(data->fd_f, 1);
+	close(data->fd_f);
+	return (0);
+}
+
+static int double_redirect_out(t_command *cmd, t_data *data)
+{
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0755)) < 0)
+		return (1);
+	dup2(data->fd_f, 1);
+	close(data->fd_f);
+	return (0);
+}
+
 static int check_fd(t_command *cmd, t_data *data)
 {
-	if (cmd->redirect == 1)
+	if (cmd->redirect)
 	{
 		while (cmd)
 		{
-			if ((data->fd_f = open(cmd->next->argv[0], O_RDWR | O_CREAT, 0755)) < 0)
-				return (1);
+			if (cmd->redirect == 1)
+				redirect_out(cmd, data);
+			else if (cmd->redirect == 3)
+				redirect_in(cmd, data);
+			else if (cmd->redirect == 2)
+				double_redirect_out(cmd, data);
 			if (cmd->next->redirect)
 			{
 				cmd = cmd->next;
 				continue ;
 			}
-			dup2(data->fd_f, 1);
-			close(data->fd_f);
 			return (0);
 		}
 	}

@@ -37,6 +37,7 @@ typedef struct	s_data
 	int			counter;
 	int 		fd[2];
 	int 		fd_f;
+	int 		fd_in;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);

@@ -93,10 +93,10 @@ static int			redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 	}
 	if (!ft_strncmp(data->inp_arr[i + 1], "|", 1))
 		(*cmd_tmp)->pipe = 1;
-	if (ft_strncmp(data->inp_arr[i], ">", 1) == 0)
-		(*cmd_tmp)->redirect = 1;
-	else if (ft_strncmp(data->inp_arr[i], ">>", 2) == 0)
+	if (ft_strncmp(data->inp_arr[i], ">>", 2) == 0)
 		(*cmd_tmp)->redirect = 2;
+	else if (ft_strncmp(data->inp_arr[i], ">", 1) == 0)
+		(*cmd_tmp)->redirect = 1;
 	else if (ft_strncmp(data->inp_arr[i], "<", 1) == 0)
 		(*cmd_tmp)->redirect = 3;
 	if (!((*cmd_tmp)->next = create_command_lst()))
