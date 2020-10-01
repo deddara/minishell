@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 12:54:24 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:06:08 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ typedef struct	s_data
 	int 		fd_in;
 	int 		cd;
 	int			sig;
+	int			read_started;
 }				t_data;
+
+extern int		g_read_started;
 
 char			**f_strarr_dup(char **src_arr);
 char			**f_strarr_add_elem(char **src_arr, char *str);
@@ -81,5 +84,6 @@ int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
 int				cmd_caller(t_data *data, t_command *cmd);
 int				f_readline(char **input);
 int				f_exit(t_data *data, char **argv);
+void			f_sigint(void);
 
 #endif
