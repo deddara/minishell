@@ -115,6 +115,7 @@ int			f_export(t_data *data, char **argv, int fd)
 		sort_list(sorted_env);
 		while (sorted_env[i])
 		{
+			ft_putstr_fd("declare -x ", fd);
 			ft_putstr_fd(sorted_env[i++], fd);
 			ft_putchar_fd('\n', fd);
 		}
