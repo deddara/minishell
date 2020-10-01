@@ -147,13 +147,13 @@ static int our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
-
-
 static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
+	pid_t	pid2;
 	int		status;
 
+	pid2 = 1;
 	if (cmd->redirect)
 	{
 		if ((pid = fork()) < 0)
@@ -168,10 +168,21 @@ static int		execute_one(t_command *cmd, t_data *data)
 				exit(0);
 			if (!our_command(cmd, data))
 				exit(0);
+			cmd_caller(data, cmd->next);
 			execve(cmd->argv[0], cmd->argv, data->envp);
 			exit (0);
 		}
 		waitpid(pid, &status, 0);
+		if (cmd->next->pipe)
+		{
+			pid2 = fork();
+			if (pid2 == 0)
+			{
+				cmd = cmd->next->next;
+				cmd_caller(data, cmd);
+			}
+		}
+		waitpid(pid2, &status, 0);
 		return (0);
 	}
 	else if (!is_our_command(cmd, data))
@@ -191,6 +202,40 @@ static int		execute_one(t_command *cmd, t_data *data)
 	waitpid(pid, &status, 0);
 	return (0);
 }
+
+//static int		execute_one(t_command *cmd, t_data *data)
+//{
+//	pid_t	pid;
+//	pid_t	pid2;
+//	int		status;
+//
+//	pid2 = 1;
+//	if ((pid = fork()) < 0)
+//		return (1);
+//	if (pid == 0)
+//	{
+//		if ((check_fd(cmd, data)))
+//			exit (errno);
+//		if (cmd->redirect)
+//			write_in_file(cmd);
+//		if (!our_command(cmd, data))
+//			exit(0);
+//		execve(cmd->argv[0], cmd->argv, data->envp);
+//		exit (0);
+//	}
+//	waitpid(pid, &status, 0);
+//	if (cmd->next->pipe)
+//	{
+//		pid2 = fork();
+//		if (pid2 == 0)
+//		{
+//			cmd = cmd->next->next;
+//			cmd_caller(data, cmd);
+//		}
+//	}
+//	waitpid(pid2, &status, 0);
+//	return (0);
+//}
 
 static void		process_handler(t_command *cmd, t_data *data, int kind)
 {
