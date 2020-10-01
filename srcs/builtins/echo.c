@@ -22,7 +22,7 @@ void	f_echo(char **argv, int fd)
 	i = 0;
 	if (!argv[i])
 	{
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', fd);
 		return ;
 	}
 	if (!ft_strncmp(argv[i], "-n", 3))
@@ -38,5 +38,5 @@ void	f_echo(char **argv, int fd)
 		i++;
 	}
 	if (!n)
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', fd);
 }

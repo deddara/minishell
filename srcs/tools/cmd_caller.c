@@ -21,8 +21,96 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
-static int redirect_in(t_command *cmd, t_data *data)
+//static int		execute_one(t_command *cmd, t_data *data)
+//{
+//	pid_t	pid;
+//	pid_t	pid2;
+//	int		status;
+//
+//	pid2 = 1;
+//	if (cmd->redirect)
+//	{
+//		if ((pid = fork()) < 0)
+//			return (1);
+//		if (pid == 0)
+//		{
+//			if ((check_fd(cmd, data)))
+//				exit (errno);
+//			if (cmd->redirect)
+//				write_in_file(cmd);
+//			if (cmd->redirect && cmd->flag2 == 2)
+//				exit(0);
+//			if (!our_command(cmd, data))
+//				exit(0);
+//			cmd_caller(data, cmd->next);
+//			execve(cmd->argv[0], cmd->argv, data->envp);
+//			exit (0);
+//		}
+//		waitpid(pid, &status, 0);
+//		if (cmd->next->pipe)
+//		{
+//			pid2 = fork();
+//			if (pid2 == 0)
+//			{
+//				cmd = cmd->next->next;
+//				cmd_caller(data, cmd);
+//			}
+//		}
+//		waitpid(pid2, &status, 0);
+//		return (0);
+//	}
+//	else if (!is_our_command(cmd, data))
+//	{
+//		our_command(cmd, data);
+//		return (0);
+//	}
+//	if ((pid = fork()) < 0)
+//		return (1);
+//	if (pid == 0)
+//	{
+//		if (!our_command(cmd, data))
+//			exit(0);
+//		execve(cmd->argv[0], cmd->argv, data->envp);
+//		exit (0);
+//	}
+//	waitpid(pid, &status, 0);
+//	return (0);
+//}
+//
+// static int		execute_one(t_command *cmd, t_data *data)
+////{
+////	pid_t	pid;
+////	pid_t	pid2;
+////	int		status;
+////
+////	pid2 = 1;
+////	if ((pid = fork()) < 0)
+////		return (1);
+////	if (pid == 0)
+////	{
+////		if ((check_fd(cmd, data)))
+////			exit (errno);
+////		if (cmd->redirect)
+////			write_in_file(cmd);
+////		if (!our_command(cmd, data))
+////			exit(0);
+////		execve(cmd->argv[0], cmd->argv, data->envp);
+////		exit (0);
+////	}
+////	waitpid(pid, &status, 0);
+////	if (cmd->next->pipe)
+////	{
+////		pid2 = fork();
+////		if (pid2 == 0)
+////		{
+////			cmd = cmd->next->next;
+////			cmd_caller(data, cmd);
+////		}
+////	}
+////	waitpid(pid2, &status, 0);
+////	return (0);
+////}
+static int redirect_in(t_command *cmd, t_data *data, int type)
 {
 	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY, 0755)) < 0)
 	{
@@ -30,12 +118,15 @@ static int redirect_in(t_command *cmd, t_data *data)
 		ft_putchar_fd('\n', 2);
 		return (1);
 	}
-	dup2(data->fd_in, 0);
-	close(data->fd_in);
+	if (type)
+	{
+		dup2(data->fd_in, 0);
+		close(data->fd_in);
+	}
 	return (0);
 }
 
-static int redirect_out(t_command *cmd, t_data *data)
+static int redirect_out(t_command *cmd, t_data *data, int type)
 {
 	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0755)) < 0)
 	{
@@ -43,12 +134,15 @@ static int redirect_out(t_command *cmd, t_data *data)
 		ft_putchar_fd('\n', 2);
 		return (1);
 	}
-	dup2(data->fd_f, 1);
-	close(data->fd_f);
+	if (type)
+	{
+		dup2(data->fd_f, 1);
+		close(data->fd_f);
+	}
 	return (0);
 }
 
-static int double_redirect_out(t_command *cmd, t_data *data)
+static int double_redirect_out(t_command *cmd, t_data *data, int type)
 {
 	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0755)) < 0)
 	{
@@ -56,12 +150,15 @@ static int double_redirect_out(t_command *cmd, t_data *data)
 		ft_putchar_fd('\n', 2);
 		return (1);
 	}
-	dup2(data->fd_f, 1);
-	close(data->fd_f);
+	if (type)
+	{
+		dup2(data->fd_f, 1);
+		close(data->fd_f);
+	}
 	return (0);
 }
 
-static int check_fd(t_command *cmd, t_data *data)
+static int check_fd(t_command *cmd, t_data *data, int type)
 {
 	if (cmd->redirect)
 	{
@@ -69,17 +166,17 @@ static int check_fd(t_command *cmd, t_data *data)
 		{
 			if (cmd->redirect == 1)
 			{
-				if (redirect_out(cmd, data))
+				if (redirect_out(cmd, data, type))
 					return (1);
 			}
 			else if (cmd->redirect == 3)
 			{
-				if (redirect_in(cmd, data))
+				if (redirect_in(cmd, data, type))
 					return (1);
 			}
 			else if (cmd->redirect == 2)
 			{
-				if (double_redirect_out(cmd, data))
+				if (double_redirect_out(cmd, data, type))
 					return (1);
 			}
 			if (cmd->next->redirect)
@@ -128,114 +225,56 @@ static int	is_our_command(t_command *cmd, t_data *data)
 
 static int our_command(t_command *cmd, t_data *data)
 {
+	data->fd_f = 1;
+	if (check_fd(cmd, data, 0))
+		return (1);
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
-		f_pwd(1);
+		f_pwd(data->fd_f);
 	else if (!data->counter && !ft_strncmp(cmd->argv[0], "cd", 3))
 		f_cd(cmd->argv[1], data);
 	else if (!ft_strncmp(cmd->argv[0], "echo", 4))
-		f_echo(&cmd->argv[1], 1);
+		f_echo(&cmd->argv[1], data->fd_f);
 	else if (!ft_strncmp(cmd->argv[0], "env", 3))
-		f_env(1, data);
+		f_env(data->fd_f, data);
 	else if (!ft_strncmp(cmd->argv[0], "export", 6))
-		f_export(data, &cmd->argv[1], 1);
+		f_export(data, &cmd->argv[1], data->fd_f);
 	else if (!ft_strncmp(cmd->argv[0], "unset", 5))
 		f_unset(data, &cmd->argv[1]);
 	else if (!ft_strncmp(cmd->argv[0], "exit", 4))
 		f_exit(data, &cmd->argv[0]);
-	else
-		return (1);
 	return (0);
 }
 
 static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
-	pid_t	pid2;
 	int		status;
 
-	pid2 = 1;
-	if (cmd->redirect)
+	data->fd_f = 1;
+	if (!is_our_command(cmd, data))
 	{
-		if ((pid = fork()) < 0)
-			return (1);
-		if (pid == 0)
-		{
-			if ((check_fd(cmd, data)))
-				exit (errno);
-			if (cmd->redirect)
+		if (cmd->redirect)
 				write_in_file(cmd);
-			if (cmd->redirect && cmd->flag2 == 2)
-				exit(0);
-			if (!our_command(cmd, data))
-				exit(0);
-			cmd_caller(data, cmd->next);
-			execve(cmd->argv[0], cmd->argv, data->envp);
-			exit (0);
-		}
-		waitpid(pid, &status, 0);
-		if (cmd->next->pipe)
-		{
-			pid2 = fork();
-			if (pid2 == 0)
-			{
-				cmd = cmd->next->next;
-				cmd_caller(data, cmd);
-			}
-		}
-		waitpid(pid2, &status, 0);
-		return (0);
-	}
-	else if (!is_our_command(cmd, data))
-	{
-		our_command(cmd, data);
+		if (our_command(cmd, data))
+			return (1);
 		return (0);
 	}
 	if ((pid = fork()) < 0)
 		return (1);
 	if (pid == 0)
 	{
-		if (!our_command(cmd, data))
-			exit(0);
+		if (cmd->redirect)
+		{
+			write_in_file(cmd);
+			if (check_fd(cmd, data, 1))
+				exit (1);
+		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
 		exit (0);
 	}
 	waitpid(pid, &status, 0);
 	return (0);
 }
-
-//static int		execute_one(t_command *cmd, t_data *data)
-//{
-//	pid_t	pid;
-//	pid_t	pid2;
-//	int		status;
-//
-//	pid2 = 1;
-//	if ((pid = fork()) < 0)
-//		return (1);
-//	if (pid == 0)
-//	{
-//		if ((check_fd(cmd, data)))
-//			exit (errno);
-//		if (cmd->redirect)
-//			write_in_file(cmd);
-//		if (!our_command(cmd, data))
-//			exit(0);
-//		execve(cmd->argv[0], cmd->argv, data->envp);
-//		exit (0);
-//	}
-//	waitpid(pid, &status, 0);
-//	if (cmd->next->pipe)
-//	{
-//		pid2 = fork();
-//		if (pid2 == 0)
-//		{
-//			cmd = cmd->next->next;
-//			cmd_caller(data, cmd);
-//		}
-//	}
-//	waitpid(pid2, &status, 0);
-//	return (0);
-//}
 
 static void		process_handler(t_command *cmd, t_data *data, int kind)
 {

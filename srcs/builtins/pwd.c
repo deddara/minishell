@@ -22,4 +22,5 @@ void f_pwd(int fd)
 		return ;
 	ft_putstr_fd(dir, fd);
 	ft_putchar_fd('\n', fd);
+	free(dir);
 }
