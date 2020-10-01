@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 16:02:03 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 12:54:24 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_data
 	int 		fd_f;
 	int 		fd_in;
 	int 		cd;
+	int			sig;
 }				t_data;
 
 char			**f_strarr_dup(char **src_arr);
@@ -46,7 +47,7 @@ char			**f_strarr_add_elem(char **src_arr, char *str);
 char			**f_strarr_rem_elem(char **src_arr, char *str, char *endcmp);
 int				f_strarr_find_elem(char **src_arr, char *str, char *endcmp);
 void			*f_strarr_free(char **strarr);
-int				f_exit(t_data *data, int exitcode, char *exitstr);
+int				f_quit(t_data *data, int exitcode, char *exitstr);
 
 int				test_strarr(t_data *data);
 int				f_cd(char *path, t_data *data);
@@ -79,5 +80,6 @@ int				f_dollar_pars(t_data *data, int *i);
 int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
 int				cmd_caller(t_data *data, t_command *cmd);
 int				f_readline(char **input);
+int				f_exit(t_data *data, char **argv);
 
 #endif

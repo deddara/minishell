@@ -6,7 +6,7 @@
 #    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/09/30 16:17:04 by awerebea         ###   ########.fr        #
+#    Updated: 2020/09/30 18:57:09 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ FLS_4		= $(addprefix $(FLSDIR_4), \
 				cd \
 				echo \
 				env \
+				exit \
 				export \
 				pwd \
 				unset )

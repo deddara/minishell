@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:17:42 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 22:38:05 by deddara          ###   ########.fr       */
+/*   Updated: 2020/09/30 17:34:24 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int			f_unset(t_data *data, char **argv)
 			return (1);
 		}
 		if (!(data->envp = f_strarr_rem_elem(data->envp, argv[i], "=")))
-			return (f_exit(data, 1, "malloc error\n"));
+			return (f_quit(data, 1, "malloc error\n"));
 		i++;
 	}
 	return (0);

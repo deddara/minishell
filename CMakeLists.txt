@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 3.17)
 project(minishell C)
 
 set(CMAKE_C_STANDARD 11)
-add_definitions("-D BUFFER_SIZE=32")
+
 include_directories(includes)
 include_directories(libft/includes)
 
 add_executable(minishell
         includes/minishell.h
+        includes/structer.h
         libft/includes/libft.h
         libft/srcs/lists/ft_lstadd_back.c
         libft/srcs/lists/ft_lstadd_front.c
@@ -54,23 +55,24 @@ add_executable(minishell
         libft/srcs/symbols/ft_isspace.c
         libft/srcs/symbols/ft_tolower.c
         libft/srcs/symbols/ft_toupper.c
-        srcs/tests/test_strarr.c
         srcs/builtins/cd.c
         srcs/builtins/echo.c
         srcs/builtins/env.c
+        srcs/builtins/exit.c
         srcs/builtins/export.c
         srcs/builtins/pwd.c
-        srcs/tools/strarr.c
+        srcs/builtins/unset.c
         srcs/parser/checks.c
         srcs/parser/dollar.c
         srcs/parser/dollar_pars_prepare.c
         srcs/parser/parser.c
         srcs/parser/quotes.c
         srcs/parser/slash_n_process.c
+        srcs/tests/test_strarr.c
+        srcs/tools/cmd_caller.c
         srcs/tools/coammand_handler.c
         srcs/tools/command_checker.c
-        srcs/tools/structer.c
-        srcs/tools/cmd_caller.c
         srcs/tools/readline.c
-        srcs/builtins/unset.c
+        srcs/tools/strarr.c
+        srcs/tools/structer.c
         srcs/main.c)
