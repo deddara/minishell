@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 13:14:03 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 15:08:31 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:24:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,10 @@ void			f_sigint(void)
 	}
 	else
 		ft_putstr_fd("\n", 1);
+}
+
+void			f_sigquit(void)
+{
+	if (g_inp_arr_exist)
+		g_need2free = 1;
 }
