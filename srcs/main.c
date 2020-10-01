@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 18:55:07 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:06:08 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include <unistd.h>
 #include <errno.h>
 #include "structer.h"
+#include <signal.h>
+
+int				g_read_started;
 
 void			f_data_init(t_data *data, char **argv)
 {
@@ -69,8 +72,8 @@ void			f_clear_input_data(t_data *data)
 	data->qt2_c = 0;
 	data->pars_complete = 0;
 	data->last_saved = 0;
-	data->errcode = 0;
 	data->slash = 0;
+	data->sig = 0;
 }
 
 int				main(int argc, char **argv, char **envp)
@@ -79,6 +82,8 @@ int				main(int argc, char **argv, char **envp)
 	t_command	*command;
 
 	command = NULL;
+	g_read_started = 0;
+	signal(SIGINT, f_sigint);
 	(void)argc;
 	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))
@@ -86,6 +91,7 @@ int				main(int argc, char **argv, char **envp)
 	data.input = ft_strdup("start :)");
 	while (1)
 	{
+		g_read_started = 1;
 		ft_putstr_fd("minishell$ ", 1);
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
@@ -104,6 +110,7 @@ int				main(int argc, char **argv, char **envp)
 				clear_list(command);
 				continue;
 			}
+			g_read_started = 0;
 			cmd_caller(&data, command);
 			clear_list(command);
 		}

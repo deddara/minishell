@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 16:07:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:11:17 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int				f_readline(char **input)
 			ft_putstr_fd("exit\n", 1);
 			return (3);
 		}
+		if (!res)
+			ft_putstr_fd("  \b\b", 1);
 		if (buf[0] != '\n')
 		{
 			if (res)
