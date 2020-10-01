@@ -158,30 +158,47 @@ static int double_redirect_out(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
+static void write_in_file(t_command *command, t_command *tmp)
+{
+	int i;
+
+	i = 1;
+	while (tmp->next->argv[i])
+	{
+		if (!(command->argv = f_strarr_add_elem(command->argv, tmp->next->argv[i])))
+			return ;
+		i++;
+	}
+}
+
 static int check_fd(t_command *cmd, t_data *data, int type)
 {
-	if (cmd->redirect)
+	t_command *tmp;
+
+	tmp = cmd;
+	if (tmp->redirect)
 	{
-		while (cmd)
+		while (tmp)
 		{
-			if (cmd->redirect == 1)
+			if (tmp->redirect == 1)
 			{
-				if (redirect_out(cmd, data, type))
+				if (redirect_out(tmp, data, type))
 					return (1);
 			}
-			else if (cmd->redirect == 3)
+			else if (tmp->redirect == 3)
 			{
-				if (redirect_in(cmd, data, type))
+				if (redirect_in(tmp, data, type))
 					return (1);
 			}
-			else if (cmd->redirect == 2)
+			else if (tmp->redirect == 2)
 			{
-				if (double_redirect_out(cmd, data, type))
+				if (double_redirect_out(tmp, data, type))
 					return (1);
 			}
-			if (cmd->next->redirect)
+			write_in_file(cmd, tmp);
+			if (tmp->next->redirect)
 			{
-				cmd = cmd->next;
+				tmp = tmp->next;
 				continue ;
 			}
 			return (0);
@@ -190,18 +207,7 @@ static int check_fd(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-static void write_in_file(t_command *command)
-{
-	int i;
 
-	i = 1;
-	while (command->next->argv[i])
-	{
-		if (!(command->argv = f_strarr_add_elem(command->argv, command->next->argv[i])))
-			return ;
-		i++;
-	}
-}
 
 static int	is_our_command(t_command *cmd, t_data *data)
 {
@@ -267,8 +273,6 @@ static int		execute_one(t_command *cmd, t_data *data)
 	{
 		if (cmd->redirect && cmd->flag2 == 2)
 				return(0);
-		if (cmd->redirect)
-				write_in_file(cmd);
 		if (our_command(cmd, data))
 			return (1);
 		if (cmd->next && cmd->redirect &&\
@@ -290,7 +294,6 @@ static int		execute_one(t_command *cmd, t_data *data)
 	{
 		if (cmd->redirect)
 		{
-			write_in_file(cmd);
 			if (check_fd(cmd, data, 1))
 				exit (1);
 		}
