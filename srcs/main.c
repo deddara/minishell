@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 18:55:07 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 22:20:44 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include <unistd.h>
 #include <errno.h>
 #include "structer.h"
+#include <signal.h>
+
+int				g_read_started;
+int				g_inp_arr_exist;
+int				g_need2free;
+int				g_sigquit;
 
 void			f_data_init(t_data *data, char **argv)
 {
@@ -69,8 +75,8 @@ void			f_clear_input_data(t_data *data)
 	data->qt2_c = 0;
 	data->pars_complete = 0;
 	data->last_saved = 0;
-	data->errcode = 0;
 	data->slash = 0;
+	data->sig = 0;
 }
 
 int				main(int argc, char **argv, char **envp)
@@ -79,6 +85,8 @@ int				main(int argc, char **argv, char **envp)
 	t_command	*command;
 
 	command = NULL;
+	signal(SIGINT, f_sigint);
+	signal(SIGQUIT, f_sigquit);
 	(void)argc;
 	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))
@@ -86,24 +94,36 @@ int				main(int argc, char **argv, char **envp)
 	data.input = ft_strdup("start :)");
 	while (1)
 	{
-		ft_putstr_fd("minishell$ ", 1);
+		g_read_started = 1;
+				ft_putstr_fd("minishell$ ", 1);
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
+		g_sigquit = 0;
 		if (f_readline(&data.input))
 			return (f_quit(&data, 0, ""));
 		while (!data.pars_complete)
 		{
+			g_inp_arr_exist = 0;
+			g_need2free = 0;
 			if (!(command = create_command_lst()))
 				return (1);
 			if (f_pars_input(&data))
 				return (f_quit(&data, 1, data.errstr));
+			g_inp_arr_exist = 1;
+			if (g_need2free)
+			{
+				f_clear_input_data(&data);
+				break;
+			}
 			if (structer(&data, command))
 				continue;
 			if (command_handler(&data, command))
 			{
+				g_read_started = 0;
 				clear_list(command);
 				continue;
 			}
+			g_read_started = 0;
 			cmd_caller(&data, command);
 			clear_list(command);
 		}
