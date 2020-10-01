@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 15:06:08 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 15:27:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <signal.h>
 
 int				g_read_started;
+int				g_inp_arr_exist;
+int				g_need2free;
 
 void			f_data_init(t_data *data, char **argv)
 {
@@ -82,8 +84,8 @@ int				main(int argc, char **argv, char **envp)
 	t_command	*command;
 
 	command = NULL;
-	g_read_started = 0;
 	signal(SIGINT, f_sigint);
+	signal(SIGQUIT, f_sigquit);
 	(void)argc;
 	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))
@@ -99,10 +101,18 @@ int				main(int argc, char **argv, char **envp)
 			return (f_quit(&data, 0, ""));
 		while (!data.pars_complete)
 		{
+			g_inp_arr_exist = 0;
+			g_need2free = 0;
 			if (!(command = create_command_lst()))
 				return (1);
 			if (f_pars_input(&data))
 				return (f_quit(&data, 1, data.errstr));
+			g_inp_arr_exist = 1;
+			if (g_need2free)
+			{
+				f_clear_input_data(&data);
+				break;
+			}
 			if (structer(&data, command))
 				continue;
 			if (command_handler(&data, command))
