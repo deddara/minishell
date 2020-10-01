@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 15:24:11 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 20:43:56 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct	s_data
 extern int		g_read_started;
 extern int		g_inp_arr_exist;
 extern int		g_need2free;
+extern int		g_sigquit;
+extern int		g_flag;
 
 char			**f_strarr_dup(char **src_arr);
 char			**f_strarr_add_elem(char **src_arr, char *str);

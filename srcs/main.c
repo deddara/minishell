@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 15:27:10 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 20:51:27 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 int				g_read_started;
 int				g_inp_arr_exist;
 int				g_need2free;
+int				g_sigquit;
+int				g_flag;
 
 void			f_data_init(t_data *data, char **argv)
 {
@@ -94,9 +96,11 @@ int				main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		g_read_started = 1;
-		ft_putstr_fd("minishell$ ", 1);
+				ft_putstr_fd("minishell$ ", 1);
+		g_flag = 0;
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
+		g_sigquit = 0;
 		if (f_readline(&data.input))
 			return (f_quit(&data, 0, ""));
 		while (!data.pars_complete)
@@ -117,6 +121,7 @@ int				main(int argc, char **argv, char **envp)
 				continue;
 			if (command_handler(&data, command))
 			{
+				g_read_started = 0;
 				clear_list(command);
 				continue;
 			}
