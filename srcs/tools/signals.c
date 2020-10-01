@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 13:14:03 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 20:59:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 22:13:51 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void			f_sigint(void)
 void			f_sigquit(void)
 {
 	g_sigquit = 1;
-	ft_putstr_fd("\b\b  \b", 1);
+	ft_putstr_fd("\b\b  \b\b", 1);
 }
