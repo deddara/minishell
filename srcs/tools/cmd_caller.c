@@ -280,10 +280,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 		{
 			pid2 = fork();
 			if (pid2 == 0)
-			{
-				cmd = cmd->next;
 				cmd_caller(data, cmd);
-			}
 			waitpid(pid2, &status, 0);
 		}
 		return (0);
@@ -306,10 +303,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 	{
 		pid2 = fork();
 		if (pid2 == 0)
-		{
-			cmd = cmd->next;
 			cmd_caller(data, cmd);
-		}
 		waitpid(pid2, &status, 0);
 	}
 	return (0);
