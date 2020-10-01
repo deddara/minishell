@@ -112,7 +112,7 @@
 ////}
 static int redirect_in(t_command *cmd, t_data *data, int type)
 {
-	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY, 0755)) < 0)
+	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY)) < 0)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
@@ -128,7 +128,7 @@ static int redirect_in(t_command *cmd, t_data *data, int type)
 
 static int redirect_out(t_command *cmd, t_data *data, int type)
 {
-	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0755)) < 0)
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0644)) < 0)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
@@ -144,7 +144,7 @@ static int redirect_out(t_command *cmd, t_data *data, int type)
 
 static int double_redirect_out(t_command *cmd, t_data *data, int type)
 {
-	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0755)) < 0)
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0644)) < 0)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
@@ -245,18 +245,43 @@ static int our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
+static int check_for_pipe(t_command **cmd)
+{
+	while (*cmd)
+	{
+		if ((*cmd)->pipe)
+			return (1);
+		(*cmd) = (*cmd)->next;
+	}
+	return (0);
+}
+
 static int		execute_one(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
+	pid_t	pid2;
 	int		status;
 
 	data->fd_f = 1;
 	if (!is_our_command(cmd, data))
 	{
+		if (cmd->redirect && cmd->flag2 == 2)
+				return(0);
 		if (cmd->redirect)
 				write_in_file(cmd);
 		if (our_command(cmd, data))
 			return (1);
+		if (cmd->next && cmd->redirect &&\
+		check_for_pipe(&cmd))
+		{
+			pid2 = fork();
+			if (pid2 == 0)
+			{
+				cmd = cmd->next;
+				cmd_caller(data, cmd);
+			}
+			waitpid(pid2, &status, 0);
+		}
 		return (0);
 	}
 	if ((pid = fork()) < 0)
@@ -273,6 +298,17 @@ static int		execute_one(t_command *cmd, t_data *data)
 		exit (0);
 	}
 	waitpid(pid, &status, 0);
+	if (cmd->next && cmd->redirect &&\
+		check_for_pipe(&cmd))
+	{
+		pid2 = fork();
+		if (pid2 == 0)
+		{
+			cmd = cmd->next;
+			cmd_caller(data, cmd);
+		}
+		waitpid(pid2, &status, 0);
+	}
 	return (0);
 }
 
