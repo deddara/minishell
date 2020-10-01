@@ -73,6 +73,7 @@ add_executable(minishell
         srcs/tools/coammand_handler.c
         srcs/tools/command_checker.c
         srcs/tools/readline.c
+        srcs/tools/signals.c
         srcs/tools/strarr.c
         srcs/tools/structer.c
         srcs/main.c)
