@@ -6,12 +6,13 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 12:14:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:42:43 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 23:24:45 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <signal.h>
 
 int				f_coincidence_char_ind(char *str, char c)
 {
