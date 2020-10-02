@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:41:13 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:19:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:32:48 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 			if (pid2 == 0)
 				cmd_caller(data, cmd);
 			waitpid(pid2, &status, 0);
+			data->errcode = f_get_exitcode(status);
 		}
 		return (0);
 	}
@@ -295,9 +296,10 @@ static int		execute_one(t_command *cmd, t_data *data)
 				exit (1);
 		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
-		exit (0);
+		exit (data->errcode);
 	}
 	waitpid(pid, &status, 0);
+	data->errcode = f_get_exitcode(status);
 	if (cmd->next && cmd->redirect &&\
 		check_for_pipe(&cmd))
 	{
@@ -305,6 +307,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 		if (pid2 == 0)
 			cmd_caller(data, cmd);
 		waitpid(pid2, &status, 0);
+		data->errcode = f_get_exitcode(status);
 	}
 	return (0);
 }
@@ -317,7 +320,7 @@ static void		process_handler(t_command *cmd, t_data *data, int kind)
 	if (kind == 1)
 		cmd->pipe = 0;
 	cmd_caller(data, cmd);
-	exit (0);
+	exit (data->errcode);
 }
 
 static int		execute(t_command *cmd, t_data *data)
@@ -341,6 +344,7 @@ static int		execute(t_command *cmd, t_data *data)
 	close(data->fd[1]);
 	waitpid(pid_1, &status_1, 0);
 	waitpid(pid_2, &status_2, 0);
+	data->errcode = f_get_exitcode(status_2);
 	return (1);
 }
 

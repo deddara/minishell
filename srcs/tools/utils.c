@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 12:14:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:19:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:30:00 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int				f_get_exitcode(int status)
 		{
 			ft_putstr_fd("Quit:\t", 2);
 			ft_putnbr_fd(sig, 2);
-			ft_putchar_fd('\n');
+			ft_putchar_fd('\n', 2);
 		}
 		return (128 + sig);
 	}
