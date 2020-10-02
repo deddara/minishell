@@ -78,8 +78,7 @@ char		*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 		{
 			while (*coincidence != '=')
 				coincidence++;
-			coincidence++;
-			return (coincidence);
+			return (++coincidence);
 		}
 	}
 	return (NULL);
