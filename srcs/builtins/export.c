@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/02 17:16:37 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 17:32:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ static int	add_var(t_data *data, char **argv)
 	{
 		if (ft_strchr(argv[i], ' ') || !ft_strncmp(argv[i], "=", 1) || !ft_isalpha(argv[i][0]))
 		{
-			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(argv[i], 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (1);
 		}
 		key = take_key(argv[i]);
