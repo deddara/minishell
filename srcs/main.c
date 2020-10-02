@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:29:35 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 int				g_read_started;
 int				g_sigquit;
+int				g_sigint;
 
 void			f_data_init(t_data *data, char **argv)
 {
@@ -92,13 +93,16 @@ int				main(int argc, char **argv, char **envp)
 	data.input = ft_strdup("start :)");
 	while (1)
 	{
-		g_read_started = 1;
-				ft_putstr_fd("minishell$ ", 1);
+		ft_putstr_fd("minishell$ ", 1);
 		free((data.input) ? data.input : NULL);
 		data.input = NULL;
+		g_read_started = 1;
 		g_sigquit = 0;
+		g_sigint = 0;
 		if (f_readline(&data.input))
 			return (f_quit(&data, 0, ""));
+		if (g_sigint)
+			data.errcode = 1;
 		while (!data.pars_complete)
 		{
 			if (!(command = create_command_lst()))
@@ -109,7 +113,10 @@ int				main(int argc, char **argv, char **envp)
 				break;
 			}
 			if ((data.errcode = structer(&data, command)))
+			{
+				data.errcode = (data.errcode == 2) ? 0 : data.errcode;
 				continue;
+			}
 			if ((data.errcode = command_handler(&data, command)))
 			{
 				g_read_started = 0;

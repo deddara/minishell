@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:41:13 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:32:48 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,15 @@
 ////}
 static int redirect_in(t_command *cmd, t_data *data, int type)
 {
+	int			errcode;
+
 	if ((data->fd_in = open(cmd->next->argv[0], O_RDONLY)) < 0)
 	{
-		ft_putstr_fd(strerror(errno), 2);
+		errcode = errno;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->next->argv[0], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errcode), 2);
 		ft_putchar_fd('\n', 2);
 		return (1);
 	}
@@ -296,7 +302,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 				exit (1);
 		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
-		exit (data->errcode);
+		exit (0);
 	}
 	waitpid(pid, &status, 0);
 	data->errcode = f_get_exitcode(status);

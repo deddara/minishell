@@ -182,7 +182,7 @@ int					structer(t_data *data, t_command *cmd)
 	cmd_tmp = cmd;
 	i = 0;
 	if (!(data->inp_arr[0]))
-		return (1);
+		return (2);
 	while (data->inp_arr[i])
 	{
 		if (check_for_redir(cmd))
