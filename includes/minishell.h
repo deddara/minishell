@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 22:53:09 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 00:24:13 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct	s_data
 	int			cd;
 	int			sig;
 	int			read_started;
-	int			*arr;
-	int			*arr_size;
+	char		*arr;
+	int			arr_size;
 }				t_data;
 
 extern int		g_read_started;
@@ -82,7 +82,7 @@ int				f_quotes_pars(t_data *data, int *i);
 int				f_quote_status(t_data *data);
 void			f_clear_quotes_flags(t_data *data);
 int				f_slash_pars(t_data *data, int *i);
-int				f_process_pars(t_data *data, int *i);
+int				f_process_pars(t_data *data, int *i, int *w_ind);
 int				f_dollar_pars(t_data *data, int *i);
 int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
 int				cmd_caller(t_data *data, t_command *cmd);

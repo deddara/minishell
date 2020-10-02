@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 23:16:54 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 00:25:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			f_pars_prepare(t_data *data, int *i)
 	data->inp_arr[0] = NULL;
 }
 
-int				f_word_complete(t_data *data, int *i, int w_ind)
+int				f_word_complete(t_data *data, int *i, int *w_ind)
 {
 	if (f_chk_unclosed_quotes(data))
 		return (1);
@@ -82,6 +82,7 @@ int				f_word_complete(t_data *data, int *i, int w_ind)
 		return (1);
 	if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
 		return (1);
+	(*w_ind)++;
 	if (f_process_pars(data, i, w_ind))
 		return (1);
 	*i += (data->input[*i]) ? 1 : 0;
@@ -117,7 +118,7 @@ int				f_pars_input(t_data *data)
 	/*     ft_putstr_fd(data->errstr, 2); */
 	/*     return (1);                    */
 	/* }                                  */
-	w_count = 0;
+	w_ind = 0;
 	f_pars_prepare(data, &i);
 	while (i < data->pos)
 	{
@@ -131,7 +132,7 @@ int				f_pars_input(t_data *data)
 				return (1);
 			i++;
 		}
-		if (f_word_complete(data, &i, w_ind++))
+		if (f_word_complete(data, &i, &w_ind))
 			return (1);
 	}
 	data->pos += (data->pars_complete) ? 0 : 1;
