@@ -83,8 +83,8 @@ int				main(int argc, char **argv, char **envp)
 	t_command	*command;
 
 	command = NULL;
-	signal(SIGINT, f_sigint);
-	signal(SIGQUIT, f_sigquit);
+	signal(SIGINT, (void*)f_sigint);
+	signal(SIGQUIT, (void*)f_sigquit);
 	(void)argc;
 	f_data_init(&data, argv);
 	if (!(data.envp = f_strarr_dup(envp)))

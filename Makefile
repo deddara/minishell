@@ -14,7 +14,7 @@ NAME		= minishell
 LIBFT		= libft/libft.a
 INCLUDES	= -I includes/ -I libft/includes/
 CC			= gcc
-CFLAGS		= -Wall -Wextra
+CFLAGS		= -Wall -Wextra -Werror
 OFLAGS		= -O2
 DBGFLAGS	= -g
 
