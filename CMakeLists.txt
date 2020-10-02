@@ -60,6 +60,7 @@ add_executable(minishell
         srcs/builtins/env.c
         srcs/builtins/exit.c
         srcs/builtins/export.c
+        srcs/builtins/export_add_var.c
         srcs/builtins/pwd.c
         srcs/builtins/unset.c
         srcs/parser/checks.c
