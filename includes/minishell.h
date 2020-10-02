@@ -41,6 +41,7 @@ typedef struct	s_data
 	int			cd;
 	int			sig;
 	int			read_started;
+	int			*arr;
 }				t_data;
 
 extern int		g_read_started;
