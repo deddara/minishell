@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/30 16:07:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/01 22:20:44 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,26 @@ int				f_readline(char **input)
 	{
 		if ((res = read(0, buf, 1)) == -1)
 			return (2);
+		if (g_sigquit)
+		{
+			if (*input)
+				free(*input);
+			*input = NULL;
+			if (line)
+			{
+				free(line);
+				line = ft_strdup("");
+			}
+			g_sigquit = 0;
+		}
 		if (!res && !ft_strlen(line))
 		{
 			ft_putstr_fd("exit\n", 1);
 			return (3);
+		}
+		if (!res)
+		{
+			ft_putstr_fd("  \b\b", 1);
 		}
 		if (buf[0] != '\n')
 		{
