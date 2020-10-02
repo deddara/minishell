@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "libft.h"
+#include <unistd.h>
 
 static void	sorter(char **sorted_env, int j)
 {

@@ -6,11 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/10/01 22:20:44 by awerebea         ###   ########.fr       */
-=======
 /*   Updated: 2020/10/02 12:24:20 by awerebea         ###   ########.fr       */
->>>>>>> b01b42431dce59499b79f2012fc3bc5b64b4a6f9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +87,6 @@ int				f_readline(char **input);
 int				f_exit(t_data *data, char **argv);
 void			f_sigint(void);
 void			f_sigquit(void);
-<<<<<<< HEAD
-=======
 int				f_coincidence_char_ind(char *str, char c);
->>>>>>> b01b42431dce59499b79f2012fc3bc5b64b4a6f9
 
 #endif
