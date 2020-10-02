@@ -101,11 +101,11 @@ int				main(int argc, char **argv, char **envp)
 			return (f_quit(&data, 0, ""));
 		while (!data.pars_complete)
 		{
-			g_inp_arr_exist = 0;
-			g_need2free = 0;
 			if (!(command = create_command_lst()))
 				return (1);
 			if (f_pars_input(&data))
+			{
+				ft_putstr_fd(data.errstr, 2);
 				break;
 			}
 			if (structer(&data, command))
