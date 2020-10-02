@@ -152,7 +152,6 @@ static int	add_var(t_data *data, char **argv)
 int			f_export(t_data *data, char **argv, int fd)
 {
 	char	**sorted_env;
-	int		equal_ind;
 	int		i;
 
 	i = 0;
@@ -163,12 +162,7 @@ int			f_export(t_data *data, char **argv, int fd)
 		while (sorted_env[i])
 		{
 			ft_putstr_fd("declare -x ", fd);
-			if ((equal_ind = f_coincidence_char_ind(sorted_env[i], '=')) < 0)
-				return (1);
-			write(fd, sorted_env[i], equal_ind + 1);
-			ft_putchar_fd('\"', fd);
-			ft_putstr_fd(sorted_env[i++] + equal_ind + 1, fd);
-			ft_putchar_fd('\"', fd);
+			ft_putstr_fd(sorted_env[i++], fd);
 			ft_putchar_fd('\n', fd);
 		}
 		sorted_env = f_strarr_free(sorted_env);
