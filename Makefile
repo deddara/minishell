@@ -6,7 +6,7 @@
 #    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/10/01 13:53:30 by awerebea         ###   ########.fr        #
+#    Updated: 2020/10/02 12:29:34 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ FLS_2		= $(addprefix $(FLSDIR_2), \
 				readline \
 				signals \
 				strarr \
-				structer )
+				structer \
+				utils )
 
 FLSDIR_3	= parser/
 FLS_3		= $(addprefix $(FLSDIR_3), \
