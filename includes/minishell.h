@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 22:53:09 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct	s_data
 	int			cd;
 	int			sig;
 	int			read_started;
+	int			*arr;
+	int			*arr_size;
 }				t_data;
 
 extern int		g_read_started;

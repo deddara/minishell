@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 20:22:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 23:16:54 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			f_pars_prepare(t_data *data, int *i)
 	data->inp_arr[0] = NULL;
 }
 
-int				f_word_complete(t_data *data, int *i)
+int				f_word_complete(t_data *data, int *i, int w_ind)
 {
 	if (f_chk_unclosed_quotes(data))
 		return (1);
@@ -82,39 +82,42 @@ int				f_word_complete(t_data *data, int *i)
 		return (1);
 	if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
 		return (1);
-	if (f_process_pars(data, i))
+	if (f_process_pars(data, i, w_ind))
 		return (1);
 	*i += (data->input[*i]) ? 1 : 0;
 	while (ft_isspace(data->input[*i]))
 		(*i)++;
 	data->last_saved = *i;
-	free((data->w) ? data->w : NULL);
+	if (data->w)
+		free(data->w);
 	data->w = NULL;
 	return (0);
 }
 
-int				f_input_validator(t_data *data)
-{
-	int			i;
+/* int				f_input_validator(t_data *data) */
+/* {                                      */
+/*     int			i;                           */
 
-	i = 0;
-	while (data->input[i])
-	{
+/*     i = 0;                             */
+/*     while (data->input[i])             */
+/*     {                                  */
 
-	}
-}
+/*     }                                  */
+/* }                                      */
 
 int				f_pars_input(t_data *data)
 {
 	int			i;
 	int			res;
+	int			w_ind;
 	char		*ptr;
 
-	if (f_input_validator(data))
-	{
-		ft_putstr_fd(data->errstr, 2);
-		return (1);
-	}
+	/* if (f_input_validator(data))       */
+	/* {                                  */
+	/*     ft_putstr_fd(data->errstr, 2); */
+	/*     return (1);                    */
+	/* }                                  */
+	w_count = 0;
 	f_pars_prepare(data, &i);
 	while (i < data->pos)
 	{
@@ -128,7 +131,7 @@ int				f_pars_input(t_data *data)
 				return (1);
 			i++;
 		}
-		if (f_word_complete(data, &i))
+		if (f_word_complete(data, &i, w_ind++))
 			return (1);
 	}
 	data->pos += (data->pars_complete) ? 0 : 1;

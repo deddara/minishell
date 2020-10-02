@@ -6,12 +6,13 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 13:14:03 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 22:41:53 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include <signal.h>
 
 void			f_sigint(void)
 {

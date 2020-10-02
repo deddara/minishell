@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 22:54:25 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void			f_data_init(t_data *data, char **argv)
 	data->errcode = 0;
 	data->slash = 0;
 	data->sig = 0;
+	data->arr = NULL;
+	data->arr_size = 100;
 }
 
 int				f_quit(t_data *data, int exitcode, char *exitstr)
@@ -57,6 +59,11 @@ int				f_quit(t_data *data, int exitcode, char *exitstr)
 	data->errstr = NULL;
 	return (exitcode);
 }
+
+/* int				*f_ind_arr_init(t_data *data) */
+/* {                                    */
+/*     return (0);                      */
+/* }                                    */
 
 void			f_clear_input_data(t_data *data)
 {
@@ -88,6 +95,8 @@ int				main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, (void*)f_sigquit);
 	(void)argc;
 	f_data_init(&data, argv);
+	if (!(data.arr = (int*)malloc(sizeof(int) * arr_size))
+		return (1);
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_quit(&data, 1, "malloc error\n"));
 	data.input = ft_strdup("start :)");
