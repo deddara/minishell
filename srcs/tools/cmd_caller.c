@@ -14,103 +14,14 @@
 #include "structer.h"
 #include <unistd.h>
 #include <stdlib.h>
-#include<stdio.h>
 #include <errno.h>
 #include "libft.h"
 #include "string.h"
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-//static int		execute_one(t_command *cmd, t_data *data)
-//{
-//	pid_t	pid;
-//	pid_t	pid2;
-//	int		status;
-//
-//	pid2 = 1;
-//	if (cmd->redirect)
-//	{
-//		if ((pid = fork()) < 0)
-//			return (1);
-//		if (pid == 0)
-//		{
-//			if ((check_fd(cmd, data)))
-//				exit (errno);
-//			if (cmd->redirect)
-//				write_in_file(cmd);
-//			if (cmd->redirect && cmd->flag2 == 2)
-//				exit(0);
-//			if (!our_command(cmd, data))
-//				exit(0);
-//			cmd_caller(data, cmd->next);
-//			execve(cmd->argv[0], cmd->argv, data->envp);
-//			exit (0);
-//		}
-//		waitpid(pid, &status, 0);
-//		if (cmd->next->pipe)
-//		{
-//			pid2 = fork();
-//			if (pid2 == 0)
-//			{
-//				cmd = cmd->next->next;
-//				cmd_caller(data, cmd);
-//			}
-//		}
-//		waitpid(pid2, &status, 0);
-//		return (0);
-//	}
-//	else if (!is_our_command(cmd, data))
-//	{
-//		our_command(cmd, data);
-//		return (0);
-//	}
-//	if ((pid = fork()) < 0)
-//		return (1);
-//	if (pid == 0)
-//	{
-//		if (!our_command(cmd, data))
-//			exit(0);
-//		execve(cmd->argv[0], cmd->argv, data->envp);
-//		exit (0);
-//	}
-//	waitpid(pid, &status, 0);
-//	return (0);
-//}
-//
-// static int		execute_one(t_command *cmd, t_data *data)
-////{
-////	pid_t	pid;
-////	pid_t	pid2;
-////	int		status;
-////
-////	pid2 = 1;
-////	if ((pid = fork()) < 0)
-////		return (1);
-////	if (pid == 0)
-////	{
-////		if ((check_fd(cmd, data)))
-////			exit (errno);
-////		if (cmd->redirect)
-////			write_in_file(cmd);
-////		if (!our_command(cmd, data))
-////			exit(0);
-////		execve(cmd->argv[0], cmd->argv, data->envp);
-////		exit (0);
-////	}
-////	waitpid(pid, &status, 0);
-////	if (cmd->next->pipe)
-////	{
-////		pid2 = fork();
-////		if (pid2 == 0)
-////		{
-////			cmd = cmd->next->next;
-////			cmd_caller(data, cmd);
-////		}
-////	}
-////	waitpid(pid2, &status, 0);
-////	return (0);
-////}
-static int redirect_in(t_command *cmd, t_data *data, int type)
+
+static int		redirect_in(t_command *cmd, t_data *data, int type)
 {
 	int			errcode;
 
@@ -132,9 +43,10 @@ static int redirect_in(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-static int redirect_out(t_command *cmd, t_data *data, int type)
+static int		redirect_out(t_command *cmd, t_data *data, int type)
 {
-	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC | O_WRONLY, 0644)) < 0)
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_TRUNC\
+	| O_WRONLY, 0644)) < 0)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
@@ -148,9 +60,10 @@ static int redirect_out(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-static int double_redirect_out(t_command *cmd, t_data *data, int type)
+static int		double_redirect_out(t_command *cmd, t_data *data, int type)
 {
-	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND | O_WRONLY, 0644)) < 0)
+	if ((data->fd_f = open(cmd->next->argv[0], O_CREAT | O_APPEND\
+	| O_WRONLY, 0644)) < 0)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
@@ -164,20 +77,41 @@ static int double_redirect_out(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-static void write_in_file(t_command *command, t_command *tmp)
+static void		write_in_file(t_command *command, t_command *tmp)
 {
 	int i;
 
 	i = 1;
 	while (tmp->next->argv[i])
 	{
-		if (!(command->argv = f_strarr_add_elem(command->argv, tmp->next->argv[i])))
+		if (!(command->argv = f_strarr_add_elem(command->argv,\
+		tmp->next->argv[i])))
 			return ;
 		i++;
 	}
 }
 
-static int check_fd(t_command *cmd, t_data *data, int type)
+static int		fd_handler(t_command *tmp, t_data *data, int type)
+{
+	if (tmp->redirect == 1)
+	{
+		if (redirect_out(tmp, data, type))
+			return (1);
+	}
+	else if (tmp->redirect == 3)
+	{
+		if (redirect_in(tmp, data, type))
+			return (1);
+	}
+	else if (tmp->redirect == 2)
+	{
+		if (double_redirect_out(tmp, data, type))
+			return (1);
+	}
+	return (0);
+}
+
+static int		check_fd(t_command *cmd, t_data *data, int type)
 {
 	t_command *tmp;
 
@@ -186,21 +120,8 @@ static int check_fd(t_command *cmd, t_data *data, int type)
 	{
 		while (tmp)
 		{
-			if (tmp->redirect == 1)
-			{
-				if (redirect_out(tmp, data, type))
-					return (1);
-			}
-			else if (tmp->redirect == 3)
-			{
-				if (redirect_in(tmp, data, type))
-					return (1);
-			}
-			else if (tmp->redirect == 2)
-			{
-				if (double_redirect_out(tmp, data, type))
-					return (1);
-			}
+			if (fd_handler(tmp, data, type))
+				return (1);
 			write_in_file(cmd, tmp);
 			if (tmp->next->redirect)
 			{
@@ -213,9 +134,7 @@ static int check_fd(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-
-
-static int	is_our_command(t_command *cmd, t_data *data)
+static int		is_our_command(t_command *cmd, t_data *data)
 {
 	if (!ft_strncmp(cmd->argv[0], "pwd", 3))
 		return (0);
@@ -235,7 +154,7 @@ static int	is_our_command(t_command *cmd, t_data *data)
 		return (1);
 }
 
-static int our_command(t_command *cmd, t_data *data)
+static int		our_command(t_command *cmd, t_data *data)
 {
 	data->fd_f = 1;
 	if (check_fd(cmd, data, 0))
@@ -257,7 +176,7 @@ static int our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
-static int check_for_pipe(t_command **cmd)
+static int		check_for_pipe(t_command **cmd)
 {
 	while (*cmd)
 	{
@@ -268,9 +187,46 @@ static int check_for_pipe(t_command **cmd)
 	return (0);
 }
 
+static void		after_redirect_pipe_h(t_command *cmd, t_data *data)
+{
+	int pid2;
+	int status;
+
+	if (cmd->next && cmd->redirect && check_for_pipe(&cmd))
+	{
+		pid2 = fork();
+		if (pid2 == 0)
+			cmd_caller(data, cmd);
+		waitpid(pid2, &status, 0);
+		data->errcode = f_get_exitcode(status);
+	}
+}
+
+static int		external_func(t_command *cmd, t_data *data)
+{
+	int status;
+	int pid;
+
+	if ((pid = fork()) < 0)
+		return (1);
+	if (pid == 0)
+	{
+		if (cmd->redirect)
+		{
+			if (check_fd(cmd, data, 1))
+				exit(1);
+		}
+		execve(cmd->argv[0], cmd->argv, data->envp);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
+	data->errcode = f_get_exitcode(status);
+	after_redirect_pipe_h(cmd, data);
+	return (0);
+}
+
 static int		execute_one(t_command *cmd, t_data *data)
 {
-	pid_t	pid;
 	pid_t	pid2;
 	int		status;
 
@@ -278,7 +234,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 	if (!is_our_command(cmd, data))
 	{
 		if (cmd->redirect && cmd->flag2 == 2)
-				return(0);
+			return (0);
 		if (our_command(cmd, data))
 			return (1);
 		if (cmd->next && cmd->redirect &&\
@@ -292,30 +248,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 		}
 		return (0);
 	}
-	if ((pid = fork()) < 0)
-		return (1);
-	if (pid == 0)
-	{
-		if (cmd->redirect)
-		{
-			if (check_fd(cmd, data, 1))
-				exit (1);
-		}
-		execve(cmd->argv[0], cmd->argv, data->envp);
-		exit (0);
-	}
-	waitpid(pid, &status, 0);
-	data->errcode = f_get_exitcode(status);
-	if (cmd->next && cmd->redirect &&\
-		check_for_pipe(&cmd))
-	{
-		pid2 = fork();
-		if (pid2 == 0)
-			cmd_caller(data, cmd);
-		waitpid(pid2, &status, 0);
-		data->errcode = f_get_exitcode(status);
-	}
-	return (0);
+	return (external_func(cmd, data));
 }
 
 static void		process_handler(t_command *cmd, t_data *data, int kind)
@@ -326,7 +259,7 @@ static void		process_handler(t_command *cmd, t_data *data, int kind)
 	if (kind == 1)
 		cmd->pipe = 0;
 	cmd_caller(data, cmd);
-	exit (data->errcode);
+	exit(data->errcode);
 }
 
 static int		execute(t_command *cmd, t_data *data)
@@ -354,7 +287,7 @@ static int		execute(t_command *cmd, t_data *data)
 	return (1);
 }
 
-int			cmd_caller(t_data *data, t_command *cmd)
+int				cmd_caller(t_data *data, t_command *cmd)
 {
 	data->counter = 0;
 	if (cmd->pipe == 0)

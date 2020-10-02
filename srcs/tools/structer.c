@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/02 18:00:29 by deddara           #+#    #+#             */
+/*   Updated: 2020/10/02 18:00:30 by deddara          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "structer.h"
 #include <stdio.h>
@@ -5,7 +17,7 @@
 #include <stdlib.h>
 #include "libft.h"
 
-void 				clear_list(t_command *cmd)
+void				clear_list(t_command *cmd)
 {
 	t_command *tmp;
 
@@ -16,13 +28,13 @@ void 				clear_list(t_command *cmd)
 			f_strarr_free(cmd->argv);
 			tmp = cmd;
 			cmd = cmd->next;
-			free (tmp);
+			free(tmp);
 		}
 		cmd = NULL;
 	}
 }
 
-t_command	*create_command_lst(void)
+t_command			*create_command_lst(void)
 {
 	t_command *tmp;
 
@@ -75,7 +87,8 @@ static int			valid_check(t_data *data, int i)
 		return (1);
 	}
 	if (((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>')\
-	&& !data->inp_arr[i + 1]) || (data->inp_arr[0][0] == '<' || data->inp_arr[0][0] == '>'))
+	&& !data->inp_arr[i + 1]) || (data->inp_arr[0][0] == '<' ||\
+	data->inp_arr[0][0] == '>'))
 	{
 		write(2, "syntax error near unexpected token `newline'\n", 45);
 		return (258);
@@ -156,7 +169,7 @@ static int			count_symbols(t_data *data, int i, char symb)
 	return (0);
 }
 
-static int check_for_redir(t_command *cmd)
+static int			check_for_redir(t_command *cmd)
 {
 	t_command *cmd_tmp;
 
@@ -169,6 +182,21 @@ static int check_for_redir(t_command *cmd)
 			return (1);
 		}
 		cmd_tmp = cmd_tmp->next;
+	}
+	return (0);
+}
+
+static int			some_checks(t_data *data, int i)
+{
+	int				err_code;
+
+	if ((err_code = valid_check(data, i)))
+		return (err_code);
+	if (data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '>' \
+		|| data->inp_arr[i][0] == '<')
+	{
+		if (count_symbols(data, i, data->inp_arr[i][0]))
+			return (258);
 	}
 	return (0);
 }
@@ -190,14 +218,8 @@ int					structer(t_data *data, t_command *cmd)
 			i++;
 			continue;
 		}
-		if ((err_code = valid_check(data, i)))
+		if ((err_code = some_checks(data, i)))
 			return (err_code);
-		if (data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '>' \
-		|| data->inp_arr[i][0] == '<')
-		{
-			if (count_symbols(data, i, data->inp_arr[i][0]))
-				return (258);
-		}
 		if ((err_code = struct_handler(data, &cmd_tmp, i)))
 			return (err_code);
 		i++;

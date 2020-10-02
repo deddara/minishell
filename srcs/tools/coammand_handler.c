@@ -16,7 +16,8 @@
 #include <stdlib.h>
 #include "libft.h"
 
-static void check_for_existence(t_command *cmd, char *str, int flag, t_data *data)
+static void		check_for_existence(t_command *cmd, char *str,\
+int flag, t_data *data)
 {
 	if (!ft_strncmp(str, "cd", 3) && flag)
 		data->cd = 1;
@@ -38,11 +39,11 @@ static void check_for_existence(t_command *cmd, char *str, int flag, t_data *dat
 	free(str);
 }
 
-static void to_lowercase(t_command *cmd, t_data *data)
+static void		to_lowercase(t_command *cmd, t_data *data)
 {
-	char *str;
-	int i;
-	int flag;
+	char	*str;
+	int		i;
+	int		flag;
 
 	flag = 0;
 	i = 0;
@@ -62,9 +63,9 @@ static void to_lowercase(t_command *cmd, t_data *data)
 	}
 }
 
-int	command_handler(t_data *data, t_command *cmd)
+int				command_handler(t_data *data, t_command *cmd)
 {
-	t_command *tmp;
+	t_command	*tmp;
 	int			errcode;
 
 	tmp = cmd;
