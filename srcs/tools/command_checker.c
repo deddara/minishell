@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/24 19:34:15 by deddara          ###   ########.fr       */
+/*   Updated: 2020/10/02 16:21:07 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int find_command(char **path_data, t_command *command)
     ft_putstr_fd("minishell: ", 2);
     ft_putstr_fd(command->argv[0], 2);
     ft_putstr_fd(": command not found\n", 2);
-    return (errno);
+    return (127);
 }
 
 int    check_command(t_data *data, t_command *cmd)
@@ -101,13 +101,13 @@ int    check_command(t_data *data, t_command *cmd)
             ft_putstr_fd(": ", 2);
             ft_putstr_fd(strerror(errno), 2);
             ft_putchar_fd('\n', 2);
-            return (errno);
+            return (127);
         }
         return (0);
     }
     if (!(path_p = f_env_find_elem(data->envp, "PATH", "="))) //if path not found (should return error that we didn't find command.
         return (1);
     if (!(path_data = ft_split(path_p, ':')))
-        return (errno);
+        return (1);
     return (find_command(path_data, cmd));
 }

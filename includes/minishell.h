@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 12:24:20 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:21:55 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ int				f_exit(t_data *data, char **argv);
 void			f_sigint(void);
 void			f_sigquit(void);
 int				f_coincidence_char_ind(char *str, char c);
+int				f_get_exitcode(int status);
 
 #endif

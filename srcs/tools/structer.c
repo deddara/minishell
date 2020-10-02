@@ -78,7 +78,7 @@ static int			valid_check(t_data *data, int i)
 	&& !data->inp_arr[i + 1]) || (data->inp_arr[0][0] == '<' || data->inp_arr[0][0] == '>'))
 	{
 		write(2, "syntax error near unexpected token `newline'\n", 45);
-		return (1);
+		return (258);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 17:35:44 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 12:53:20 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:19:19 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ static void to_lowercase(t_command *cmd, t_data *data)
 int	command_handler(t_data *data, t_command *cmd)
 {
 	t_command *tmp;
+	int			errcode;
 
 	tmp = cmd;
-
 	while (tmp)
 	{
 		if (tmp->file)
@@ -76,8 +76,8 @@ int	command_handler(t_data *data, t_command *cmd)
 			continue;
 		}
 		to_lowercase(tmp, data);
-		if (check_command(data, tmp))
-			return (1);
+		if ((errcode = check_command(data, tmp)))
+			return (errcode);
 		tmp = tmp->next;
 	}
 	return (0);

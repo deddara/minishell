@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 10:57:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 16:15:36 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,14 @@ int				main(int argc, char **argv, char **envp)
 		{
 			if (!(command = create_command_lst()))
 				return (1);
-			if (f_pars_input(&data))
+			if (data.errcode = f_pars_input(&data))
 			{
 				ft_putstr_fd(data.errstr, 2);
 				break;
 			}
-			if (structer(&data, command))
+			if (data.errcode = structer(&data, command))
 				continue;
-			if (command_handler(&data, command))
+			if (data.errcode = command_handler(&data, command))
 			{
 				g_read_started = 0;
 				clear_list(command);
