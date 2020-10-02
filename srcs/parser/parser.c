@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 00:28:31 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:07:07 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ int				f_join_to_w(t_data *data, char *str)
 	return (0);
 }
 
-void			f_pars_prepare(t_data *data, int *i)
+int				f_pars_prepare(t_data *data, int *i)
 {
+	if (f_ind_arr_init(data))
+		return (1);
 	*i = data->pos;
 	data->start = data->pos;
 	data->last_saved = data->pos;
@@ -70,6 +72,7 @@ void			f_pars_prepare(t_data *data, int *i)
 	free((data->inp_arr) ? data->inp_arr : NULL);
 	data->inp_arr = (char**)malloc(sizeof(char*) * 1);
 	data->inp_arr[0] = NULL;
+	return (0);
 }
 
 int				f_word_complete(t_data *data, int *i, int *w_ind)

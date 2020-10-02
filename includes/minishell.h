@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 00:30:09 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:10:32 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int				f_chk_unclosed_quotes(t_data *data);
 int				f_quotes_pars(t_data *data, int *i);
 int				f_quote_status(t_data *data);
 void			f_clear_quotes_flags(t_data *data);
+int				f_ind_arr_init(t_data *data);
 int				f_slash_pars(t_data *data, int *i);
 int				f_process_pars(t_data *data, int *i, int *w_ind);
 int				f_dollar_pars(t_data *data, int *i);

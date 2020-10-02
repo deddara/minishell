@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 00:23:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:11:38 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ int				f_data_init(t_data *data, char **argv)
 	data->errcode = 0;
 	data->slash = 0;
 	data->sig = 0;
-	data->arr_size = 100;
-	if (!(data->arr = (char*)malloc(sizeof(char) * data->arr_size)))
+	data->arr = NULL;
+	if (f_ind_arr_init(data))
 		return (1);
-	ft_bzero(data->arr, data->arr_size);
 	return (0);
 }
 
@@ -64,6 +63,17 @@ int				f_quit(t_data *data, int exitcode, char *exitstr)
 		free(data->errstr);
 	data->errstr = NULL;
 	return (exitcode);
+}
+
+int				f_ind_arr_init(t_data *data)
+{
+	data->arr_size = 100;
+	if (data->arr)
+		free(data->arr);
+	if (!(data->arr = (char*)malloc(sizeof(char) * data->arr_size)))
+		return (1);
+	ft_bzero(data->arr, data->arr_size);
+	return (0);
 }
 
 int				f_clear_input_data(t_data *data)
@@ -86,11 +96,8 @@ int				f_clear_input_data(t_data *data)
 	data->last_saved = 0;
 	data->slash = 0;
 	data->sig = 0;
-	data->arr_size = 100;
-	free(data->arr);
-	if (!(data->arr = (char*)malloc(sizeof(char) * data->arr_size)))
+	if (f_ind_arr_init(data))
 		return (1);
-	ft_bzero(data->arr, data->arr_size);
 	return (0);
 }
 
