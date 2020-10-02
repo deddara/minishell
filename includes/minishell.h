@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 22:20:44 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:24:20 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ typedef struct	s_data
 }				t_data;
 
 extern int		g_read_started;
-extern int		g_inp_arr_exist;
-extern int		g_need2free;
 extern int		g_sigquit;
 
 char			**f_strarr_dup(char **src_arr);
@@ -89,5 +87,6 @@ int				f_readline(char **input);
 int				f_exit(t_data *data, char **argv);
 void			f_sigint(void);
 void			f_sigquit(void);
+int				f_coincidence_char_ind(char *str, char c);
 
 #endif
