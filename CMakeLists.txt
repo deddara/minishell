@@ -68,7 +68,6 @@ add_executable(minishell
         srcs/parser/parser.c
         srcs/parser/quotes.c
         srcs/parser/slash_n_process.c
-        srcs/tests/test_strarr.c
         srcs/tools/cmd_caller.c
         srcs/tools/coammand_handler.c
         srcs/tools/command_checker.c
@@ -76,4 +75,5 @@ add_executable(minishell
         srcs/tools/signals.c
         srcs/tools/strarr.c
         srcs/tools/structer.c
+        srcs/tools/utils.c
         srcs/main.c)

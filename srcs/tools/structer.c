@@ -135,7 +135,7 @@ static int			count_symbols(t_data *data, int i, char symb)
 	int j;
 
 	j = 0;
-	while (data->inp_arr[i][0] == symb && data->inp_arr[i])
+	while (data->inp_arr[i] && data->inp_arr[i][0] == symb)
 	{
 		i++;
 		j++;
