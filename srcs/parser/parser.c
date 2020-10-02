@@ -6,12 +6,13 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:07:07 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:56:30 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <unistd.h>
 
 int				f_add_segment(t_data *data, int i)
 {
@@ -83,9 +84,12 @@ int				f_word_complete(t_data *data, int *i, int *w_ind)
 		(*i)++;
 	if (f_add_segment(data, *i))
 		return (1);
-	if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
-		return (1);
-	(*w_ind)++;
+	if (data->w)
+	{
+		if (!(data->inp_arr = f_strarr_add_elem(data->inp_arr, data->w)))
+			return (1);
+		(*w_ind)++;
+	}
 	if (f_process_pars(data, i, w_ind))
 		return (1);
 	*i += (data->input[*i]) ? 1 : 0;
@@ -98,17 +102,6 @@ int				f_word_complete(t_data *data, int *i, int *w_ind)
 	return (0);
 }
 
-/* int				f_input_validator(t_data *data) */
-/* {                                      */
-/*     int			i;                           */
-
-/*     i = 0;                             */
-/*     while (data->input[i])             */
-/*     {                                  */
-
-/*     }                                  */
-/* }                                      */
-
 int				f_pars_input(t_data *data)
 {
 	int			i;
@@ -116,11 +109,6 @@ int				f_pars_input(t_data *data)
 	int			w_ind;
 	char		*ptr;
 
-	/* if (f_input_validator(data))       */
-	/* {                                  */
-	/*     ft_putstr_fd(data->errstr, 2); */
-	/*     return (1);                    */
-	/* }                                  */
 	w_ind = 0;
 	f_pars_prepare(data, &i);
 	while (i < data->pos)

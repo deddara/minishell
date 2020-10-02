@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:11:38 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:56:30 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ int				f_quit(t_data *data, int exitcode, char *exitstr)
 	if (data->w)
 		free(data->w);
 	data->w = NULL;
+	if (data->arr)
+		free(data->arr);
+	data->arr = NULL;
 	ft_putstr_fd(exitstr, (exitcode) ? 2 : 1);
 	if (data->errstr)
 		free(data->errstr);
@@ -76,7 +79,7 @@ int				f_ind_arr_init(t_data *data)
 	return (0);
 }
 
-int				f_clear_input_data(t_data *data)
+void			f_clear_input_data(t_data *data)
 {
 	data->pars_complete = 0;
 	data->inp_arr = f_strarr_free(data->inp_arr);
@@ -96,10 +99,18 @@ int				f_clear_input_data(t_data *data)
 	data->last_saved = 0;
 	data->slash = 0;
 	data->sig = 0;
-	if (f_ind_arr_init(data))
-		return (1);
-	return (0);
 }
+
+/* int				f_input_validator(t_data *data) */
+/* {                                      */
+/*     int			i;                           */
+
+/*     i = 0;                             */
+/*     while (data->input[i])             */
+/*     {                                  */
+
+/*     }                                  */
+/* }                                      */
 
 int				main(int argc, char **argv, char **envp)
 {
@@ -128,6 +139,11 @@ int				main(int argc, char **argv, char **envp)
 			return (f_quit(&data, 0, ""));
 		if (g_sigint)
 			data.errcode = 1;
+	/* if (f_input_validator(data))       */
+	/* {                                  */
+	/*     ft_putstr_fd(data->errstr, 2); */
+	/*     return (1);                    */
+	/* }                                  */
 		while (!data.pars_complete)
 		{
 			if (!(command = create_command_lst()))
@@ -152,8 +168,7 @@ int				main(int argc, char **argv, char **envp)
 			cmd_caller(&data, command);
 			clear_list(command);
 		}
-		if (f_clear_input_data(&data))
-			return (f_quit(&data, 1, "malloc error"));
+		f_clear_input_data(&data);
 	}
 	return (f_quit(&data, 0, ""));
 }

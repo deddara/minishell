@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:28:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 00:03:58 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 01:53:33 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int				f_process_pars(t_data *data, int *i, int *w_ind)
 			if (f_ind_arr_realloc(data))
 				return (1);
 		}
-		data->arr[*w_ind] = 1;
+		data->arr[*w_ind] = '1';
 		(*w_ind)++;
 	}
 	return (0);
