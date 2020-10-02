@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 20:22:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/02 23:25:48 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,16 @@ int				f_word_complete(t_data *data, int *i)
 	return (0);
 }
 
-int				f_input_validator(t_data *data)
-{
-	int			i;
+/* int				f_input_validator(t_data *data) */
+/* {                                      */
+/*     int			i;                           */
 
-	i = 0;
-	while (data->input[i])
-	{
+/*     i = 0;                             */
+/*     while (data->input[i])             */
+/*     {                                  */
 
-	}
-}
+/*     }                                  */
+/* }                                      */
 
 int				f_pars_input(t_data *data)
 {
@@ -110,11 +110,11 @@ int				f_pars_input(t_data *data)
 	int			res;
 	char		*ptr;
 
-	if (f_input_validator(data))
-	{
-		ft_putstr_fd(data->errstr, 2);
-		return (1);
-	}
+	/* if (f_input_validator(data))       */
+	/* {                                  */
+	/*     ft_putstr_fd(data->errstr, 2); */
+	/*     return (1);                    */
+	/* }                                  */
 	f_pars_prepare(data, &i);
 	while (i < data->pos)
 	{
