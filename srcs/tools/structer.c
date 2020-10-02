@@ -148,9 +148,9 @@ static int			count_symbols(t_data *data, int i, char symb)
 	}
 	if (j > 1)
 	{
-		write(2, "syntax error near unexpected token ", 35);
+		write(2, "syntax error near unexpected token `", 36);
 		write(2, &symb, 1);
-		write(2, "\n", 1);
+		write(2, "'\n", 2);
 		return (258);
 	}
 	return (0);
@@ -182,7 +182,7 @@ int					structer(t_data *data, t_command *cmd)
 	cmd_tmp = cmd;
 	i = 0;
 	if (!(data->inp_arr[0]))
-		return (2);
+		return (5);
 	while (data->inp_arr[i])
 	{
 		if (check_for_redir(cmd))
