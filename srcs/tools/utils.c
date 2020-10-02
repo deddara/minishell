@@ -24,17 +24,18 @@ int				f_coincidence_char_ind(char *str, char c)
 
 int				f_get_exitcode(int status)
 {
-	int			sig;
+	// int			sig;
 
-	if (WIFSIGNALED(status))
-	{
-		if ((sig = WTERMSIG(status)) == SIGQUIT)
-		{
-			ft_putstr_fd("Quit:\t", 2);
-			ft_putnbr_fd(sig, 2);
-			ft_putchar_fd('\n', 2);
-		}
-		return (128 + sig);
-	}
-	return (WEXITSTATUS(status));
+	// if (WIFSIGNALED(status))
+	// {
+	// 	if ((sig = WTERMSIG(status)) == SIGQUIT)
+	// 	{
+	// 		ft_putstr_fd("Quit:\t", 2);
+	// 		ft_putnbr_fd(sig, 2);
+	// 		ft_putchar_fd('\n', 2);
+	// 	}
+	// 	return (128 + sig);
+	// }
+	// return (WEXITSTATUS(status));
+	return (status);
 }
