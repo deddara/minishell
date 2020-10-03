@@ -20,6 +20,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+
+
 static int		redirect_in(t_command *cmd, t_data *data, int type)
 {
 	int			errcode;
@@ -175,30 +177,87 @@ static int		our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
-static int		check_for_pipe(t_command **cmd)
+static int		check_for_pipe(t_command *cmd)
 {
-	while (*cmd)
+	t_command *tmp;
+
+	tmp = cmd;
+	while (tmp)
 	{
-		if ((*cmd)->pipe)
+		if ((tmp)->pipe)
 			return (1);
-		(*cmd) = (*cmd)->next;
+		(tmp) = (tmp)->next;
 	}
 	return (0);
 }
 
-static void		after_redirect_pipe_h(t_command *cmd, t_data *data)
-{
-	int pid2;
-	int status;
+//static void		after_redirect_pipe_h(t_command *cmd, t_data *data)
+//{
+//	int pid2;
+//	int status;
+//
+//	if (cmd->next && cmd->redirect && check_for_pipe(cmd))
+//	{
+//		pid2 = fork();
+//		if (pid2 == 0)
+//			cmd_caller(data, cmd);
+//		waitpid(pid2, &status, 0);
+//		data->errcode = f_get_exitcode(status);
+//	}
+//}
 
-	if (cmd->next && cmd->redirect && check_for_pipe(&cmd))
+static void		process_handler(t_command *cmd, t_data *data, int kind)
+{
+	dup2(data->fd[kind], kind);
+	close(data->fd[0]);
+	close(data->fd[1]);
+	if (kind == 1)
+		cmd->pipe = 0;
+	cmd_caller(data, cmd);
+	exit(data->errcode);
+}
+
+static int		execute2(t_command *cmd, t_command *cmd2, t_data *data)
+{
+	pid_t		pid_1;
+	pid_t		pid_2;
+	int			status_1;
+	int			status_2;
+
+	if (pipe(data->fd) == -1)
+		return (1);
+	if ((pid_1 = fork()) < 0)
+		return (1);
+	if (pid_1 == 0)
+		process_handler(cmd, data, 1);
+	if ((pid_2 = fork()) < 0)
+		return (1);
+	if (pid_2 == 0)
+		process_handler(cmd2, data, 0);
+	close(data->fd[0]);
+	close(data->fd[1]);
+	waitpid(pid_1, &status_1, 0);
+	waitpid(pid_2, &status_2, 0);
+	data->errcode = f_get_exitcode(status_2);
+	return (1);
+}
+
+static int empty_pipe_handler(t_command *cmd, t_data *data)
+{
+	t_command *tmp;
+
+	tmp = cmd;
+	while (tmp)
 	{
-		pid2 = fork();
-		if (pid2 == 0)
-			cmd_caller(data, cmd);
-		waitpid(pid2, &status, 0);
-		data->errcode = f_get_exitcode(status);
+		if ((tmp)->pipe)
+		{
+			cmd->redirect = 0;
+			execute2(cmd, tmp->next, data);
+			return (0);
+		}
+		(tmp) = (tmp)->next;
 	}
+	return (0);
 }
 
 static int		external_func(t_command *cmd, t_data *data)
@@ -215,12 +274,17 @@ static int		external_func(t_command *cmd, t_data *data)
 			if (check_fd(cmd, data, 1))
 				exit(1);
 		}
+		if (cmd->next && cmd->redirect && check_for_pipe(cmd))
+		{
+			empty_pipe_handler(cmd, data);
+			exit(0);
+		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
 	data->errcode = f_get_exitcode(status);
-	after_redirect_pipe_h(cmd, data);
+//	after_redirect_pipe_h(cmd, data);
 	return (0);
 }
 
@@ -237,7 +301,7 @@ static int		execute_one(t_command *cmd, t_data *data)
 		if (our_command(cmd, data))
 			return (1);
 		if (cmd->next && cmd->redirect &&\
-		check_for_pipe(&cmd))
+		check_for_pipe(cmd))
 		{
 			pid2 = fork();
 			if (pid2 == 0)
@@ -250,16 +314,6 @@ static int		execute_one(t_command *cmd, t_data *data)
 	return (external_func(cmd, data));
 }
 
-static void		process_handler(t_command *cmd, t_data *data, int kind)
-{
-	dup2(data->fd[kind], kind);
-	close(data->fd[0]);
-	close(data->fd[1]);
-	if (kind == 1)
-		cmd->pipe = 0;
-	cmd_caller(data, cmd);
-	exit(data->errcode);
-}
 
 static int		execute(t_command *cmd, t_data *data)
 {
