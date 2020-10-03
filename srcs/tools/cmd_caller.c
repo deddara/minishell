@@ -177,34 +177,45 @@ static int		our_command(t_command *cmd, t_data *data)
 	return (0);
 }
 
-static int		check_for_pipe(t_command *cmd)
+static int		check_for_pipe(t_command *cmd, int type)
 {
 	t_command *tmp;
 
 	tmp = cmd;
-	while (tmp)
+	if (!type)
 	{
-		if ((tmp)->pipe)
-			return (1);
-		(tmp) = (tmp)->next;
+		while (tmp)
+		{
+			if ((tmp)->pipe)
+				return (1);
+			(tmp) = (tmp)->next;
+		}
+	}
+	else
+	{
+		while (tmp)
+		{
+			if ((tmp)->redirect == 3)
+				return (1);
+			(tmp) = (tmp)->next;
+		}
 	}
 	return (0);
 }
 
-//static void		after_redirect_pipe_h(t_command *cmd, t_data *data)
-//{
-//	int pid2;
-//	int status;
-//
-//	if (cmd->next && cmd->redirect && check_for_pipe(cmd))
-//	{
-//		pid2 = fork();
-//		if (pid2 == 0)
-//			cmd_caller(data, cmd);
-//		waitpid(pid2, &status, 0);
-//		data->errcode = f_get_exitcode(status);
-//	}
-//}
+static void		after_redirect_pipe_h(t_command *cmd, t_data *data)
+{
+
+	while (cmd)
+	{
+		if (cmd->pipe)
+		{
+			cmd_caller(data, cmd);
+			return ;
+		}
+		cmd = cmd->next;
+	}
+}
 
 static void		process_handler(t_command *cmd, t_data *data, int kind)
 {
@@ -260,10 +271,21 @@ static int empty_pipe_handler(t_command *cmd, t_data *data)
 	return (0);
 }
 
+static int		check_redirect(t_command *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->redirect == 1 || cmd->redirect == 2)
+			return (1);
+		cmd = cmd->next;
+	}
+	return (0);
+}
+
 static int		external_func(t_command *cmd, t_data *data)
 {
 	int status;
-	int pid;
+	pid_t pid;
 
 	if ((pid = fork()) < 0)
 		return (1);
@@ -274,24 +296,25 @@ static int		external_func(t_command *cmd, t_data *data)
 			if (check_fd(cmd, data, 1))
 				exit(1);
 		}
-		if (cmd->next && cmd->redirect && check_for_pipe(cmd))
+		if (cmd->next && cmd->redirect == 3 && !check_redirect(cmd) && check_for_pipe(cmd, 0))
 		{
 			empty_pipe_handler(cmd, data);
-			exit(0);
+			exit(data->errcode);
 		}
 		execve(cmd->argv[0], cmd->argv, data->envp);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
 	data->errcode = f_get_exitcode(status);
-//	after_redirect_pipe_h(cmd, data);
+	if (cmd->redirect && !check_for_pipe(cmd, 1) && check_for_pipe(cmd,0))
+	{
+		after_redirect_pipe_h(cmd, data);
+	}
 	return (0);
 }
 
-static int		execute_one(t_command *cmd, t_data *data)
+int		execute_one(t_command *cmd, t_data *data)
 {
-	pid_t	pid2;
-	int		status;
 
 	data->fd_f = 1;
 	if (!is_our_command(cmd, data))
@@ -301,14 +324,8 @@ static int		execute_one(t_command *cmd, t_data *data)
 		if (our_command(cmd, data))
 			return (1);
 		if (cmd->next && cmd->redirect &&\
-		check_for_pipe(cmd))
-		{
-			pid2 = fork();
-			if (pid2 == 0)
-				cmd_caller(data, cmd);
-			waitpid(pid2, &status, 0);
-			data->errcode = f_get_exitcode(status);
-		}
+		check_for_pipe(cmd, 0))
+			after_redirect_pipe_h(cmd, data);
 		return (0);
 	}
 	return (external_func(cmd, data));

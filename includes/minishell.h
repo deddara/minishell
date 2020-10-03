@@ -42,6 +42,7 @@ typedef struct	s_data
 	int					read_started;
 	char				*arr;
 	int					arr_size;
+	int 				in_fd_exst;
 }				t_data;
 
 typedef struct	s_command
@@ -107,5 +108,5 @@ int				f_get_exitcode(int status);
 int				f_readline(char **input);
 void			f_sigint(void);
 void			f_sigquit(void);
-
+int				execute_one(t_command *cmd, t_data *data);
 #endif
