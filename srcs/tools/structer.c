@@ -17,20 +17,6 @@
 #include <stdlib.h>
 #include "libft.h"
 
-static int check_real(int i, t_data *data)
-{
-	int j;
-
-	j = 0;
-	while (data->arr[j])
-	{
-		if (data->arr[j] == i)
-			return (1);
-		j++;
-	}
-	return (0);
-}
-
 void				clear_list(t_command *cmd)
 {
 	t_command *tmp;
@@ -90,23 +76,22 @@ static int			pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 
 static int			valid_check(t_data *data, int i)
 {
-	if (data->inp_arr[0][0] == '|')
+	if (data->inp_arr[0][0] == '|' && data->arr[0] == '1')
 	{
 		write(2, "syntax error near unexpected token `|'\n", 39);
 		return (258);
 	}
-	if (data->inp_arr[i][0] == '|' && !data->inp_arr[i + 1])
+	if (!ft_strncmp(data->inp_arr[i], "|", 2) && !data->inp_arr[i + 1] && data->arr[i] == '1')
 	{
 		write(2, "undefined behavior: multiple lines\n", 35);
 		return (1);
 	}
-	if (((data->inp_arr[i][0] == '<' || data->inp_arr[i][0] == '>')\
-	&& !data->inp_arr[i + 1]) || (data->inp_arr[0][0] == '<' ||\
-	data->inp_arr[0][0] == '>'))
-	{
-		write(2, "syntax error near unexpected token `newline'\n", 45);
-		return (258);
-	}
+	if (((!ft_strncmp(data->inp_arr[i], "<", 2) || !ft_strncmp(data->inp_arr[i], ">", 2)) && !data->inp_arr[i + 1] && data->arr[i] == '1')
+	|| ((!ft_strncmp(data->inp_arr[0], "<", 2) || !ft_strncmp(data->inp_arr[0], ">", 2)) && data->arr[i] == '1'))
+    {
+        write(2, "syntax error near unexpected token `newline'\n", 45);
+        return (258);
+    }
 	return (0);
 }
 
@@ -137,13 +122,13 @@ static int			struct_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	int err_code;
 
-	if (data->inp_arr[i][0] == '|' && !check_real(i, data) && ft_strlen(data->inp_arr[i]) == 1)
+	if (!ft_strncmp(data->inp_arr[i], "|", 2) && data->arr[i] == '1')
 	{
 		if (pipe_handler(data, cmd_tmp, i))
 			return (1);
 	}
-	else if (((data->inp_arr[i][0] == '<' && ft_strlen(data->inp_arr[i]) == 1) || \
-		!ft_strncmp(data->inp_arr[i], ">", 2) || !ft_strncmp(data->inp_arr[i], ">>", 3)) && !check_real(i, data))
+	else if ((!ft_strncmp(data->inp_arr[i], "<", 2) || \
+		!ft_strncmp(data->inp_arr[i], ">", 2) || !ft_strncmp(data->inp_arr[i], ">>", 3)) && data->arr[i] == '1')
 	{
 		if ((err_code = redirect_handler(data, cmd_tmp, i)))
 			return (err_code);
@@ -206,8 +191,8 @@ static int			some_checks(t_data *data, int i)
 
 	if ((err_code = valid_check(data, i)))
 		return (err_code);
-	if (((data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '<') && ft_strlen(data->inp_arr[i]) == 1) ||
-	 !ft_strncmp(data->inp_arr[i], ">>", 3) || !ft_strncmp(data->inp_arr[i], ">", 2))
+	if ((((data->inp_arr[i][0] == '|' || data->inp_arr[i][0] == '<') && ft_strlen(data->inp_arr[i]) == 1) ||
+	 !ft_strncmp(data->inp_arr[i], ">>", 3) || !ft_strncmp(data->inp_arr[i], ">", 2)) && data->arr[i] == '1')
 	{
 		if (count_symbols(data, i, data->inp_arr[i][0]))
 			return (258);
