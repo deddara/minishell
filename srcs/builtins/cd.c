@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/09/22 22:07:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 12:32:37 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include <string.h>
 #include <unistd.h>
 
-static void old_pwd(t_data *data)
+static void		old_pwd(t_data *data)
 {
-	char	*old_p;
-	char 	*tmp;
+	char		*old_p;
+	char		*tmp;
 
 	if (!(old_p = getcwd(NULL, 0)))
 		return ;
@@ -33,10 +33,10 @@ static void old_pwd(t_data *data)
 	free(old_p);
 }
 
-static void new_pwd(t_data *data)
+static void		new_pwd(t_data *data)
 {
-	char *new_p;
-	char *tmp;
+	char		*new_p;
+	char		*tmp;
 
 	if (!(new_p = getcwd(NULL, 0)))
 		return ;
@@ -50,7 +50,7 @@ static void new_pwd(t_data *data)
 	free(new_p);
 }
 
-static int	path_error(char *path)
+static int		path_error(char *path)
 {
 	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(path, 2);
@@ -60,34 +60,10 @@ static int	path_error(char *path)
 	return (errno);
 }
 
-char		*f_env_find_elem(char **src_arr, char *str, char *endcmp)
+static int		tilda_handle(char *path, t_data *data)
 {
-	int			i;
-	int			len;
-	char		*coincidence;
-
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	i = -1;
-	while (src_arr[++i])
-	{
-		if ((coincidence = ft_strnstr(src_arr[i], str, len)) && \
-			coincidence == src_arr[i] && (ft_strchr(endcmp, src_arr[i][len]) \
-			&& !(!src_arr[i][len] && ft_strlen(endcmp))))
-		{
-			while (*coincidence != '=')
-				coincidence++;
-			return (++coincidence);
-		}
-	}
-	return (NULL);
-}
-
-static int	tilda_handle(char *path, t_data *data)
-{
-	char *new_path;
-	char *home;
+	char		*new_path;
+	char		*home;
 
 	if (!(home = f_env_find_elem(data->envp, "HOME", "=")))
 	{
@@ -109,9 +85,9 @@ static int	tilda_handle(char *path, t_data *data)
 	return (0);
 }
 
-int			f_cd(char *path, t_data *data)
+int				f_cd(char *path, t_data *data)
 {
-	char *home;
+	char		*home;
 
 	if (!path)
 	{

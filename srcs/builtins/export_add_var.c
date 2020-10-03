@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 19:07:05 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 13:15:24 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static char		*take_key(char *argv)
 	return (tmp);
 }
 
-int				f_export_assist(t_data *data, char **argv, int i, char *key)
+static int		f_var_rem_or_replace(t_data *data, char **argv, \
+										int i, char *key)
 {
 	char		*val;
 	char		*val2;
@@ -63,34 +64,42 @@ int				f_export_assist(t_data *data, char **argv, int i, char *key)
 	return (0);
 }
 
-int				f_export_add_var(t_data *data, char **argv)
+static int		f_check_var_exist(t_data *data, char **argv, int i)
 {
-	int			i;
 	char		*key;
 	int			errcode;
 
-	i = 0;
-	while (argv[i])
+	key = take_key(argv[i]);
+	if (f_strarr_find_elem(data->envp, key, "") != -1)
+	{
+		if (!ft_strrchr(argv[i], '='))
+			return (1);
+		else
+			data->envp = f_strarr_rem_elem(data->envp, key, "");
+	}
+	else if (f_strarr_find_elem(data->envp, key, "=") != -1)
+	{
+		if ((errcode = f_var_rem_or_replace(data, argv, i, key)))
+			return (errcode);
+	}
+	return (0);
+}
+
+int				f_export_add_var(t_data *data, char **argv)
+{
+	int			i;
+	int			errcode;
+
+	i = -1;
+	while (argv[++i])
 	{
 		if (ft_strchr(argv[i], ' ') || !ft_strncmp(argv[i], "=", 1) \
 				|| !ft_isalpha(argv[i][0]))
 			return (f_export_print_err(argv, i));
-		key = take_key(argv[i]);
-		if (f_strarr_find_elem(data->envp, key, "") != -1)
-		{
-			if (!ft_strrchr(argv[i], '='))
-				return (0);
-			else
-				data->envp = f_strarr_rem_elem(data->envp, key, "");
-		}
-		else if (f_strarr_find_elem(data->envp, key, "=") != -1)
-		{
-			if ((errcode = f_export_assist(data, argv, i, key)))
-				return (errcode - 1);
-		}
+		if ((errcode = f_check_var_exist(data, argv, i)))
+			return (errcode - 1);
 		if (!(data->envp = f_strarr_add_elem(data->envp, argv[i])))
 			return (1);
-		i++;
 	}
 	return (0);
 }
