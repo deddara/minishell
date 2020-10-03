@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:27:49 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 16:45:51 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 12:03:26 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static int		f_dollar_pars_name_exist(t_data *data, int i, int k)
 		if (!(env_val = ft_strdup((ft_strchr(data->envp[index], '=') + 1))) \
 			|| f_join_to_w(data, env_val))
 			return (1);
-		free((env_val) ? env_val : NULL);
+		free(env_val);
 	}
 	data->last_saved = i;
-	free((name) ? name : NULL);
+	free(name);
 	return (2);
 }
 
@@ -60,7 +60,7 @@ static int		f_dollar_question_or_zero(t_data *data, int *i)
 			return (1);
 		(*i)++;
 		data->last_saved = *i;
-		free((num) ? num : NULL);
+		free(num);
 	}
 	else
 	{

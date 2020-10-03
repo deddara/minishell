@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:10:32 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 11:25:01 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void			clear_list(t_command *cmd);
 int             check_command(t_data *data, t_command *cmd);
 int				command_handler(t_data *data, t_command *cmd);
 
+int				f_input_validator(t_data *data);
 int				f_pars_input(t_data *data);
 int				f_add_segment(t_data *data, int i);
 int				f_join_to_w(t_data *data, char *str);
@@ -80,6 +81,7 @@ int				f_word_chks(t_data *data, int *i);
 int				f_chk_unclosed_quotes(t_data *data);
 int				f_quotes_pars(t_data *data, int *i);
 int				f_quote_status(t_data *data);
+void			f_clear_input_data(t_data *data);
 void			f_clear_quotes_flags(t_data *data);
 int				f_ind_arr_init(t_data *data);
 int				f_slash_pars(t_data *data, int *i);

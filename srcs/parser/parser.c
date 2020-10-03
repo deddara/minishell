@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:56:30 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 12:05:43 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int				f_join_to_w(t_data *data, char *str)
 		if (!(data->w = ft_strjoin(data->w, str)))
 			return (1);
 	}
-	free(w_tmp);
+	if (w_tmp)
+		free(w_tmp);
 	w_tmp = NULL;
 	return (0);
 }
@@ -70,7 +71,8 @@ int				f_pars_prepare(t_data *data, int *i)
 							&& !data->input[*i + 1])) ? 1 : 0;
 	data->pos = *i;
 	*i = data->start;
-	free((data->inp_arr) ? data->inp_arr : NULL);
+	if (data->inp_arr)
+		free(data->inp_arr);
 	data->inp_arr = (char**)malloc(sizeof(char*) * 1);
 	data->inp_arr[0] = NULL;
 	return (0);

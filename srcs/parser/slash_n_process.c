@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:28:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:53:33 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 12:06:47 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ int				f_ind_arr_realloc(t_data *data)
 	ft_bzero(tmp, data->arr_size + 100);
 	while (++i < data->arr_size)
 		tmp[i] = data->arr[i];
-	free(data->arr);
+	if (data->arr)
+		free(data->arr);
 	data->arr = tmp;
 	data->arr_size += 100;
 	return (0);

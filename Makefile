@@ -6,7 +6,7 @@
 #    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/10/02 12:29:34 by awerebea         ###   ########.fr        #
+#    Updated: 2020/10/03 10:42:58 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ FLS_3		= $(addprefix $(FLSDIR_3), \
 				checks \
 				dollar \
 				dollar_pars_prepare \
+				input_validator \
 				parser \
 				quotes \
 				slash_n_process )

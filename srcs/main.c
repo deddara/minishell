@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 01:56:30 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 12:01:09 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,6 @@ void			f_clear_input_data(t_data *data)
 	data->sig = 0;
 }
 
-/* int				f_input_validator(t_data *data) */
-/* {                                      */
-/*     int			i;                           */
-
-/*     i = 0;                             */
-/*     while (data->input[i])             */
-/*     {                                  */
-
-/*     }                                  */
-/* }                                      */
-
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
@@ -122,7 +111,7 @@ int				main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, (void*)f_sigquit);
 	(void)argc;
 	if (f_data_init(&data, argv))
-		return (f_quit(&data, 1, "malloc error"));
+		return (f_quit(&data, 1, "malloc error\n"));
 	if (!(data.envp = f_strarr_dup(envp)))
 		return (f_quit(&data, 1, "malloc error\n"));
 	data.input = ft_strdup("start :)");
@@ -139,11 +128,8 @@ int				main(int argc, char **argv, char **envp)
 			return (f_quit(&data, 0, ""));
 		if (g_sigint)
 			data.errcode = 1;
-	/* if (f_input_validator(data))       */
-	/* {                                  */
-	/*     ft_putstr_fd(data->errstr, 2); */
-	/*     return (1);                    */
-	/* }                                  */
+		if (f_input_validator(&data))
+			continue;
 		while (!data.pars_complete)
 		{
 			if (!(command = create_command_lst()))
