@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 11:25:01 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 13:49:16 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		        f_unset(t_data *data, char **argv);
 void			f_env(int fd, t_data *data);
 void			f_echo(char **argv, int fd);
 int			    f_export(t_data *data, char **argv, int fd);
-int				f_pars_input(t_data *data);
+int				f_export_add_var(t_data *data, char **argv);
 int				structer(t_data *data, t_command *cmd);
 void			clear_list(t_command *cmd);
 int             check_command(t_data *data, t_command *cmd);

@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 12:14:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 12:33:13 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 13:20:27 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,32 @@ char			*f_env_find_elem(char **src_arr, char *str, char *endcmp)
 		}
 	}
 	return (NULL);
+}
+
+int				check_for_equal(char **words)
+{
+	int			i;
+	int			j;
+	int			flag;
+
+	flag = 0;
+	i = 0;
+	while (words[i])
+	{
+		j = 0;
+		flag = 0;
+		while (words[i][j])
+		{
+			if (words[i][j] == '=')
+				flag = 1;
+			j++;
+		}
+		if (!flag)
+		{
+			ft_putstr_fd("export: not a valid identifier\n", 2);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }

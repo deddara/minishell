@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 13:15:24 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 13:45:34 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int		f_export_print_err(char **argv, int i)
 	return (1);
 }
 
-static char		*take_key(char *argv)
+static char		*f_export_take_key(char *argv)
 {
 	int			i;
 	int			count;
@@ -41,7 +41,7 @@ static char		*take_key(char *argv)
 	return (tmp);
 }
 
-static int		f_var_rem_or_replace(t_data *data, char **argv, \
+static int		f_var_rem_or_repl(t_data *data, char **argv, \
 										int i, char *key)
 {
 	char		*val;
@@ -69,7 +69,7 @@ static int		f_check_var_exist(t_data *data, char **argv, int i)
 	char		*key;
 	int			errcode;
 
-	key = take_key(argv[i]);
+	key = f_export_take_key(argv[i]);
 	if (f_strarr_find_elem(data->envp, key, "") != -1)
 	{
 		if (!ft_strrchr(argv[i], '='))
@@ -79,7 +79,7 @@ static int		f_check_var_exist(t_data *data, char **argv, int i)
 	}
 	else if (f_strarr_find_elem(data->envp, key, "=") != -1)
 	{
-		if ((errcode = f_var_rem_or_replace(data, argv, i, key)))
+		if ((errcode = f_var_rem_or_repl(data, argv, i, key)))
 			return (errcode);
 	}
 	return (0);
