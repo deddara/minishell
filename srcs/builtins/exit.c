@@ -6,12 +6,11 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 17:12:45 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/01 12:48:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 14:13:42 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structer.h"
 #include "libft.h"
 #include <stdlib.h>
 

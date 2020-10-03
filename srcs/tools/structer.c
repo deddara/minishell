@@ -6,12 +6,11 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:00:29 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/02 18:00:30 by deddara          ###   ########.fr       */
+/*   Updated: 2020/10/03 14:12:39 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structer.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
