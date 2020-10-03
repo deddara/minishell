@@ -6,18 +6,17 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/02 16:21:07 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 14:21:28 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <sys/errno.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 
-static int			check_existence(char *c_path)
+static int		check_existence(char *c_path)
 {
 	if (open(c_path, O_RDONLY) == -1)
 	{
@@ -26,7 +25,7 @@ static int			check_existence(char *c_path)
 	return (0);
 }
 
-static int			new_path_create(char *c_path, t_command *command)
+static int		new_path_create(char *c_path, t_command *command)
 {
 	if (!ft_strncmp(command->argv[0], "pwd", 3) \
 	|| !ft_strncmp(command->argv[0], "echo", 4) ||\
@@ -42,7 +41,7 @@ static int			new_path_create(char *c_path, t_command *command)
 	return (0);
 }
 
-static int			error_print(t_command *command)
+static int		error_print(t_command *command)
 {
 	if ((!ft_strncmp(command->argv[0], "cd", 2) && \
 	ft_strlen(command->argv[0]) == 2) || \
@@ -59,11 +58,11 @@ static int			error_print(t_command *command)
 	return (127);
 }
 
-static int			find_command(char **path_data, t_command *command)
+static int		find_command(char **path_data, t_command *command)
 {
-	int		i;
-	char	*tmp;
-	char	*c_path;
+	int			i;
+	char		*tmp;
+	char		*c_path;
 
 	c_path = NULL;
 	i = 0;
@@ -83,10 +82,10 @@ static int			find_command(char **path_data, t_command *command)
 	return (error_print(command));
 }
 
-int					check_command(t_data *data, t_command *cmd)
+int				check_command(t_data *data, t_command *cmd)
 {
-	char	*path_p;
-	char	**path_data;
+	char		*path_p;
+	char		**path_data;
 
 	if (cmd->argv[0][0] == '/')
 	{

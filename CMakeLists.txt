@@ -8,7 +8,6 @@ include_directories(libft/includes)
 
 add_executable(minishell
         includes/minishell.h
-        includes/structer.h
         libft/includes/libft.h
         libft/srcs/lists/ft_lstadd_back.c
         libft/srcs/lists/ft_lstadd_front.c
@@ -66,12 +65,13 @@ add_executable(minishell
         srcs/parser/checks.c
         srcs/parser/dollar.c
         srcs/parser/dollar_pars_prepare.c
+        srcs/parser/input_validator.c
         srcs/parser/parser.c
         srcs/parser/quotes.c
         srcs/parser/slash_n_process.c
         srcs/tools/cmd_caller.c
-        srcs/tools/coammand_handler.c
         srcs/tools/command_checker.c
+        srcs/tools/command_handler.c
         srcs/tools/readline.c
         srcs/tools/signals.c
         srcs/tools/strarr.c

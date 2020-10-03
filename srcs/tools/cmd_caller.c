@@ -6,12 +6,11 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:41:13 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/02 17:09:19 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/03 14:11:10 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structer.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>

@@ -6,7 +6,7 @@
 #    By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/19 22:18:35 by awerebea          #+#    #+#              #
-#    Updated: 2020/10/03 13:50:02 by awerebea         ###   ########.fr        #
+#    Updated: 2020/10/03 14:11:45 by awerebea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,8 @@ FLS_1		= $(addprefix $(FLSDIR_1), \
 FLSDIR_2	= tools/
 FLS_2		= $(addprefix $(FLSDIR_2), \
 				cmd_caller \
-				coammand_handler \
 				command_checker \
+				command_handler \
 				readline \
 				signals \
 				strarr \
