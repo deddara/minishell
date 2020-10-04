@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/03 14:16:15 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 12:42:38 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@ static void		sorter(char **sorted_env, int j)
 {
 	char		*tmp;
 
-	if (!(tmp = ft_strdup(sorted_env[j])))
-		return ;
-	free(sorted_env[j]);
-	if (!(sorted_env[j] = ft_strdup(sorted_env[j + 1])))
-		return ;
-	free(sorted_env[j + 1]);
-	if (!(sorted_env[j + 1] = ft_strdup(tmp)))
-		return ;
-	free(tmp);
+	tmp = sorted_env[j];
+	sorted_env[j] = sorted_env[j + 1];
+	sorted_env[j + 1] = tmp;
 }
 
 static void		sort_list(char **sorted_env)
