@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 12:14:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 13:20:27 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 14:18:50 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 int				f_coincidence_char_ind(char *str, char c)
 {
-
 	char	*coincidence;
 
 	return ((coincidence = ft_strchr(str, c)) ? coincidence - str : -1);
@@ -89,4 +88,21 @@ int				check_for_equal(char **words)
 		i++;
 	}
 	return (0);
+}
+
+int				f_quit(t_data *data, int exitcode, char *exitstr)
+{
+	data->envp = f_strarr_free(data->envp);
+	data->inp_arr = f_strarr_free(data->inp_arr);
+	if (data->input)
+		free(data->input);
+	data->input = NULL;
+	if (data->w)
+		free(data->w);
+	data->w = NULL;
+	if (data->arr)
+		free(data->arr);
+	data->arr = NULL;
+	ft_putstr_fd(exitstr, (exitcode) ? 2 : 1);
+	return (exitcode);
 }

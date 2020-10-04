@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:27:49 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 12:03:26 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 14:00:27 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,6 @@ static int		f_dollar_pars_name_exist(t_data *data, int i, int k)
 	data->last_saved = i;
 	free(name);
 	return (2);
-}
-
-static int		f_double_dollar_err(t_data *data)
-{
-	if (!(data->errstr = ft_strdup("undefined behavior: command '$$' not \
-supported\n")))
-		return (1);
-	return (1);
 }
 
 static int		f_dollar_question_or_zero(t_data *data, int *i)
@@ -92,7 +84,10 @@ int				f_dollar_pars(t_data *data, int *i)
 		if (k)
 			return (f_dollar_pars_name_exist(data, *i, k));
 		if (data->input[*i] == '$')
-			return (f_double_dollar_err(data));
+		{
+			ft_putstr_fd("undefined behavior: command '$$' not supported\n", 2);
+			return (1);
+		}
 		else if (ft_strchr("0?", data->input[*i]))
 			return (f_dollar_question_or_zero(data, i));
 		else if (!data->input[*i] || !ft_strchr("\'\"", data->input[*i]) \

@@ -6,26 +6,21 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 23:45:37 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/03 14:16:15 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 13:16:46 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <unistd.h>
 
 static void		sorter(char **sorted_env, int j)
 {
 	char		*tmp;
 
-	if (!(tmp = ft_strdup(sorted_env[j])))
-		return ;
-	free(sorted_env[j]);
-	if (!(sorted_env[j] = ft_strdup(sorted_env[j + 1])))
-		return ;
-	free(sorted_env[j + 1]);
-	if (!(sorted_env[j + 1] = ft_strdup(tmp)))
-		return ;
-	free(tmp);
+	tmp = sorted_env[j];
+	sorted_env[j] = sorted_env[j + 1];
+	sorted_env[j + 1] = tmp;
 }
 
 static void		sort_list(char **sorted_env)
@@ -52,6 +47,23 @@ static void		sort_list(char **sorted_env)
 	}
 }
 
+static void		f_print_variable(char **sorted_env, int i, int fd)
+{
+	int		equal_ind;
+
+	ft_putstr_fd("declare -x ", fd);
+	if ((equal_ind = f_coincidence_char_ind(sorted_env[i], '=')) >= 0)
+	{
+		write(fd, sorted_env[i], equal_ind + 1);
+		ft_putchar_fd('\"', fd);
+		ft_putstr_fd(sorted_env[i] + equal_ind + 1, fd);
+		ft_putchar_fd('\"', fd);
+	}
+	else
+		ft_putstr_fd(sorted_env[i], fd);
+	ft_putchar_fd('\n', fd);
+}
+
 int				f_export(t_data *data, char **argv, int fd)
 {
 	char		**sorted_env;
@@ -64,9 +76,8 @@ int				f_export(t_data *data, char **argv, int fd)
 		sort_list(sorted_env);
 		while (sorted_env[i])
 		{
-			ft_putstr_fd("declare -x ", fd);
-			ft_putstr_fd(sorted_env[i++], fd);
-			ft_putchar_fd('\n', fd);
+			f_print_variable(sorted_env, i, fd);
+			i++;
 		}
 		sorted_env = f_strarr_free(sorted_env);
 	}

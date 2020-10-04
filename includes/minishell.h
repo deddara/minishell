@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 14:11:55 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 17:34:53 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct	s_data
 	int					pars_complete;
 	char				*w;
 	int					last_saved;
-	char				*errstr;
 	char				**argv;
 	int					errcode;
 	int					slash;
@@ -42,7 +41,7 @@ typedef struct	s_data
 	int					read_started;
 	char				*arr;
 	int					arr_size;
-	int 				in_fd_exst;
+	int					in_fd_exst;
 }				t_data;
 
 typedef struct	s_command
@@ -84,18 +83,19 @@ int				command_handler(t_data *data, t_command *cmd);
 int				structer(t_data *data, t_command *cmd);
 t_command		*create_command_lst(void);
 
-void			f_clear_input_data(t_data *data);
-void			f_clear_quotes_flags(t_data *data);
 int				f_add_segment(t_data *data, int i);
 int				f_chk_quotes(t_data *data, int i);
 int				f_chk_shield_rev(t_data *data, int i);
 int				f_chk_shield (t_data *data, int i);
 int				f_chk_unclosed_quotes(t_data *data);
+void			f_clear_input_data(t_data *data);
+void			f_clear_quotes_flags(t_data *data);
 int				f_dollar_pars_prepare(t_data *data, int *i, int *k);
 int				f_dollar_pars(t_data *data, int *i);
 int				f_ind_arr_init(t_data *data);
 int				f_input_validator(t_data *data);
 int				f_join_to_w(t_data *data, char *str);
+void			f_line_pos_shift(t_data *data, int *i);
 int				f_pars_input(t_data *data);
 int				f_process_pars(t_data *data, int *i, int *w_ind);
 int				f_quotes_pars(t_data *data, int *i);
