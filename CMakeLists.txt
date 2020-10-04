@@ -76,5 +76,7 @@ add_executable(minishell
         srcs/tools/signals.c
         srcs/tools/strarr.c
         srcs/tools/structer.c
-        srcs/tools/utils.c
+        srcs/tools/structer_assists.c
+        srcs/tools/utils_1.c
+        srcs/tools/utils_2.c
         srcs/main.c)

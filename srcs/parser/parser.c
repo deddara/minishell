@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:20:46 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 12:05:43 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 17:30:28 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,7 @@ int				f_pars_prepare(t_data *data, int *i)
 	while (data->input[*i] && (data->input[*i] != ';' \
 				|| (data->input[*i] == ';' && ((f_quote_status(data) \
 				|| f_chk_shield_rev(data, *i))))))
-	{
-		if ((f_chk_quotes(data, *i)) == 2)
-			f_clear_quotes_flags(data);
-		(*i)++;
-	}
+		f_line_pos_shift(data, i);
 	f_clear_quotes_flags(data);
 	data->pars_complete = (!data->input[*i] || ((data->input[*i] == ';') \
 							&& !data->input[*i + 1])) ? 1 : 0;

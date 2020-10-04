@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:24:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/26 15:14:35 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 15:01:28 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,10 @@ int				f_chk_quotes(t_data *data, int i)
 			return (1);
 	}
 	else if (data->qt1_o && (data->input[i] == '\'') && !f_chk_shield(data, i))
-	{
 		data->qt1_c = 1;
-		return (2);
-	}
 	else if (data->qt2_o && (data->input[i] == '\"') && !f_chk_shield(data, i))
-	{
 		data->qt2_c = 1;
-		return (2);
-	}
-	return (0);
+	return ((data->qt1_c || data->qt2_c) ? 2 : 0);
 }
 
 int				f_word_chks(t_data *data, int *i)
@@ -80,19 +74,8 @@ int				f_chk_unclosed_quotes(t_data *data)
 
 	if ((quotes = f_quote_status(data)))
 	{
-		if (quotes == 1)
-		{
-			if (!(data->errstr = ft_strdup("undefined behavior: unclosed \
-quote\n")))
-				return (1);
-		}
-		if (quotes == 2)
-		{
-			if (!(data->errstr = ft_strdup("undefined behavior: unclosed \
-double quote\n")))
-				return (1);
-		}
-		return (1);
+		ft_putstr_fd("undefined behavior: unclosed ", 2);
+		ft_putstr_fd((quotes == 1) ? "quote\n" : "double quote\n", 2);
 	}
-	return (0);
+	return ((quotes) ? 1 : 0);
 }

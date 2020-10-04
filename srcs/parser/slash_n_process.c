@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:28:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 12:06:47 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 14:10:29 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ int				f_slash_pars(t_data *data, int *i)
 		if (f_quote_status(data) != 1 && f_chk_shield(data, *i + 1) \
 				&& !data->input[*i + 1])
 		{
-			if (!(data->errstr = ft_strdup("undefined behavior: unclosed \
-escape character '\\'\n")))
-				return (1);
+			ft_putstr_fd("undefined behavior: unclosed escape character \
+'\\'\n", 2);
 			return (1);
 		}
 	}

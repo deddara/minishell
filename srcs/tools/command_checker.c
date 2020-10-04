@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/03 14:21:28 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 21:47:03 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 #include <sys/errno.h>
 #include <fcntl.h>
 #include <string.h>
-
-static int		check_existence(char *c_path)
-{
-	if (open(c_path, O_RDONLY) == -1)
-	{
-		return (1);
-	}
-	return (0);
-}
 
 static int		new_path_create(char *c_path, t_command *command)
 {
@@ -74,7 +65,7 @@ static int		find_command(char **path_data, t_command *command)
 		if (!(c_path = ft_strjoin(c_path, command->argv[0])))
 			return (1);
 		free(tmp);
-		if (!check_existence(c_path))
+		if (!(open(c_path, O_RDONLY) == -1))
 			return (new_path_create(c_path, command));
 		i++;
 		free(c_path);
@@ -82,14 +73,28 @@ static int		find_command(char **path_data, t_command *command)
 	return (error_print(command));
 }
 
+static int		f_chk_n_fill_empty_argv_with_echo(t_command *cmd)
+{
+	if (!cmd->argv[0])
+	{
+		if (!(cmd->argv = f_strarr_add_elem(cmd->argv, "echo")))
+			return (1);
+		if (!(cmd->argv = f_strarr_add_elem(cmd->argv, "-n")))
+			return (1);
+	}
+	return (0);
+}
+
 int				check_command(t_data *data, t_command *cmd)
 {
 	char		*path_p;
 	char		**path_data;
 
+	if (f_chk_n_fill_empty_argv_with_echo(cmd))
+		return (1);
 	if (cmd->argv[0][0] == '/')
 	{
-		if (check_existence(cmd->argv[0]))
+		if (open(cmd->argv[0], O_RDONLY) == -1)
 		{
 			ft_putstr_fd(cmd->argv[0], 2);
 			ft_putstr_fd(": ", 2);
