@@ -6,13 +6,12 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 18:06:30 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 18:11:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 18:23:42 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include <unistd.h>
 
 static int		pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 {
@@ -41,7 +40,7 @@ static int		redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 	if (data->inp_arr[i + 1][0] == '|' && (data->inp_arr[i][0] == '<' || \
 			!ft_strncmp(data->inp_arr[i], ">>", 2)))
 	{
-		write(2, "syntax error near unexpected token `newline'\n", 45);
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (258);
 	}
 	if (!ft_strncmp(data->inp_arr[i + 1], "|", 1))
@@ -78,7 +77,7 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 	else if (!((*cmd_tmp)->argv = \
 	f_strarr_add_elem((*cmd_tmp)->argv, data->inp_arr[i])))
 	{
-		write(2, "malloc error\n", 13);
+		ft_putstr_fd("malloc error\n", 2);
 		return (1);
 	}
 	return (0);

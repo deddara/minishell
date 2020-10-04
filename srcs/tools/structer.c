@@ -6,25 +6,24 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:00:29 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/04 18:08:48 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 18:22:25 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include <unistd.h>
 
 static int		valid_check(t_data *data, int i)
 {
 	if (data->inp_arr[0][0] == '|' && data->arr[0] == '1')
 	{
-		write(2, "syntax error near unexpected token `|'\n", 39);
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 		return (258);
 	}
 	if (!ft_strncmp(data->inp_arr[i], "|", 2) && !data->inp_arr[i + 1] \
 			&& data->arr[i] == '1')
 	{
-		write(2, "undefined behavior: multiple lines\n", 35);
+		ft_putstr_fd("undefined behavior: multiple lines\n", 2);
 		return (1);
 	}
 	if (((!ft_strncmp(data->inp_arr[i], "<", 2) \
@@ -33,7 +32,7 @@ static int		valid_check(t_data *data, int i)
 		|| ((!ft_strncmp(data->inp_arr[0], "<", 2) \
 		|| !ft_strncmp(data->inp_arr[0], ">", 2)) && data->arr[i] == '1'))
 	{
-		write(2, "syntax error near unexpected token `newline'\n", 45);
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (258);
 	}
 	return (0);
@@ -51,15 +50,15 @@ static int		count_symbols(t_data *data, int i, char symb)
 	}
 	if (symb == '>' && j > 2)
 	{
-		write(2, "syntax error near unexpected token ", 35);
-		j > 3 ? write(2, "`>'\n", 4) : write(2, "`>>'\n", 5);
+		ft_putstr_fd("syntax error near unexpected token ", 2);
+		j > 3 ? ft_putstr_fd("`>'\n", 2) : ft_putstr_fd("`>>'\n", 2);
 		return (258);
 	}
 	if (j > 1)
 	{
-		write(2, "syntax error near unexpected token `", 36);
-		write(2, &symb, 1);
-		write(2, "'\n", 2);
+		ft_putstr_fd("syntax error near unexpected token `", 2);
+		ft_putstr_fd(&symb, 2);
+		ft_putstr_fd("'\n", 2);
 		return (258);
 	}
 	return (0);
