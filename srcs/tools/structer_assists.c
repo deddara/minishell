@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 18:06:30 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 18:23:42 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 23:21:34 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 static int		pipe_handler(t_data *data, t_command **cmd_tmp, int i)
 {
-	if (ft_strncmp(data->inp_arr[i + 1], ">", 1) == 0)
+	if (!ft_strncmp(data->inp_arr[i + 1], ">", 1))
 		(*cmd_tmp)->redirect = 1;
-	else if (ft_strncmp(data->inp_arr[i + 1], ">>", 2) == 0)
+	else if (!ft_strncmp(data->inp_arr[i + 1], ">>", 2))
 		(*cmd_tmp)->redirect = 2;
-	else if (ft_strncmp(data->inp_arr[i + 1], "<", 1) == 0)
+	else if (!ft_strncmp(data->inp_arr[i + 1], "<", 1))
 		(*cmd_tmp)->redirect = 3;
 	(*cmd_tmp)->pipe = 1;
 	(*cmd_tmp)->flag2 = 2;
@@ -45,11 +45,11 @@ static int		redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 	}
 	if (!ft_strncmp(data->inp_arr[i + 1], "|", 1))
 		(*cmd_tmp)->pipe = 1;
-	if (ft_strncmp(data->inp_arr[i], ">>", 2) == 0)
+	if (!ft_strncmp(data->inp_arr[i], ">>", 2))
 		(*cmd_tmp)->redirect = 2;
-	else if (ft_strncmp(data->inp_arr[i], ">", 1) == 0)
+	else if (!ft_strncmp(data->inp_arr[i], ">", 1))
 		(*cmd_tmp)->redirect = 1;
-	else if (ft_strncmp(data->inp_arr[i], "<", 1) == 0)
+	else if (!ft_strncmp(data->inp_arr[i], "<", 1))
 		(*cmd_tmp)->redirect = 3;
 	if (!((*cmd_tmp)->next = create_command_lst()))
 		return (1);
