@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:00:29 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/04 18:22:25 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 20:15:36 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ static int		valid_check(t_data *data, int i)
 		ft_putstr_fd("undefined behavior: multiple lines\n", 2);
 		return (1);
 	}
-	if (((!ft_strncmp(data->inp_arr[i], "<", 2) \
-		|| !ft_strncmp(data->inp_arr[i], ">", 2)) \
+	/* не понял, зачем отдельная проверка для нулевого индекса, если i всё ровно стартует с нуля? */
+	/* if (((!ft_strncmp(data->inp_arr[i], "<", 2) \                          */
+	/*     || !ft_strncmp(data->inp_arr[i], ">", 2)) \                        */
+	/*     && !data->inp_arr[i + 1] && data->arr[i] == '1')                   */
+	/*     || ((!ft_strncmp(data->inp_arr[0], "<", 2) \                       */
+	/*     || !ft_strncmp(data->inp_arr[0], ">", 2)) && data->arr[i] == '1')) */
+	if ((!ft_strncmp(data->inp_arr[i], "<", 2) \
+		|| !ft_strncmp(data->inp_arr[i], ">", 2) \
+		|| !ft_strncmp(data->inp_arr[i], ">>", 3)) \
 		&& !data->inp_arr[i + 1] && data->arr[i] == '1')
-		|| ((!ft_strncmp(data->inp_arr[0], "<", 2) \
-		|| !ft_strncmp(data->inp_arr[0], ">", 2)) && data->arr[i] == '1'))
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (258);
