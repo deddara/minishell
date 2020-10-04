@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 17:34:53 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/04 18:09:57 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void			clear_list(t_command *cmd);
 int				cmd_caller(t_data *data, t_command *cmd);
 int				command_handler(t_data *data, t_command *cmd);
 int				structer(t_data *data, t_command *cmd);
+int				struct_handler(t_data *data, t_command **cmd_tmp, int i);
 t_command		*create_command_lst(void);
 
 int				f_add_segment(t_data *data, int i);
