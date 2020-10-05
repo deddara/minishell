@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 18:06:30 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 19:01:51 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:18:17 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 	else if (!(*cmd_tmp)->argv)
 	{
 		(*cmd_tmp)->argv = (char**)malloc(sizeof(char*) * 2);
-		(*cmd_tmp)->argv[1] = 0;
+		(*cmd_tmp)->argv[1] = NULL;
 		if (!((*cmd_tmp)->argv[0] = ft_strdup(data->inp_arr[i])))
 		{
 			ft_putstr_fd("malloc error\n", 2);

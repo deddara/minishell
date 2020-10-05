@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 15:07:24 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:27:34 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int		f_other_cases(char **input, char **line, char *buf, int res)
 
 	if (!res && !ft_strlen(*line))
 	{
+		if (*line)
+			free(*line);
 		ft_putstr_fd("exit\n", 1);
 		return (4);
 	}
@@ -69,10 +71,18 @@ int				f_readline(char **input)
 	while (1)
 	{
 		if ((res = read(0, buf, 1)) == -1)
+		/* {                   */
+		/*     if (line)       */
+		/*         free(line); */
 			return (2);
+		/* } */
 		if (g_sigquit)
 			f_sigquit_case(input, line);
 		if ((result = f_other_cases(input, &line, buf, res)))
+		/* {                   */
+		/*     if (line)       */
+		/*         free(line); */
 			return (result - 1);
+		/* } */
 	}
 }

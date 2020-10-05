@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 14:44:03 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:25:44 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static int		f_inner_loop(t_data *data)
 		g_read_started = 0;
 		cmd_caller(data, command);
 	}
+	clear_list(command);
 	return (0);
 }
 
@@ -112,7 +113,7 @@ int				main(int argc, char **argv, char **envp)
 		f_clear_input_data(&data);
 		ft_putstr_fd("minishell$ ", 1);
 		if (f_readline(&data.input))
-			return (1);
+			return (f_quit(&data, 1, ""));
 		if (g_sigint)
 			data.errcode = 1;
 		if (f_input_validator(&data))
