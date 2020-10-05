@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 17:59:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 14:22:17 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:49:52 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_command		*create_command_lst(void)
 	return (tmp);
 }
 
-void			clear_list(t_command *cmd)
+t_command		*clear_list(t_command *cmd)
 {
 	t_command	*tmp;
 
@@ -47,4 +47,5 @@ void			clear_list(t_command *cmd)
 		}
 		cmd = NULL;
 	}
+	return (NULL);
 }

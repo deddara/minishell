@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 12:14:32 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 18:09:57 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:51:29 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int				f_unset(t_data *data, char **argv);
 char			*f_env_find_elem(char **src_arr, char *str, char *endcmp);
 
 int				check_command(t_data *data, t_command *cmd);
-void			clear_list(t_command *cmd);
+t_command		*clear_list(t_command *cmd);
 int				cmd_caller(t_data *data, t_command *cmd);
 int				command_handler(t_data *data, t_command *cmd);
 int				structer(t_data *data, t_command *cmd);
