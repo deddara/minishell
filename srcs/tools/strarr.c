@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 15:12:26 by awerebea          #+#    #+#             */
-/*   Updated: 2020/09/24 16:23:43 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:17:16 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char			**f_strarr_add_elem(char **src_arr, char *str)
 		dest_arr[j] = src_arr[j];
 	if (!(dest_arr[j] = ft_strdup(str)))
 		return (NULL);
+	src_arr = f_strarr_free(src_arr);
 	free(src_arr);
 	return (dest_arr);
 }

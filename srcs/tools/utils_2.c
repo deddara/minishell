@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 17:59:28 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 18:03:27 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:22:17 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ t_command		*create_command_lst(void)
 	tmp->file = 0;
 	tmp->flag = 0;
 	tmp->flag2 = 0;
-	tmp->argv = malloc(sizeof(char) * 2);
-	tmp->argv[0] = 0;
-	tmp->argv[1] = 0;
+	tmp->argv = NULL;
+	/* tmp->argv = malloc(sizeof(char) * 1); */
+	/* tmp->argv[0] = 0;                     */
+	/* tmp->argv[1] = 0; */
 	tmp->next = NULL;
 	return (tmp);
 }
@@ -39,7 +40,7 @@ void			clear_list(t_command *cmd)
 	{
 		while (cmd)
 		{
-			f_strarr_free(cmd->argv);
+			cmd->argv = f_strarr_free(cmd->argv);
 			tmp = cmd;
 			cmd = cmd->next;
 			free(tmp);

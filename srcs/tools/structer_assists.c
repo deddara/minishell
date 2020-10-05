@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 18:06:30 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/04 23:21:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:27:46 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	int			err_code;
 
+	err_code = 0;
 	if (!ft_strncmp(data->inp_arr[i], "|", 2) && data->arr[i] == '1')
 	{
 		if (pipe_handler(data, cmd_tmp, i))
@@ -73,6 +74,16 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 	{
 		if ((err_code = redirect_handler(data, cmd_tmp, i)))
 			return (err_code);
+	}
+	else if (!(*cmd_tmp)->argv)
+	{
+		(*cmd_tmp)->argv = malloc(sizeof(char) * 2);
+		(*cmd_tmp)->argv[1] = 0;
+		if (!((*cmd_tmp)->argv[0] = ft_strdup(data->inp_arr[i])))
+		{
+			ft_putstr_fd("malloc error\n", 2);
+			return (1);
+		}
 	}
 	else if (!((*cmd_tmp)->argv = \
 	f_strarr_add_elem((*cmd_tmp)->argv, data->inp_arr[i])))

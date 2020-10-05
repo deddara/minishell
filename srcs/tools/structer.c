@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:00:29 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/04 21:48:53 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 13:57:04 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int				structer(t_data *data, t_command *cmd)
 
 	cmd_tmp = cmd;
 	i = 0;
+	err_code = 0;
 	if (!(data->inp_arr[0]))
 		return (5);
 	while (data->inp_arr[i])

@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/04 21:47:03 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:19:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static int		find_command(char **path_data, t_command *command)
 	char		*tmp;
 	char		*c_path;
 
-	c_path = NULL;
 	i = 0;
 	while (path_data[i])
 	{
+		c_path = NULL;
 		if (!(c_path = ft_strjoin(path_data[i], "/")))
 			return (1);
 		tmp = c_path;
@@ -89,6 +89,7 @@ int				check_command(t_data *data, t_command *cmd)
 {
 	char		*path_p;
 	char		**path_data;
+	int			res;
 
 	if (f_chk_n_fill_empty_argv_with_echo(cmd))
 		return (1);
@@ -108,5 +109,8 @@ int				check_command(t_data *data, t_command *cmd)
 		return (1);
 	if (!(path_data = ft_split(path_p, ':')))
 		return (1);
-	return (find_command(path_data, cmd));
+	res = find_command(path_data, cmd);
+	path_data = f_strarr_free(path_data);
+	return (res);
 }
+
