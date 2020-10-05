@@ -58,7 +58,6 @@ char			**f_strarr_add_elem(char **src_arr, char *str)
 		dest_arr[j] = src_arr[j];
 	if (!(dest_arr[j] = ft_strdup(str)))
 		return (NULL);
-	src_arr = f_strarr_free(src_arr);
 	free(src_arr);
 	return (dest_arr);
 }
