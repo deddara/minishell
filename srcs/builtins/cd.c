@@ -24,7 +24,10 @@ static void		old_pwd(t_data *data)
 	if (!(old_p = getcwd(NULL, 0)))
 		return ;
 	if (!f_env_find_elem(data->envp, "OLDPWD", "="))
+	{
+		free(old_p);
 		return ;
+	}
 	data->envp = f_strarr_rem_elem(data->envp, "OLDPWD", "=");
 	tmp = old_p;
 	old_p = ft_strjoin("OLDPWD=", old_p);
