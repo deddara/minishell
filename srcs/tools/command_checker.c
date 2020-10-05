@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/05 15:19:23 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 18:20:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,3 @@ int				check_command(t_data *data, t_command *cmd)
 	path_data = f_strarr_free(path_data);
 	return (res);
 }
-

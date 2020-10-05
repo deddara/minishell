@@ -3,15 +3,10 @@ project(minishell C)
 
 set(CMAKE_C_STANDARD 11)
 
-file(GLOB minishell_srcs
-            srcs/*.c
-            srcs/builtins/*.c
-            srcs/tools/*.c)
-
 include_directories(includes)
 include_directories(libft/includes)
 
-add_executable(minishell ${minishell_srcs}
+add_executable(minishell
         includes/minishell.h
         libft/includes/libft.h
         libft/srcs/lists/ft_lstadd_back.c
@@ -75,9 +70,12 @@ add_executable(minishell ${minishell_srcs}
         srcs/parser/quotes.c
         srcs/parser/slash_n_process.c
         srcs/tools/cmd_caller.c
+        srcs/tools/cmd_execution.c
         srcs/tools/command_checker.c
         srcs/tools/command_handler.c
+        srcs/tools/pipe_utils.c
         srcs/tools/readline.c
+        srcs/tools/redirect.c
         srcs/tools/signals.c
         srcs/tools/strarr.c
         srcs/tools/structer.c
