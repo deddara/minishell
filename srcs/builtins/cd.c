@@ -41,7 +41,10 @@ static void		new_pwd(t_data *data)
 	if (!(new_p = getcwd(NULL, 0)))
 		return ;
 	if (!f_env_find_elem(data->envp, "PWD", "="))
-		return ;
+	{
+		free(new_p);
+		return;
+	}
 	data->envp = f_strarr_rem_elem(data->envp, "PWD", "=");
 	tmp = new_p;
 	new_p = ft_strjoin("PWD=", new_p);

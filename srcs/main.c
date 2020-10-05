@@ -79,9 +79,15 @@ static int		f_inner_loop(t_data *data)
 		if (!(command = create_command_lst()))
 			return (1);
 		if ((data->errcode = f_pars_input(data)))
-			break ;
+		{
+			clear_list(command);
+			break;
+		}
 		if ((data->errcode = structer(data, command)))
+		{
+			clear_list(command);
 			continue;
+		}
 		if ((data->errcode = command_handler(data, command)))
 		{
 			g_read_started = 0;
