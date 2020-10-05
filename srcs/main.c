@@ -60,6 +60,7 @@ static int		f_data_init(t_data *data, char **argv)
 	data->envp = NULL;
 	data->inp_arr = NULL;
 	data->cd = 0;
+	data->input = NULL;
 	data->in_fd_exst = 0;
 	data->w = NULL;
 	data->errcode = 0;

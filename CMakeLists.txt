@@ -3,10 +3,15 @@ project(minishell C)
 
 set(CMAKE_C_STANDARD 11)
 
+file(GLOB minishell_srcs
+            srcs/*.c
+            srcs/builtins/*.c
+            srcs/tools/*.c)
+
 include_directories(includes)
 include_directories(libft/includes)
 
-add_executable(minishell
+add_executable(minishell ${minishell_srcs}
         includes/minishell.h
         libft/includes/libft.h
         libft/srcs/lists/ft_lstadd_back.c

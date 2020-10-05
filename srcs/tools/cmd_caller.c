@@ -20,7 +20,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int		check_fd(t_command *cmd, t_data *data, int type)
+int				check_fd(t_command *cmd, t_data *data, int type)
 {
 	t_command *tmp;
 
@@ -43,7 +43,7 @@ int		check_fd(t_command *cmd, t_data *data, int type)
 	return (0);
 }
 
-void		process_handler(t_command *cmd, t_data *data, int kind)
+void			process_handler(t_command *cmd, t_data *data, int kind)
 {
 	dup2(data->fd[kind], kind);
 	close(data->fd[0]);
@@ -54,10 +54,8 @@ void		process_handler(t_command *cmd, t_data *data, int kind)
 	exit(data->errcode);
 }
 
-
-int		execute_one(t_command *cmd, t_data *data)
+int				execute_one(t_command *cmd, t_data *data)
 {
-
 	data->fd_f = 1;
 	if (!is_our_command(cmd, data))
 	{
@@ -72,7 +70,6 @@ int		execute_one(t_command *cmd, t_data *data)
 	}
 	return (external_func(cmd, data));
 }
-
 
 static int		execute(t_command *cmd, t_data *data)
 {
