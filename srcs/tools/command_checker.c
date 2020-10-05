@@ -18,10 +18,10 @@
 
 static int		new_path_create(char *c_path, t_command *command)
 {
-	if (!ft_strncmp(command->argv[0], "pwd", 3) \
-	|| !ft_strncmp(command->argv[0], "echo", 4) ||\
-	!ft_strncmp(command->argv[0], "env", 3) ||\
-	!ft_strncmp(command->argv[0], "cd", 2))
+	if (!ft_strncmp(command->argv[0], "pwd", 4) \
+	|| !ft_strncmp(command->argv[0], "echo", 5) ||\
+	!ft_strncmp(command->argv[0], "env", 4) ||\
+	!ft_strncmp(command->argv[0], "cd", 3))
 	{
 		free(c_path);
 		return (0);
@@ -34,18 +34,24 @@ static int		new_path_create(char *c_path, t_command *command)
 
 static int		error_print(t_command *command)
 {
-	if ((!ft_strncmp(command->argv[0], "cd", 2) && \
+	if ((!ft_strncmp(command->argv[0], "cd", 3) && \
 	ft_strlen(command->argv[0]) == 2) || \
-	(!ft_strncmp(command->argv[0], "exit", 4) \
+	(!ft_strncmp(command->argv[0], "exit", 5) \
 	&& ft_strlen(command->argv[0]) == 4) || \
-	(!ft_strncmp(command->argv[0], "export", 6) \
+	(!ft_strncmp(command->argv[0], "export", 7) \
 	&& ft_strlen(command->argv[0]) == 6) || \
-		(!ft_strncmp(command->argv[0], "unset", 5) \
-		&& ft_strlen(command->argv[0]) == 5))
+		(!ft_strncmp(command->argv[0], "unset", 6) \
+		&& ft_strlen(command->argv[0]) == 5) || \
+		!ft_strncmp(command->argv[0], "env", 4) || \
+		!ft_strncmp(command->argv[0], "pwd", 4) || \
+		!ft_strncmp(command->argv[0], "echo", 5))
 		return (0);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(command->argv[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	else
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(command->argv[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
 	return (127);
 }
 
@@ -93,7 +99,7 @@ int				check_command(t_data *data, t_command *cmd)
 
 	if (f_chk_n_fill_empty_argv_with_echo(cmd))
 		return (1);
-	if (cmd->argv[0][0] == '/')
+	if (cmd->argv[0][0] == '/' || !ft_strncmp(cmd->argv[0], "./", 3))
 	{
 		if (open(cmd->argv[0], O_RDONLY) == -1)
 		{
@@ -106,7 +112,7 @@ int				check_command(t_data *data, t_command *cmd)
 		return (0);
 	}
 	if (!(path_p = f_env_find_elem(data->envp, "PATH", "=")))
-		return (1);
+		return (error_print(cmd));
 	if (!(path_data = ft_split(path_p, ':')))
 		return (1);
 	res = find_command(path_data, cmd);
