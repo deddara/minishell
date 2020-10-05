@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 21:07:05 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 21:53:30 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int		f_inner_loop(t_data *data)
 	while (!data->pars_complete)
 	{
 		command = clear_list(command);
-		ft_putstr_fd("!\n", 1);
 		if (!(command = create_command_lst()))
 			return (1);
 		data->inp_arr = f_strarr_free(data->inp_arr);
