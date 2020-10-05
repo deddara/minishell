@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 15:18:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 16:27:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/05 21:01:03 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,21 @@ static void		f_sigquit_case(char **input, char *line)
 	g_sigquit = 0;
 }
 
+static int		f_clear_n_print_exit(char **line)
+{
+	/* (void)line; */
+	if (*line)
+		free(*line);
+	ft_putstr_fd("exit\n", 1);
+	return (4);
+}
+
 static int		f_other_cases(char **input, char **line, char *buf, int res)
 {
 	char		*tmp;
 
 	if (!res && !ft_strlen(*line))
-	{
-		if (*line)
-			free(*line);
-		ft_putstr_fd("exit\n", 1);
-		return (4);
-	}
+		return (f_clear_n_print_exit(line));
 	if (!res)
 		ft_putstr_fd("  \b\b", 1);
 	if (buf[0] != '\n')
@@ -71,18 +75,10 @@ int				f_readline(char **input)
 	while (1)
 	{
 		if ((res = read(0, buf, 1)) == -1)
-		/* {                   */
-		/*     if (line)       */
-		/*         free(line); */
 			return (2);
-		/* } */
 		if (g_sigquit)
 			f_sigquit_case(input, line);
 		if ((result = f_other_cases(input, &line, buf, res)))
-		/* {                   */
-		/*     if (line)       */
-		/*         free(line); */
 			return (result - 1);
-		/* } */
 	}
 }
