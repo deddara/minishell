@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/06 15:25:22 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 15:36:51 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ static int		f_inner_loop(t_data *data, t_command *command)
 			return (1);
 		data->inp_arr = f_strarr_free(data->inp_arr);
 		if ((data->errcode = f_pars_input(data)))
-		{
-			command = clear_list(command);
 			break ;
-		}
 		if ((data->errcode = structer(data, command)))
 		{
 			data->errcode = (data->errcode == 2) ? 0 : data->errcode;
@@ -97,6 +94,7 @@ static int		f_inner_loop(t_data *data, t_command *command)
 		g_read_started = 0;
 		cmd_caller(data, command);
 	}
+	command = clear_list(command);
 	return (0);
 }
 
@@ -123,7 +121,6 @@ int				main(int argc, char **argv, char **envp)
 			continue;
 		if (f_inner_loop(&data, command))
 			return (1);
-		command = clear_list(command);
 	}
 	return (f_quit(&data, 0, ""));
 }
