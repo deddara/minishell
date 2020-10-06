@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:18:54 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/03 14:15:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 12:54:23 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void		new_pwd(t_data *data)
 	if (!f_env_find_elem(data->envp, "PWD", "="))
 	{
 		free(new_p);
-		return;
+		return ;
 	}
 	data->envp = f_strarr_rem_elem(data->envp, "PWD", "=");
 	tmp = new_p;

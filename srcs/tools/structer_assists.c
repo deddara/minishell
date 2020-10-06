@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/04 18:06:30 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 21:01:03 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 13:19:19 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ static int		redirect_handler(t_data *data, t_command **cmd_tmp, int i)
 	return (0);
 }
 
+static int		print_err_n_quit(char *str, int errcode)
+{
+	ft_putstr_fd(str, 2);
+	return (errcode);
+}
+
+static int		check_condition(t_data *data, int i)
+{
+	return (((!ft_strncmp(data->inp_arr[i], "<", 2) \
+		|| !ft_strncmp(data->inp_arr[i], ">", 2) \
+		|| !ft_strncmp(data->inp_arr[i], ">>", 3)) && data->arr[i] == '1') \
+			? 1 : 0);
+}
+
 int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 {
 	int			err_code;
@@ -68,9 +82,7 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 		if (pipe_handler(data, cmd_tmp, i))
 			return (1);
 	}
-	else if ((!ft_strncmp(data->inp_arr[i], "<", 2) \
-		|| !ft_strncmp(data->inp_arr[i], ">", 2) \
-		|| !ft_strncmp(data->inp_arr[i], ">>", 3)) && data->arr[i] == '1')
+	else if (check_condition(data, i))
 	{
 		if ((err_code = redirect_handler(data, cmd_tmp, i)))
 			return (err_code);
@@ -80,16 +92,10 @@ int				struct_handler(t_data *data, t_command **cmd_tmp, int i)
 		(*cmd_tmp)->argv = (char**)malloc(sizeof(char*) * 2);
 		(*cmd_tmp)->argv[1] = NULL;
 		if (!((*cmd_tmp)->argv[0] = ft_strdup(data->inp_arr[i])))
-		{
-			ft_putstr_fd("malloc error\n", 2);
-			return (1);
-		}
+			return (print_err_n_quit("malloc error\n", 1));
 	}
 	else if (!((*cmd_tmp)->argv = \
-	f_strarr_add_elem((*cmd_tmp)->argv, data->inp_arr[i])))
-	{
-		ft_putstr_fd("malloc error\n", 2);
-		return (1);
-	}
+				f_strarr_add_elem((*cmd_tmp)->argv, data->inp_arr[i])))
+		return (print_err_n_quit("malloc error\n", 1));
 	return (0);
 }

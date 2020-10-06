@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/05 21:53:30 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 12:58:50 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,8 @@ static int		f_data_init(t_data *data, char **argv)
 	return (0);
 }
 
-static int		f_inner_loop(t_data *data)
+static int		f_inner_loop(t_data *data, t_command *command)
 {
-	t_command	*command;
-
-	command = NULL;
 	while (!data->pars_complete)
 	{
 		command = clear_list(command);
@@ -84,7 +81,7 @@ static int		f_inner_loop(t_data *data)
 		if ((data->errcode = f_pars_input(data)))
 		{
 			command = clear_list(command);
-			break;
+			break ;
 		}
 		if ((data->errcode = structer(data, command)))
 			continue;
@@ -103,7 +100,9 @@ static int		f_inner_loop(t_data *data)
 int				main(int argc, char **argv, char **envp)
 {
 	t_data		data;
+	t_command	*command;
 
+	command = NULL;
 	signal(SIGINT, (void*)f_sigint);
 	signal(SIGQUIT, (void*)f_sigquit);
 	(void)argc;
@@ -119,7 +118,7 @@ int				main(int argc, char **argv, char **envp)
 			data.errcode = 1;
 		if (f_input_validator(&data))
 			continue;
-		if (f_inner_loop(&data))
+		if (f_inner_loop(&data, command))
 			return (1);
 	}
 	return (f_quit(&data, 0, ""));
