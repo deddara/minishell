@@ -6,13 +6,14 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 00:51:31 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/06 12:58:50 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 15:25:22 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <signal.h>
+#include <search.h>
 
 int				g_read_started;
 int				g_sigquit;
@@ -84,7 +85,10 @@ static int		f_inner_loop(t_data *data, t_command *command)
 			break ;
 		}
 		if ((data->errcode = structer(data, command)))
+		{
+			data->errcode = (data->errcode == 2) ? 0 : data->errcode;
 			continue;
+		}
 		if ((data->errcode = command_handler(data, command)))
 		{
 			g_read_started = 0;
@@ -93,7 +97,6 @@ static int		f_inner_loop(t_data *data, t_command *command)
 		g_read_started = 0;
 		cmd_caller(data, command);
 	}
-	command = clear_list(command);
 	return (0);
 }
 
@@ -120,6 +123,7 @@ int				main(int argc, char **argv, char **envp)
 			continue;
 		if (f_inner_loop(&data, command))
 			return (1);
+		command = clear_list(command);
 	}
 	return (f_quit(&data, 0, ""));
 }

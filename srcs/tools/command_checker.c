@@ -6,7 +6,7 @@
 /*   By: deddara <deddara@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 19:34:14 by deddara           #+#    #+#             */
-/*   Updated: 2020/10/05 21:01:03 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 15:01:38 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int				check_command(t_data *data, t_command *cmd)
 
 	if (f_chk_n_fill_empty_argv_with_echo(cmd))
 		return (1);
-	if (cmd->argv[0][0] == '/' || !ft_strncmp(cmd->argv[0], "./", 3))
+	if (cmd->argv[0][0] == '/' || !ft_strncmp(cmd->argv[0], "./", 2))
 	{
 		if (open(cmd->argv[0], O_RDONLY) == -1)
 		{

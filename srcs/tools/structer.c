@@ -107,7 +107,7 @@ int				structer(t_data *data, t_command *cmd)
 	i = 0;
 	err_code = 0;
 	if (!(data->inp_arr[0]))
-		return (5);
+		return (2);
 	while (data->inp_arr[i])
 	{
 		if (check_for_redir(cmd))
