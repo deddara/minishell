@@ -6,7 +6,7 @@
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 18:07:25 by awerebea          #+#    #+#             */
-/*   Updated: 2020/10/03 13:45:34 by awerebea         ###   ########.fr       */
+/*   Updated: 2020/10/06 11:02:16 by awerebea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static char		*f_export_take_key(char *argv)
 	i = 0;
 	while (argv[count])
 		count++;
-	tmp = malloc(count + 1);
+	if (!(tmp = (char*)malloc(sizeof(char) * count + 1)))
+		return (NULL);
 	while (argv[i] && argv[i] != '=')
 	{
 		tmp[i] = argv[i];
@@ -69,7 +70,8 @@ static int		f_check_var_exist(t_data *data, char **argv, int i)
 	char		*key;
 	int			errcode;
 
-	key = f_export_take_key(argv[i]);
+	if (!(key = f_export_take_key(argv[i])))
+		return (1);
 	if (f_strarr_find_elem(data->envp, key, "") != -1)
 	{
 		if (!ft_strrchr(argv[i], '='))
@@ -82,6 +84,7 @@ static int		f_check_var_exist(t_data *data, char **argv, int i)
 		if ((errcode = f_var_rem_or_repl(data, argv, i, key)))
 			return (errcode);
 	}
+	free(key);
 	return (0);
 }
 
